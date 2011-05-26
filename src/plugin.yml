@@ -1,0 +1,8 @@
+name: Cityscape
+main: com.sethcran.cityscape.Cityscape
+version: 0.0.0.1
+
+commands:
+    test:
+        description: testing
+        usage: /test
