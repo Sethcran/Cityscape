@@ -40,6 +40,10 @@ public class CommandHandler {
 			}
 			cscommand.execute(sender, args);
 		}
+		else {
+			CSCommand cscommand = map.get("default");
+			cscommand.execute(sender, args);
+		}
 		
 		return false;
 	}

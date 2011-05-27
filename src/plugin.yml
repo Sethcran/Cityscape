@@ -4,8 +4,8 @@ version: 0.0.0.1
 
 commands:
     cs:
-        description: Cityscape commands
+        description: commands
         usage: /cs
     cityscape:
-    	description: Cityscape commands
-    	usage: /cityscape
+        description: commands
+        usage: /cityscape

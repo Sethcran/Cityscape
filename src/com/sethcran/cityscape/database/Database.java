@@ -1,29 +1,23 @@
 package com.sethcran.cityscape.database;
 
-import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.bukkit.util.config.Configuration;
+import com.sethcran.cityscape.Cityscape;
+import com.sethcran.cityscape.Settings;
 
 public class Database {
 	private Connection connection = null;
 	
-	public Database() {
-		File file = new File("bukkit.yml");
-		Configuration config = new Configuration(file);
-		config.load();
-		
-		String username = config.getString("database.username");
-		String password = config.getString("database.password");
-		String driver = config.getString("database.driver");
-		String url = config.getString("database.url");
+	public Database(Cityscape plugin) {		
+		Settings settings = plugin.getSettings();
 		
 		try {
-			Class.forName(driver);
-			connection = DriverManager.getConnection(url, username, password);
+			Class.forName(settings.databaseDriver);
+			connection = DriverManager.getConnection(settings.databaseUrl, 
+					settings.databaseUsername, settings.databasePassword);
 		} catch(ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch(SQLException e) {

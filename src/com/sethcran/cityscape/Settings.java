@@ -6,7 +6,12 @@ import org.bukkit.util.config.Configuration;
 
 
 public class Settings {
-	public boolean debug;
+	public boolean debug = false;
+	
+	public String databaseUsername = null;
+	public String databasePassword = null;
+	public String databaseDriver = null;
+	public String databaseUrl = null;
 	
 	public Settings() {
 		String directory = "plugins/Cityscape";
@@ -18,8 +23,14 @@ public class Settings {
 		
 		if(!file.exists())
 			create(file);
-		else
-			debug = config.getBoolean("debug", false);
+		config.load();
+		
+		debug = config.getBoolean("debug", false);
+			
+		databaseUsername = config.getString("database.username");
+		databasePassword = config.getString("database.password");
+		databaseDriver = config.getString("database.driver");
+		databaseUrl = config.getString("database.url");
 	}
 	
 	public void create(File file) {
@@ -32,6 +43,11 @@ public class Settings {
 		config.load();
 		
 		config.setProperty("debug",	false);
+		
+		config.setProperty("database.username", "minecraft");
+		config.setProperty("database.password", "testpass");
+		config.setProperty("database.driver", "com.mysql.jdbc.Driver");
+		config.setProperty("database.url", "jdbc:mysql://localhost/minecraft");
 		config.save();
 	}
 }

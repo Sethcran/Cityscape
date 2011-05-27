@@ -17,9 +17,9 @@ public class Cityscape extends JavaPlugin {
 	public static Logger log = null;
 	public static PermissionHandler permissionHandler = null;
 	
-	public static Settings settings = null;
-	public static Database database = null;
-	public static CommandHandler commandHandler = null;
+	private Settings settings = null;
+	private Database database = null;
+	private CommandHandler commandHandler = null;
 
 	@Override
 	public void onDisable() {
@@ -32,7 +32,7 @@ public class Cityscape extends JavaPlugin {
 		setupPermissions();
 		
 		settings = new Settings();
-		database = new Database();
+		database = new Database(this);
 		commandHandler = new CommandHandler();
 		
 		log.info("Cityscape loaded.");
@@ -41,6 +41,18 @@ public class Cityscape extends JavaPlugin {
 	public boolean onCommand(CommandSender sender, Command cmd, 
 			String commandLabel, String[] args) {
 		return commandHandler.handleCommand(sender, cmd, commandLabel, args);
+	}
+	
+	public Settings getSettings() {
+		return settings;
+	}
+	
+	public Database getDB() {
+		return database;
+	}
+	
+	public CommandHandler getCommandHandler() {
+		return commandHandler;
 	}
 	
 	private void setupPermissions() {
