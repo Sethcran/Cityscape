@@ -8,8 +8,6 @@ import java.sql.SQLException;
 
 import org.bukkit.util.config.Configuration;
 
-import com.sethcran.cityscape.Cityscape;
-
 public class Database {
 	private Connection connection = null;
 	
@@ -39,8 +37,6 @@ public class Database {
 				Schemas schemas = new Schemas(connection);
 				schemas.createCSDatabase();
 			}
-			else
-				Cityscape.log.info("Error.");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
