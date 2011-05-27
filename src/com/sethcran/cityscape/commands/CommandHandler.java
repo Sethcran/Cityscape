@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class CommandHandler {
 
@@ -20,32 +19,27 @@ public class CommandHandler {
 	public boolean handleCommand(CommandSender sender, Command cmd, 
 			String label, String[] args) {
 		String command = cmd.getName().toLowerCase();
-		Player player = null;
-		if(sender instanceof Player)
-			player = (Player)sender;
-		else
-			return false;
 		
 		HashMap<String, CSCommand> map = commandMap.get(command);
 		if(map == null) {
-			player.sendMessage("That command does not exist.");
+			sender.sendMessage("That command does not exist.");
 			return false;
 		}
 		
 		if(args.length > 0) {
 			CSCommand cscommand = map.get(args[0]);
 			if(cscommand == null) {
-				player.sendMessage("That command does not exist.");
+				sender.sendMessage("That command does not exist.");
 				return false;
 			}
 			cscommand.execute(sender, args);
+			return true;
 		}
 		else {
 			CSCommand cscommand = map.get("default");
 			cscommand.execute(sender, args);
+			return true;
 		}
-		
-		return false;
 	}
 	
 	public void addCityCommands() {
