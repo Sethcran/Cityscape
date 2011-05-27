@@ -9,6 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
+import com.sethcran.cityscape.commands.CommandHandler;
 import com.sethcran.cityscape.database.Database;
 
 
@@ -18,6 +19,7 @@ public class Cityscape extends JavaPlugin {
 	
 	public static Settings settings = null;
 	public static Database database = null;
+	public static CommandHandler commandHandler = null;
 
 	@Override
 	public void onDisable() {
@@ -31,15 +33,14 @@ public class Cityscape extends JavaPlugin {
 		
 		settings = new Settings();
 		database = new Database();
+		commandHandler = new CommandHandler();
 		
 		log.info("Cityscape loaded.");
 	}
 	
 	public boolean onCommand(CommandSender sender, Command cmd, 
 			String commandLabel, String[] args) {
-		if(cmd.getName().equalsIgnoreCase("test"))
-			sender.sendMessage("works.");
-		return true;
+		return commandHandler.handleCommand(sender, cmd, commandLabel, args);
 	}
 	
 	private void setupPermissions() {
