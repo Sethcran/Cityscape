@@ -5,10 +5,10 @@ import java.io.File;
 import org.bukkit.util.config.Configuration;
 
 
-public class CSSettings {
+public class Settings {
 	public boolean debug;
 	
-	CSSettings() {
+	public Settings() {
 		String directory = "plugins/Cityscape";
 		File dataFolder = new File(directory);
 		dataFolder.mkdir();
