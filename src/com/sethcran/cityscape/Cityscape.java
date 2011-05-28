@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event.Type;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.iConomy.iConomy;
@@ -14,6 +15,7 @@ import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
 import com.sethcran.cityscape.commands.CommandHandler;
 import com.sethcran.cityscape.database.Database;
+import com.sethcran.cityscape.listeners.CSPlayerListener;
 import com.sethcran.cityscape.listeners.CSServerListener;
 
 
@@ -34,12 +36,16 @@ public class Cityscape extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		log = Logger.getLogger("Minecraft");
+		PluginManager pm = getServer().getPluginManager();
 		
 		setupPermissions();
-		getServer().getPluginManager().registerEvent(Type.PLUGIN_ENABLE, 
-				new CSServerListener(this), Priority.Monitor, this);
-		getServer().getPluginManager().registerEvent(Type.PLUGIN_DISABLE,
-				new CSServerListener(this), Priority.Monitor, this);
+		
+		pm.registerEvent(Type.PLUGIN_ENABLE, new CSServerListener(this), 
+				Priority.Monitor, this);
+		pm.registerEvent(Type.PLUGIN_DISABLE, new CSServerListener(this), 
+				Priority.Monitor, this);
+		pm.registerEvent(Type.PLAYER_JOIN, new CSPlayerListener(this), 
+				Priority.Normal, this);
 		
 		settings = new Settings();
 		database = new Database(this);

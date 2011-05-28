@@ -7,13 +7,10 @@ import java.sql.SQLException;
 
 import com.sethcran.cityscape.Settings;
 
-public class CSPlayerCityData {
-	Connection con = null;
-	Settings settings = null;
+public class CSPlayerCityData extends Table {
 	
 	public CSPlayerCityData(Connection con, Settings settings) {
-		this.con = con;
-		this.settings = settings;
+		super(con, settings);
 	}
 	
 	public String getCurrentCity(String playerName) {

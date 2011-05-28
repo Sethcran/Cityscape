@@ -8,13 +8,10 @@ import java.sql.SQLException;
 import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.Settings;
 
-public class CSCities {
-	Connection con = null;
-	Settings settings = null;
+public class CSCities extends Table {
 	
 	public CSCities(Connection con, Settings settings) {
-		this.con = con;
-		this.settings = settings;
+		super(con, settings);
 	}
 	
 	public boolean doesCityExist(String cityName) {
