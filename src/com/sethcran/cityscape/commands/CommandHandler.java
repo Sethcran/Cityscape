@@ -7,6 +7,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 import com.sethcran.cityscape.Cityscape;
+import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.commands.citycommands.*;
 
 public class CommandHandler {
@@ -28,7 +29,7 @@ public class CommandHandler {
 		
 		HashMap<String, CSCommand> map = commandMap.get(command);
 		if(map == null) {
-			sender.sendMessage(ChatColor.GOLD + "[Cityscape] " + ChatColor.RED + 
+			sender.sendMessage(Constants.CITYSCAPE + ChatColor.RED + 
 					"That command does not exist.");
 			return true;
 		}
@@ -36,7 +37,7 @@ public class CommandHandler {
 		if(args.length > 0) {
 			CSCommand cscommand = map.get(args[0]);
 			if(cscommand == null) {
-				sender.sendMessage(ChatColor.GOLD + "[Cityscape] " + ChatColor.RED + 
+				sender.sendMessage(Constants.CITYSCAPE + ChatColor.RED + 
 						"That command does not exist.");
 				return true;
 			}

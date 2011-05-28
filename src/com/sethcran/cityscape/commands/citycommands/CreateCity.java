@@ -28,24 +28,24 @@ public class CreateCity extends CSCommand {
 		if(sender instanceof Player)
 			player = (Player)sender;
 		else {
-			sender.sendMessage(ChatColor.GOLD + "[Cityscape] " + ChatColor.RED + 
+			sender.sendMessage(Constants.CITYSCAPE + ChatColor.RED + 
 					"Only a player in game can do that!");
 			return;
 		}
 		
 		if(args.length < 2) {
-			player.sendMessage(ChatColor.GOLD + "[Cityscape] " + ChatColor.RED + 
+			player.sendMessage(Constants.CITYSCAPE + ChatColor.RED + 
 					"You must provide a townname.");
 			player.sendMessage(ChatColor.RED + usage);
 			return;
 		}
 		if(args.length > 2) {
-			player.sendMessage(ChatColor.GOLD + "[Cityscape] " + ChatColor.RED + 
+			player.sendMessage(Constants.CITYSCAPE + ChatColor.RED + 
 					"Spaces are not allowed in town names.");
 			return;
 		}
 		if(args[1].length() > Constants.TOWN_MAX_NAME_LENGTH) {
-			player.sendMessage(ChatColor.GOLD + "[Cityscape] " + ChatColor.RED + 
+			player.sendMessage(Constants.CITYSCAPE + ChatColor.RED + 
 					"The town name must be under " + Constants.TOWN_MAX_NAME_LENGTH + 
 					" characters.");
 			return;
@@ -53,9 +53,14 @@ public class CreateCity extends CSCommand {
 		
 		Holdings balance = iConomy.getAccount(player.getName()).getHoldings();
 		if(balance == null) {
-			player.sendMessage(ChatColor.GOLD + "[Cityscape] " + ChatColor.RED +
+			player.sendMessage(Constants.CITYSCAPE + ChatColor.RED +
 					"There was an error executing that command.");
 			return;
+		}
+		
+		if(!plugin.permissionHandler.has(player, "cityscape.createcity")) {
+			player.sendMessage(Constants.CITYSCAPE + ChatColor.RED + 
+					"You do not have permission to create a city.");
 		}
 		if(balance.hasEnough(plugin.getSettings().cityCost)) {
 			CSPlayerCityData cspcd = new CSPlayerCityData(plugin.getDB().getConnection(),
@@ -66,26 +71,26 @@ public class CreateCity extends CSCommand {
 						plugin.getSettings());
 				
 				if(csc.doesCityExist(args[1])) {
-					player.sendMessage(ChatColor.GOLD + "[Cityscape] " + ChatColor.RED +
+					player.sendMessage(Constants.CITYSCAPE + ChatColor.RED +
 							"That city already exists!");
 					return;
 				}
 				
 				if(csc.createCity(player.getName(), args[1])) {
 					cspcd.addPlayerToCity(player.getName(), args[1]);
-					plugin.getServer().broadcastMessage(ChatColor.GOLD + "[Cityscape] " + 
+					plugin.getServer().broadcastMessage(Constants.CITYSCAPE + 
 							ChatColor.GREEN + "The city of " + args[1] + " was founded!");
 				}
 				else
-					player.sendMessage(ChatColor.GOLD + "[Cityscape] " + ChatColor.RED + 
+					player.sendMessage(Constants.CITYSCAPE + ChatColor.RED + 
 							"There was an error founding your town.");
 			}
 			else
-				player.sendMessage(ChatColor.GOLD + "[Cityscape] " + ChatColor.RED + 
+				player.sendMessage(Constants.CITYSCAPE + ChatColor.RED + 
 						"You must first leave your current city.");
 		}
 		else
-			player.sendMessage(ChatColor.GOLD + "[Cityscape] " + ChatColor.RED + 
+			player.sendMessage(Constants.CITYSCAPE + ChatColor.RED + 
 					"You do not have enough money for that.");
 	}
 }
