@@ -13,6 +13,10 @@ public class Settings {
 	public String databaseDriver = null;
 	public String databaseUrl = null;
 	
+	public int defaultBaseClaims = 0;
+	
+	public double cityCost = 0.0;
+	
 	public Settings() {
 		String directory = "plugins/Cityscape";
 		File dataFolder = new File(directory);
@@ -31,6 +35,10 @@ public class Settings {
 		databasePassword = config.getString("database.password");
 		databaseDriver = config.getString("database.driver");
 		databaseUrl = config.getString("database.url");
+		
+		defaultBaseClaims = config.getInt("cityscape.defaultbaseclaims", 0);
+		
+		cityCost = config.getDouble("iconomy.citycost", 0.0);
 	}
 	
 	public void create(File file) {
@@ -48,6 +56,10 @@ public class Settings {
 		config.setProperty("database.password", "testpass");
 		config.setProperty("database.driver", "com.mysql.jdbc.Driver");
 		config.setProperty("database.url", "jdbc:mysql://localhost/minecraft");
+		
+		config.setProperty("cityscape.defaultbaseclaims", 16);
+		
+		config.setProperty("iconomy.citycost", 0.0);
 		config.save();
 	}
 }

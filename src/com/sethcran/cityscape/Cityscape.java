@@ -43,7 +43,7 @@ public class Cityscape extends JavaPlugin {
 		
 		settings = new Settings();
 		database = new Database(this);
-		commandHandler = new CommandHandler();
+		commandHandler = new CommandHandler(this);
 		
 		log.info("Cityscape loaded.");
 	}

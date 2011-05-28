@@ -3,9 +3,9 @@ main: com.sethcran.cityscape.Cityscape
 version: 0.0.0.1
 
 commands:
-    cs:
+    city:
         description: commands
-        usage: /cs
-    cityscape:
+        usage: /city
+    c:
         description: commands
-        usage: /cityscape
+        usage: /c

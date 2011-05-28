@@ -5,12 +5,17 @@ import java.util.HashMap;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
+import com.sethcran.cityscape.Cityscape;
+import com.sethcran.cityscape.commands.citycommands.*;
+
 public class CommandHandler {
 
+	private Cityscape plugin;
 	private HashMap<String, HashMap<String, CSCommand>> commandMap = 
 		new HashMap<String, HashMap<String, CSCommand>>();
 	
-	public CommandHandler() {
+	public CommandHandler(Cityscape plugin) {
+		this.plugin = plugin;
 		addCityCommands();
 		addPlayerCommands();
 		addCSAdminCommands();
@@ -45,6 +50,8 @@ public class CommandHandler {
 	public void addCityCommands() {
 		HashMap<String, CSCommand> map = new HashMap<String, CSCommand>();
 		
+		addToMap(new CreateCity(plugin), map);
+		
 		commandMap.put("city", map);
 		commandMap.put("c", map);
 	}
@@ -59,5 +66,15 @@ public class CommandHandler {
 		HashMap<String, CSCommand> map = new HashMap<String, CSCommand>();
 		commandMap.put("csadmin", map);
 		commandMap.put("csa", map);
+	}
+	
+	private void addToMap(CSCommand cmd, HashMap<String, CSCommand> map) {
+		map.put(cmd.getName(), cmd);
+		
+		if(cmd.getAliases() != null) {
+			for(String alias : cmd.getAliases()) {
+				map.put(alias, cmd);
+			}
+		}
 	}
 }
