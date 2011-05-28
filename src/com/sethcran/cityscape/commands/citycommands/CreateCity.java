@@ -58,6 +58,13 @@ public class CreateCity extends CSCommand {
 			return;
 		}
 		
+		// Check that town name is alphabetic
+		if(!args[0].matches("[a-zA-Z]+")) {
+			player.sendMessage(Constants.CITYSCAPE + ChatColor.RED +
+					"The town name must consist only of alphabetic characters.");
+			return;
+		}
+		
 		// Check that user has permissions to create a city.
 		if(!plugin.permissionHandler.has(player, "cityscape.createcity")) {
 			player.sendMessage(Constants.CITYSCAPE + ChatColor.RED + 
