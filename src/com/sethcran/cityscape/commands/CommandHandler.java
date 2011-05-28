@@ -2,6 +2,7 @@ package com.sethcran.cityscape.commands;
 
 import java.util.HashMap;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
@@ -27,15 +28,17 @@ public class CommandHandler {
 		
 		HashMap<String, CSCommand> map = commandMap.get(command);
 		if(map == null) {
-			sender.sendMessage("That command does not exist.");
-			return false;
+			sender.sendMessage(ChatColor.GOLD + "[Cityscape] " + ChatColor.RED + 
+					"That command does not exist.");
+			return true;
 		}
 		
 		if(args.length > 0) {
 			CSCommand cscommand = map.get(args[0]);
 			if(cscommand == null) {
-				sender.sendMessage("That command does not exist.");
-				return false;
+				sender.sendMessage(ChatColor.GOLD + "[Cityscape] " + ChatColor.RED + 
+						"That command does not exist.");
+				return true;
 			}
 			cscommand.execute(sender, args);
 			return true;
@@ -51,6 +54,7 @@ public class CommandHandler {
 		HashMap<String, CSCommand> map = new HashMap<String, CSCommand>();
 		
 		addToMap(new CreateCity(plugin), map);
+		addToMap(new com.sethcran.cityscape.commands.citycommands.Default(plugin), map);
 		
 		commandMap.put("city", map);
 		commandMap.put("c", map);

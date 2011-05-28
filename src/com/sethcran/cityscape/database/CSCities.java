@@ -29,6 +29,7 @@ public class CSCities {
 			if(rs.next())
 				return true;
 		} catch (SQLException e) {
+			if(settings.debug)
 			e.printStackTrace();
 		}
 		
@@ -47,7 +48,8 @@ public class CSCities {
 			stmt.setInt(5, 0);
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if(settings.debug)
+				e.printStackTrace();
 			return false;
 		}
 		return true;
