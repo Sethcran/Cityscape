@@ -61,7 +61,9 @@ public class Schemas {
 	public void createResidentsTable() {
 		String sql = 	"CREATE TABLE IF NOT EXISTS CSResidents(" +
 						"player CHAR(" + Constants.PLAYER_MAX_NAME_LENGTH + ") PRIMARY KEY," +
-						"city CHAR(" + Constants.TOWN_MAX_NAME_LENGTH + ")) " +
+						"city CHAR(" + Constants.TOWN_MAX_NAME_LENGTH + "), " +
+						"FOREIGN KEY(player) REFERENCES csplayers(name), " +
+						"FOREIGN KEY(city) REFERENCES cscities(name))" +
 						"ENGINE = InnoDB;";
 		try {
 			con.createStatement().executeUpdate(sql);
@@ -74,7 +76,8 @@ public class Schemas {
 	public void createClaimsTable() {
 		String sql = 	"CREATE TABLE IF NOT EXISTS CSClaims(" +
 						"loc POINT PRIMARY KEY," +
-						"city CHAR(" + Constants.TOWN_MAX_NAME_LENGTH + ") NOT NULL) " + 
+						"city CHAR(" + Constants.TOWN_MAX_NAME_LENGTH + ") NOT NULL, " + 
+						"FOREIGN KEY(city) REFERENCES cscities(name))" +
 						"ENGINE = InnoDB;";
 		
 		try {

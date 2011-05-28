@@ -12,6 +12,7 @@ public class Database {
 	private Connection connection = null;
 	
 	private CSCities cscities = null;
+	private CSClaims csclaims = null;
 	private CSPlayers csplayers = null;
 	private CSPlayerCityData csplayercitydata = null;
 	private CSResidents csresidents = null;
@@ -44,17 +45,22 @@ public class Database {
 		}
 		
 		cscities = new CSCities(connection, plugin.getSettings());
+		csclaims = new CSClaims(connection, plugin.getSettings());
 		csplayers = new CSPlayers(connection, plugin.getSettings());
 		csplayercitydata = new CSPlayerCityData(connection, plugin.getSettings());
 		csresidents = new CSResidents(connection, plugin.getSettings());
 	}
-		
+	
 	public Connection getConnection() {
 		return connection;
 	}
 	
 	public CSCities getCSCities() {
 		return cscities;
+	}
+	
+	public CSClaims getCSClaims() {
+		return csclaims;
 	}
 	
 	public CSPlayers getCSPlayers() {

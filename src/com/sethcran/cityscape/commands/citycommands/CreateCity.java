@@ -12,6 +12,7 @@ import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.commands.CSCommand;
 import com.sethcran.cityscape.database.CSCities;
+import com.sethcran.cityscape.database.CSClaims;
 import com.sethcran.cityscape.database.CSPlayerCityData;
 import com.sethcran.cityscape.database.CSResidents;
 
@@ -87,6 +88,7 @@ public class CreateCity extends CSCommand {
 		
 		// Get needed tables;
 		CSCities cscities = plugin.getDB().getCSCities();
+		CSClaims csclaims = plugin.getDB().getCSClaims();
 		CSPlayerCityData csplayercitydata = plugin.getDB().getCSPlayerCityData();
 		CSResidents csresidents = plugin.getDB().getCSResidents();
 		
@@ -105,11 +107,21 @@ public class CreateCity extends CSCommand {
 			return;
 		}
 		
+		int x = player.getLocation().getBlock().getChunk().getX();
+		int z = player.getLocation().getBlock().getChunk().getZ();
+		
+		// Check that the current chunk is unclaimed
+		if(csclaims.isChunkClaimed(x, z)) {
+			player.sendMessage(Constants.CITYSCAPE + ChatColor.RED +
+					"A city already owns that spot!");
+		}
+		
 		// Set as Transaction and execute;
 		try {
 			plugin.getDB().getConnection().setAutoCommit(false);
 		
 			cscities.createCity(player.getName(), args[0]);
+			csclaims.claimChunk(args[0], x, z);
 			csplayercitydata.addPlayerToCity(player.getName(), args[0]);
 			csresidents.setCurrentCity(player.getName(), args[0]);
 			plugin.getDB().getConnection().commit();
