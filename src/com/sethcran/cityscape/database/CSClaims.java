@@ -13,14 +13,15 @@ public class CSClaims extends Table {
 		super(con, settings);
 	}
 	
-	public void claimChunk(String cityName, int x, int z) {
+	public void claimChunk(String cityName, int x, int z, String worldName) {
 		String sql = 	"INSERT INTO csclaims " +
-						"VALUES( POINT(?, ?), ?);";
+						"VALUES(?, POINT(?, ?), ?);";
 		try {
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setInt(1, x);
-			stmt.setInt(2, z);
-			stmt.setString(3, cityName);
+			stmt.setString(1, cityName);
+			stmt.setInt(2, x);
+			stmt.setInt(3, z);
+			stmt.setString(4, worldName);
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			if(settings.debug)

@@ -3,6 +3,7 @@ package com.sethcran.cityscape.commands.citycommands;
 import java.sql.SQLException;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -96,7 +97,7 @@ public class CreateCity extends CSCommand {
 		String currentCity = csresidents.getCurrentCity(player.getName());
 		if(currentCity != null) {
 			player.sendMessage(Constants.CITYSCAPE + ChatColor.RED + 
-			"You must first leave your current city.");
+				"You must first leave your current city.");
 			return;
 		}
 		
@@ -107,8 +108,10 @@ public class CreateCity extends CSCommand {
 			return;
 		}
 		
-		int x = player.getLocation().getBlock().getChunk().getX();
-		int z = player.getLocation().getBlock().getChunk().getZ();
+		Chunk chunk = player.getLocation().getBlock().getChunk();
+		int x = chunk.getX();
+		int z = chunk.getZ();
+		String worldName = chunk.getWorld().getName();
 		
 		// Check that the current chunk is unclaimed
 		if(csclaims.isChunkClaimed(x, z)) {
@@ -121,7 +124,7 @@ public class CreateCity extends CSCommand {
 			plugin.getDB().getConnection().setAutoCommit(false);
 		
 			cscities.createCity(player.getName(), args[0]);
-			csclaims.claimChunk(args[0], x, z);
+			csclaims.claimChunk(args[0], x, z, worldName);
 			csplayercitydata.addPlayerToCity(player.getName(), args[0]);
 			csresidents.setCurrentCity(player.getName(), args[0]);
 			plugin.getDB().getConnection().commit();

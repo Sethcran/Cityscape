@@ -75,8 +75,9 @@ public class Schemas {
 	
 	public void createClaimsTable() {
 		String sql = 	"CREATE TABLE IF NOT EXISTS CSClaims(" +
-						"loc POINT PRIMARY KEY," +
 						"city CHAR(" + Constants.TOWN_MAX_NAME_LENGTH + ") NOT NULL, " + 
+						"loc POINT PRIMARY KEY," +
+						"world CHAR(" + Constants.WORLD_MAX_NAME_LENGTH + ") NOT NULL, " +
 						"FOREIGN KEY(city) REFERENCES cscities(name))" +
 						"ENGINE = InnoDB;";
 		

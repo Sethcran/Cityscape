@@ -15,6 +15,9 @@ public class Player extends CSCommand {
 	
 	public Player(Cityscape plugin) {
 		super(plugin);
+		
+		addToMap(new com.sethcran.cityscape.commands.playercommands.Default(plugin), 
+				playerMap);
 	}
 
 	@Override
