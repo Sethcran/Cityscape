@@ -33,7 +33,7 @@ public class CSCities extends Table {
 		return false;
 	}
 	
-	public boolean createCity(String playerName, String cityName) {
+	public void createCity(String playerName, String cityName) {
 		String sql = 	"INSERT INTO cscities " +
 						"VALUES( ?, ?, ?, NOW(), ?, ?, null);";
 		try {
@@ -47,8 +47,6 @@ public class CSCities extends Table {
 		} catch (SQLException e) {
 			if(settings.debug)
 				e.printStackTrace();
-			return false;
 		}
-		return true;
 	}
 }

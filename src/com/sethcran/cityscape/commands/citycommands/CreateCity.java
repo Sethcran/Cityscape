@@ -1,5 +1,7 @@
 package com.sethcran.cityscape.commands.citycommands;
 
+import java.sql.SQLException;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -11,6 +13,7 @@ import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.commands.CSCommand;
 import com.sethcran.cityscape.database.CSCities;
 import com.sethcran.cityscape.database.CSPlayerCityData;
+import com.sethcran.cityscape.database.CSResidents;
 
 public class CreateCity extends CSCommand {
 	
@@ -25,6 +28,8 @@ public class CreateCity extends CSCommand {
 	@Override
 	public void execute(CommandSender sender, String[] args) {
 		Player player = null;
+		
+		// Check if that sender is a player
 		if(sender instanceof Player)
 			player = (Player)sender;
 		else {
@@ -33,64 +38,81 @@ public class CreateCity extends CSCommand {
 			return;
 		}
 		
-		if(args.length < 2) {
-			player.sendMessage(Constants.CITYSCAPE + ChatColor.RED + 
+		// Check that arguments were provided correctly
+		if(args == null) {
+			player.sendMessage(Constants.CITYSCAPE + ChatColor.RED +
 					"You must provide a townname.");
-			player.sendMessage(ChatColor.RED + usage);
 			return;
 		}
-		if(args.length > 2) {
+		if(args.length > 1) {
 			player.sendMessage(Constants.CITYSCAPE + ChatColor.RED + 
 					"Spaces are not allowed in town names.");
 			return;
 		}
-		if(args[1].length() > Constants.TOWN_MAX_NAME_LENGTH) {
+		
+		// Check that town name is of appropriate length
+		if(args[0].length() > Constants.TOWN_MAX_NAME_LENGTH) {
 			player.sendMessage(Constants.CITYSCAPE + ChatColor.RED + 
 					"The town name must be under " + Constants.TOWN_MAX_NAME_LENGTH + 
 					" characters.");
 			return;
 		}
 		
+		// Check that user has permissions to create a city.
+		if(!plugin.permissionHandler.has(player, "cityscape.createcity")) {
+			player.sendMessage(Constants.CITYSCAPE + ChatColor.RED + 
+					"You do not have permission to create a city.");
+			return;
+		}
+		
+		// Check that user has enough money.
 		Holdings balance = iConomy.getAccount(player.getName()).getHoldings();
 		if(balance == null) {
 			player.sendMessage(Constants.CITYSCAPE + ChatColor.RED +
 					"There was an error executing that command.");
 			return;
+		}	
+		if(!balance.hasEnough(plugin.getSettings().cityCost)) {
+			player.sendMessage(Constants.CITYSCAPE + ChatColor.RED + 
+			"You do not have enough money for that.");
+			return;
 		}
 		
-		if(!plugin.permissionHandler.has(player, "cityscape.createcity")) {
+		// Get needed tables;
+		CSCities cscities = plugin.getDB().getCSCities();
+		CSPlayerCityData csplayercitydata = plugin.getDB().getCSPlayerCityData();
+		CSResidents csresidents = plugin.getDB().getCSResidents();
+		
+		// Check that player is not in a city
+		String currentCity = csresidents.getCurrentCity(player.getName());
+		if(currentCity != null) {
 			player.sendMessage(Constants.CITYSCAPE + ChatColor.RED + 
-					"You do not have permission to create a city.");
+			"You must first leave your current city.");
+			return;
 		}
-		if(balance.hasEnough(plugin.getSettings().cityCost)) {
-			CSPlayerCityData cspcd = new CSPlayerCityData(plugin.getDB().getConnection(),
-					plugin.getSettings());
-			String currentCity = cspcd.getCurrentCity(player.getName());
-			if(currentCity == null) {
-				CSCities csc = new CSCities(plugin.getDB().getConnection(), 
-						plugin.getSettings());
-				
-				if(csc.doesCityExist(args[1])) {
-					player.sendMessage(Constants.CITYSCAPE + ChatColor.RED +
-							"That city already exists!");
-					return;
-				}
-				
-				if(csc.createCity(player.getName(), args[1])) {
-					cspcd.addPlayerToCity(player.getName(), args[1]);
-					plugin.getServer().broadcastMessage(Constants.CITYSCAPE + 
-							ChatColor.GREEN + "The city of " + args[1] + " was founded!");
-				}
-				else
-					player.sendMessage(Constants.CITYSCAPE + ChatColor.RED + 
-							"There was an error founding your town.");
-			}
-			else
-				player.sendMessage(Constants.CITYSCAPE + ChatColor.RED + 
-						"You must first leave your current city.");
+		
+		// Check that selected cityname does not exist
+		if(cscities.doesCityExist(args[0])) {
+			player.sendMessage(Constants.CITYSCAPE + ChatColor.RED +
+					"That city already exists!");
+			return;
 		}
-		else
-			player.sendMessage(Constants.CITYSCAPE + ChatColor.RED + 
-					"You do not have enough money for that.");
+		
+		// Set as Transaction and execute;
+		try {
+			plugin.getDB().getConnection().setAutoCommit(false);
+		
+			cscities.createCity(player.getName(), args[0]);
+			csplayercitydata.addPlayerToCity(player.getName(), args[0]);
+			csresidents.setCurrentCity(player.getName(), args[0]);
+			plugin.getDB().getConnection().commit();
+			plugin.getServer().broadcastMessage(Constants.CITYSCAPE + 
+					ChatColor.GREEN + "The city of " + args[0] + " was founded!");
+			
+			plugin.getDB().getConnection().setAutoCommit(true);			
+		} catch (SQLException e) {
+			if(plugin.getSettings().debug)
+				e.printStackTrace();
+		}
 	}
 }

@@ -11,6 +11,11 @@ import com.sethcran.cityscape.Settings;
 public class Database {
 	private Connection connection = null;
 	
+	private CSCities cscities = null;
+	private CSPlayers csplayers = null;
+	private CSPlayerCityData csplayercitydata = null;
+	private CSResidents csresidents = null;
+	
 	public Database(Cityscape plugin) {		
 		Settings settings = plugin.getSettings();
 		
@@ -19,9 +24,11 @@ public class Database {
 			connection = DriverManager.getConnection(settings.databaseUrl, 
 					settings.databaseUsername, settings.databasePassword);
 		} catch(ClassNotFoundException e) {
-			e.printStackTrace();
+			if(settings.debug)
+				e.printStackTrace();
 		} catch(SQLException e) {
-			e.printStackTrace();
+			if(settings.debug)
+				e.printStackTrace();
 		}
 		
 		String sql = "show tables like 'CSCities';";
@@ -32,12 +39,33 @@ public class Database {
 				schemas.createCSDatabase();
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if(settings.debug)
+				e.printStackTrace();
 		}
+		
+		cscities = new CSCities(connection, plugin.getSettings());
+		csplayers = new CSPlayers(connection, plugin.getSettings());
+		csplayercitydata = new CSPlayerCityData(connection, plugin.getSettings());
+		csresidents = new CSResidents(connection, plugin.getSettings());
 	}
 		
 	public Connection getConnection() {
 		return connection;
 	}
-		
+	
+	public CSCities getCSCities() {
+		return cscities;
+	}
+	
+	public CSPlayers getCSPlayers() {
+		return csplayers;
+	}
+	
+	public CSPlayerCityData getCSPlayerCityData() {
+		return csplayercitydata;
+	}
+	
+	public CSResidents getCSResidents() {
+		return csresidents;
+	}
 }

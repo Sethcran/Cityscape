@@ -13,33 +13,7 @@ public class CSPlayerCityData extends Table {
 		super(con, settings);
 	}
 	
-	public String getCurrentCity(String playerName) {
-		String sql = 	"SELECT city " +
-						"FROM csplayercitydata " +
-						"WHERE player = ? " +
-						"GROUP BY player " +
-						"HAVING MAX(startingfrom);";
-	
-		String currentCity = null;
-		
-		try {
-			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setString(1, playerName);
-			ResultSet rs = stmt.executeQuery();
-			if(rs.next()) {
-				currentCity = rs.getString("city");
-				if(currentCity.equalsIgnoreCase("NULL"))
-					currentCity = null;
-			}
-		} catch (SQLException e) {
-			if(settings.debug)
-				e.printStackTrace();
-		}
-		
-		return currentCity;
-	}
-	
-	public boolean addPlayerToCity(String playerName, String cityName) {
+	public void addPlayerToCity(String playerName, String cityName) {
 		String sql = 	"INSERT INTO csplayercitydata " +
 						"VALUES( ?, ?, NOW());";
 		try {
@@ -50,10 +24,33 @@ public class CSPlayerCityData extends Table {
 		} catch (SQLException e) {
 			if(settings.debug)
 				e.printStackTrace();
-			return false;
+		}
+	}
+	
+	public String getCurrentCity(String playerName) {
+		String sql = 	"SELECT DISTINCT city " +
+						"FROM csplayercitydata t1" +
+						"WHERE startingfrom = ( " +
+							"SELECT MAX(startingfrom) " +
+							"FROM csplayercitydata t2 " +
+							"WHERE player = ? " +
+							"GROUP BY player));";
+	
+		String currentCity = null;
+		
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, playerName);
+			ResultSet rs = stmt.executeQuery();
+			if(rs.next()) {
+				currentCity = rs.getString("city");
+			}
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
 		}
 		
-		return true;
+		return currentCity;
 	}
 	
 	public boolean removePlayerFromCity(String playerName) {

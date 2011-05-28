@@ -6,6 +6,7 @@ import org.bukkit.event.player.PlayerListener;
 import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.database.CSPlayerCityData;
 import com.sethcran.cityscape.database.CSPlayers;
+import com.sethcran.cityscape.database.CSResidents;
 
 public class CSPlayerListener extends PlayerListener {
 	private Cityscape plugin = null;
@@ -16,17 +17,19 @@ public class CSPlayerListener extends PlayerListener {
 	
 	@Override
 	public void onPlayerJoin(PlayerJoinEvent event) {
-		CSPlayers csp = new CSPlayers(plugin.getDB().getConnection(), plugin.getSettings());
+		CSPlayers csplayers = plugin.getDB().getCSPlayers();
 		String playerName = event.getPlayer().getName();
 		
-		if(csp.doesPlayerExist(playerName)) {
-			csp.updatePlayerTimeStamp(playerName);
+		if(csplayers.doesPlayerExist(playerName)) {
+			csplayers.updatePlayerTimeStamp(playerName);
 		}
 		else {
-			csp.insertNewPlayer(playerName);
-			CSPlayerCityData cspcd = new CSPlayerCityData(plugin.getDB().getConnection(),
-					plugin.getSettings());
-			cspcd.removePlayerFromCity(playerName);
+			CSPlayerCityData csplayercitydata = plugin.getDB().getCSPlayerCityData();
+			CSResidents csresidents = plugin.getDB().getCSResidents();
+			
+			csplayers.insertNewPlayer(playerName);
+			csresidents.insertNewPlayer(playerName);
+			csplayercitydata.removePlayerFromCity(playerName);
 		}
 	}
 }

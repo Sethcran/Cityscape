@@ -8,13 +8,11 @@ import org.bukkit.command.CommandSender;
 
 import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
-import com.sethcran.cityscape.commands.citycommands.*;
 
 public class CommandHandler {
 
 	private Cityscape plugin;
-	private HashMap<String, HashMap<String, CSCommand>> commandMap = 
-		new HashMap<String, HashMap<String, CSCommand>>();
+	private HashMap<String, CSCommand> commandMap = new HashMap<String, CSCommand>();
 	
 	public CommandHandler(Cityscape plugin) {
 		this.plugin = plugin;
@@ -27,59 +25,35 @@ public class CommandHandler {
 			String label, String[] args) {
 		String command = cmd.getName().toLowerCase();
 		
-		HashMap<String, CSCommand> map = commandMap.get(command);
-		if(map == null) {
+		CSCommand cscommand = null;
+		cscommand = commandMap.get(command);
+		
+		if(cscommand == null) {
 			sender.sendMessage(Constants.CITYSCAPE + ChatColor.RED + 
 					"That command does not exist.");
 			return true;
 		}
 		
-		if(args.length > 0) {
-			CSCommand cscommand = map.get(args[0]);
-			if(cscommand == null) {
-				sender.sendMessage(Constants.CITYSCAPE + ChatColor.RED + 
-						"That command does not exist.");
-				return true;
-			}
-			cscommand.execute(sender, args);
-			return true;
-		}
-		else {
-			CSCommand cscommand = map.get("default");
-			cscommand.execute(sender, args);
-			return true;
-		}
+		cscommand.execute(sender, args);
+		
+		return true;
 	}
 	
 	public void addCityCommands() {
-		HashMap<String, CSCommand> map = new HashMap<String, CSCommand>();
-		
-		addToMap(new CreateCity(plugin), map);
-		addToMap(new com.sethcran.cityscape.commands.citycommands.Default(plugin), map);
-		
-		commandMap.put("city", map);
-		commandMap.put("c", map);
+		City city = new City(plugin);
+		commandMap.put("city", city);
+		commandMap.put("c", city);
 	}
 	
 	public void addPlayerCommands() {
-		HashMap<String, CSCommand> map = new HashMap<String, CSCommand>();
-		commandMap.put("player", map);
-		commandMap.put("p", map);
+		Player player = new Player(plugin);
+		commandMap.put("player", player);
+		commandMap.put("p", player);
 	}
 	
 	public void addCSAdminCommands() {
-		HashMap<String, CSCommand> map = new HashMap<String, CSCommand>();
-		commandMap.put("csadmin", map);
-		commandMap.put("csa", map);
-	}
-	
-	private void addToMap(CSCommand cmd, HashMap<String, CSCommand> map) {
-		map.put(cmd.getName(), cmd);
-		
-		if(cmd.getAliases() != null) {
-			for(String alias : cmd.getAliases()) {
-				map.put(alias, cmd);
-			}
-		}
+		CSAdmin csadmin = new CSAdmin(plugin);
+		commandMap.put("csadmin", csadmin);
+		commandMap.put("csa", csadmin);
 	}
 }
