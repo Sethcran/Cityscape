@@ -1,8 +1,8 @@
 package com.sethcran.cityscape;
 
 public class RankPermissions {
-	private boolean addResidents = false;
-	private boolean removeResidents = false;
+	private boolean addResident = false;
+	private boolean removeResident = false;
 	private boolean claim = false;
 	private boolean unclaim = false;
 	private boolean promote = false;
@@ -17,13 +17,38 @@ public class RankPermissions {
 	private boolean setTaxes = false;
 	private boolean setPrices = false;
 	private boolean createPlots = false;
+	private boolean sendChestsToLostAndFound = false;
 	
-	public boolean getAddResidents() {
-		return addResidents;
+	public RankPermissions() {
+		
 	}
 	
-	public boolean getRemoveResidents() {
-		return removeResidents;
+	public RankPermissions(boolean b) {
+		addResident = b;
+		removeResident = b;
+		claim = b;
+		unclaim = b;
+		promote = b;
+		demote = b;
+		withdraw = b;
+		changeRankName = b;
+		setWelcome = b;
+		setMayor = b;
+		setWarp = b;
+		setName = b;
+		setPlotSale = b;
+		setTaxes = b;
+		setPrices = b;
+		createPlots = b;
+		sendChestsToLostAndFound = b;
+	}
+	
+	public boolean getAddResident() {
+		return addResident;
+	}
+	
+	public boolean getRemoveResident() {
+		return removeResident;
 	}
 	
 	public boolean getClaim() {
@@ -82,12 +107,16 @@ public class RankPermissions {
 		return createPlots;
 	}
 	
-	public void setAddResidents(boolean b) {
-		addResidents = b;
+	public boolean getSendChestsToLostAndFound() {
+		return sendChestsToLostAndFound;
 	}
 	
-	public void setRemoveResidents(boolean b) {
-		removeResidents = b;
+	public void setAddResident(boolean b) {
+		addResident = b;
+	}
+	
+	public void setRemoveResident(boolean b) {
+		removeResident = b;
 	}
 	
 	public void setClaim(boolean b) {
@@ -144,5 +173,9 @@ public class RankPermissions {
 	
 	public void setCreatePlots(boolean b) {
 		createPlots = b;
+	}
+	
+	public void setSendChestsToLostAndFound(boolean b) {
+		sendChestsToLostAndFound = b;
 	}
 }

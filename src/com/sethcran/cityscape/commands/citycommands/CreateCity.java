@@ -11,10 +11,12 @@ import com.iConomy.iConomy;
 import com.iConomy.system.Holdings;
 import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
+import com.sethcran.cityscape.RankPermissions;
 import com.sethcran.cityscape.commands.CSCommand;
 import com.sethcran.cityscape.database.CSCities;
 import com.sethcran.cityscape.database.CSClaims;
 import com.sethcran.cityscape.database.CSPlayerCityData;
+import com.sethcran.cityscape.database.CSRanks;
 import com.sethcran.cityscape.database.CSResidents;
 
 public class CreateCity extends CSCommand {
@@ -92,6 +94,7 @@ public class CreateCity extends CSCommand {
 		CSClaims csclaims = plugin.getDB().getCSClaims();
 		CSPlayerCityData csplayercitydata = plugin.getDB().getCSPlayerCityData();
 		CSResidents csresidents = plugin.getDB().getCSResidents();
+		CSRanks csranks = plugin.getDB().getCSRanks();
 		
 		// Check that player is not in a city
 		String currentCity = csresidents.getCurrentCity(player.getName());
@@ -120,6 +123,8 @@ public class CreateCity extends CSCommand {
 					"A city already owns that spot!");
 		}
 		
+		RankPermissions rp = new RankPermissions(true);
+		
 		// Set as Transaction and execute;
 		try {
 			plugin.getDB().getConnection().setAutoCommit(false);
@@ -128,6 +133,8 @@ public class CreateCity extends CSCommand {
 			csclaims.claimChunk(args[0], x, z, worldName);
 			csplayercitydata.addPlayerToCity(player.getName(), args[0]);
 			csresidents.setCurrentCity(player.getName(), args[0]);
+			csranks.createRank(args[0], "Mayor", rp);
+			csresidents.setRank(player.getName(), "Mayor");
 			plugin.getDB().getConnection().commit();
 			plugin.getServer().broadcastMessage(Constants.CITYSCAPE + 
 					ChatColor.GREEN + "The city of " + args[0] + " was founded!");

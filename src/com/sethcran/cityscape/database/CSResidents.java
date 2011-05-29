@@ -32,6 +32,23 @@ public class CSResidents extends Table {
 		return null;
 	}
 	
+	public String getRank(String playerName) {
+		String sql = 	"SELECT rank " +
+						"FROM csresidents " +
+						"WHERE player = ?";
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, playerName);
+			ResultSet rs = stmt.executeQuery();
+			if(rs.next())
+				return rs.getString("rank");
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public void insertNewPlayer(String playerName) {
 		String sql = 	"INSERT INTO csresidents " +
 						"VALUES(?, null, null);";
@@ -59,5 +76,19 @@ public class CSResidents extends Table {
 				e.printStackTrace();
 		}
 	}
-
+	
+	public void setRank(String playerName, String rank) {
+		String sql = 	"UPDATE csresidents " +
+						"SET rank = ? " +
+						"WHERE player = ?;";
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, rank);
+			stmt.setString(2, playerName);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+	}
 }

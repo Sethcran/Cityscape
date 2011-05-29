@@ -131,7 +131,6 @@ public class Schemas {
 		String sql = 	"CREATE TABLE IF NOT EXISTS CSRanks(" +
 						"city CHAR(" + Constants.TOWN_MAX_NAME_LENGTH + "), " +
 						"name CHAR(" + Constants.RANK_MAX_NAME_LENGTH + "), " +
-						"rank INT, " +
 						"addResident BOOL, " +
 						"removeResident BOOL, " +
 						"claim BOOL, " +
@@ -148,6 +147,7 @@ public class Schemas {
 						"setTaxes BOOL, " +
 						"setPrices BOOL, " +
 						"createPlots BOOL, " +
+						"sendChestsToLostAndFound BOOL, " +
 						"PRIMARY KEY(city, name), " +
 						"FOREIGN KEY(city) REFERENCES cscities(name))" +
 						"ENGINE = InnoDB;";

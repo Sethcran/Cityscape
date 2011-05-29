@@ -11,4 +11,6 @@ public class Constants {
 	public static int DEFAULT_TOWN_RANK = 1;
 	
 	public static String CITYSCAPE = ChatColor.GOLD + "[Cityscape] ";
+	public static String ERROR_COLOR = "" + ChatColor.RED;
+	public static String SUCCESS_COLOR = "" + ChatColor.AQUA;
 }
