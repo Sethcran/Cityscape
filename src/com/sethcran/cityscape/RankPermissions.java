@@ -8,6 +8,7 @@ public class RankPermissions {
 	private boolean promote = false;
 	private boolean demote = false;
 	private boolean withdraw = false;
+	private boolean changeRankName = false;
 	private boolean setWelcome = false;
 	private boolean setMayor = false;
 	private boolean setWarp = false;
@@ -43,6 +44,10 @@ public class RankPermissions {
 	
 	public boolean getWithdraw() {
 		return withdraw;
+	}
+	
+	public boolean getChangeRankName() {
+		return changeRankName;
 	}
 	
 	public boolean getSetWelcome() {
@@ -103,6 +108,10 @@ public class RankPermissions {
 	
 	public void setWithdraw(boolean b) {
 		withdraw = b;
+	}
+	
+	public void setChangeRankName(boolean b) {
+		changeRankName = b;
 	}
 	
 	public void setSetWelcome(boolean b) {

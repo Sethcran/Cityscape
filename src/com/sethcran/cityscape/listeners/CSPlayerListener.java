@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.PlayerCache;
@@ -86,5 +87,10 @@ public class CSPlayerListener extends PlayerListener {
 				
 		}
 		cache.setLastLocation(to);
+	}
+	
+	@Override
+	public void onPlayerQuit(PlayerQuitEvent event) {
+		plugin.removeFromCache(event.getPlayer().getName());
 	}
 }

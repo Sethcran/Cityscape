@@ -38,18 +38,10 @@ public class Cityscape extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		log = Logger.getLogger("Minecraft");
-		PluginManager pm = getServer().getPluginManager();
 		
 		setupPermissions();
 		
-		pm.registerEvent(Type.PLUGIN_ENABLE, new CSServerListener(this), 
-				Priority.Monitor, this);
-		pm.registerEvent(Type.PLUGIN_DISABLE, new CSServerListener(this), 
-				Priority.Monitor, this);
-		pm.registerEvent(Type.PLAYER_JOIN, new CSPlayerListener(this), 
-				Priority.Normal, this);
-		pm.registerEvent(Type.PLAYER_MOVE, new CSPlayerListener(this), 
-				Priority.Normal, this);
+		registerEvents();
 		
 		settings = new Settings();
 		database = new Database(this);
@@ -81,6 +73,22 @@ public class Cityscape extends JavaPlugin {
 	
 	public void insertIntoCache(String playerName, PlayerCache playerCache) {
 		locationCache.put(playerName, playerCache);
+	}
+	
+	private void registerEvents() {
+		PluginManager pm = getServer().getPluginManager();
+		CSServerListener serverListener = new CSServerListener(this);
+		CSPlayerListener playerListener = new CSPlayerListener(this);
+		
+		pm.registerEvent(Type.PLUGIN_ENABLE, serverListener, Priority.Monitor, this);
+		pm.registerEvent(Type.PLUGIN_DISABLE, serverListener, Priority.Monitor, this);
+		pm.registerEvent(Type.PLAYER_JOIN, playerListener, Priority.Normal, this);
+		pm.registerEvent(Type.PLAYER_QUIT, playerListener, Priority.Normal, this);
+		pm.registerEvent(Type.PLAYER_MOVE, playerListener, Priority.Normal, this);
+	}
+	
+	public void removeFromCache(String playerName) {
+		locationCache.remove(playerName);
 	}
 	
 	private void setupPermissions() {

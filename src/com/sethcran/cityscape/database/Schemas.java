@@ -16,11 +16,13 @@ public class Schemas {
 	public void createCSDatabase() {
 		createPlayersTable();
 		createCitiesTable();
-		createResidentsTable();
+		
+		createChestsTable();
 		createClaimsTable();
 		createPlotsTable();
 		createPlayerCityDataTable();
-		createChestsTable();
+		createRanksTable();
+		createResidentsTable();
 	}
 	
 	public void createChestsTable() {
@@ -117,6 +119,38 @@ public class Schemas {
 						"PRIMARY KEY(loc1, loc2)) " +
 						"ENGINE = InnoDB;";
 		
+		try {
+			con.createStatement().executeUpdate(sql);
+		} catch (SQLException e) {
+			Cityscape.log.severe("There was an error creating a database table.");
+			e.printStackTrace();
+		}
+	}
+	
+	public void createRanksTable() {
+		String sql = 	"CREATE TABLE IF NOTE EXISTS CSRanks(" +
+						"city CHAR(" + Constants.TOWN_MAX_NAME_LENGTH + ")," +
+						"name CHAR(" + Constants.RANK_MAX_NAME_LENGTH + ")," +
+						"rank INT, " +
+						"addResident BOOL, " +
+						"removeResident BOOL, " +
+						"claim BOOL, " +
+						"unclaim BOOL, " +
+						"promote BOOL, " +
+						"demote BOOL, " +
+						"withdraw BOOL, " +
+						"changeRankName BOOL, " +
+						"setWelcome BOOL, " +
+						"setMayor BOOL, " +
+						"setWarp BOOL, " +
+						"setName BOOL, " +
+						"setPlotSale BOOL, " +
+						"setTaxes BOOL, " +
+						"setPrices BOOL, " +
+						"createPlots BOOL, " +
+						"PRIMARY KEY(city, name), " +
+						"FOREIGN KEY(city) REFERENCES cscities(name))" +
+						"ENGINE = InnoDB;";
 		try {
 			con.createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
