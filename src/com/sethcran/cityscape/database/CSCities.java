@@ -50,4 +50,44 @@ public class CSCities extends Table {
 		
 		return false;
 	}
+	
+	public boolean hasClaims(String cityName, int numClaims) {
+		String sql = 	"SELECT usedClaims, baseClaims, bonusClaims " +
+						"FROM cscities " +
+						"WHERE name = ?;";
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, cityName); 
+			ResultSet rs = stmt.executeQuery();
+			if(rs.next()) {
+				int usedClaims = rs.getInt("usedClaims");
+				int baseClaims = rs.getInt("baseClaims");
+				int bonusClaims = rs.getInt("bonusClaims");
+				if(numClaims + usedClaims <= baseClaims + bonusClaims)
+					return true;
+			}
+			else
+				return false; 	// ERROR!
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+		
+		return false;
+	}
+	
+	public void addUsedClaims(String cityName, int numClaims) {
+		String sql = 	"UPDATE cscities " +
+						"SET usedClaims = usedClaims + ? " +
+						"WHERE name = ?;";
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setInt(1, numClaims);
+			stmt.setString(2, cityName);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+	}
 }

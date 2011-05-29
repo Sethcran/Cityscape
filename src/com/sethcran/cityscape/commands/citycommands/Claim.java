@@ -1,5 +1,7 @@
 package com.sethcran.cityscape.commands.citycommands;
 
+import java.sql.SQLException;
+
 import org.bukkit.Chunk;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -8,6 +10,7 @@ import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.RankPermissions;
 import com.sethcran.cityscape.commands.CSCommand;
+import com.sethcran.cityscape.database.CSCities;
 import com.sethcran.cityscape.database.CSClaims;
 import com.sethcran.cityscape.database.CSRanks;
 import com.sethcran.cityscape.database.CSResidents;
@@ -35,6 +38,7 @@ public class Claim extends CSCommand {
 		CSResidents csresidents = plugin.getDB().getCSResidents();
 		CSClaims csclaims = plugin.getDB().getCSClaims();
 		CSRanks csranks = plugin.getDB().getCSRanks();
+		CSCities cscities = plugin.getDB().getCSCities();
 		
 		String playerCity = csresidents.getCurrentCity(player.getName());
 		if(playerCity == null) {
@@ -56,6 +60,12 @@ public class Claim extends CSCommand {
 			return;
 		}
 		
+		if(!cscities.hasClaims(playerCity, 1)) {
+			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+					"Your town does not have enough claims available!");
+			return;
+		}
+		
 		Chunk chunk = player.getLocation().getBlock().getChunk();
 		int x = chunk.getX();
 		int z = chunk.getZ();
@@ -73,7 +83,17 @@ public class Claim extends CSCommand {
 			return;
 		}
 		
-		csclaims.claimChunk(playerCity, x, z, chunk.getWorld().getName());
+		try {
+			plugin.getDB().getConnection().setAutoCommit(false);
+			csclaims.claimChunk(playerCity, x, z, chunk.getWorld().getName());
+			cscities.addUsedClaims(playerCity, 1);
+			plugin.getDB().getConnection().commit();
+			plugin.getDB().getConnection().setAutoCommit(true);			
+		} catch (SQLException e) {
+			if(plugin.getSettings().debug)
+				e.printStackTrace();
+		}
+		
 		player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
 				"Your town has annexed the claim at " + x + ", " + z + ".");
 	}

@@ -144,5 +144,7 @@ public class CreateCity extends CSCommand {
 			if(plugin.getSettings().debug)
 				e.printStackTrace();
 		}
+		
+		balance.subtract(plugin.getSettings().cityCost);
 	}
 }
