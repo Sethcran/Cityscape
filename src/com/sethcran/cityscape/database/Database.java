@@ -63,12 +63,12 @@ public class Database {
 		return csclaims;
 	}
 	
-	public CSPlayers getCSPlayers() {
-		return csplayers;
-	}
-	
 	public CSPlayerCityData getCSPlayerCityData() {
 		return csplayercitydata;
+	}
+	
+	public CSPlayers getCSPlayers() {
+		return csplayers;
 	}
 	
 	public CSResidents getCSResidents() {

@@ -14,6 +14,24 @@ public class CSCities extends Table {
 		super(con, settings);
 	}
 	
+	public void createCity(String playerName, String cityName) {
+		String sql = 	"INSERT INTO cscities " +
+						"VALUES( ?, ?, ?, NOW(), ?, ?, ?, null);";
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, cityName);
+			stmt.setString(2, playerName);
+			stmt.setInt(3, Constants.DEFAULT_TOWN_RANK);
+			stmt.setInt(4, 1);
+			stmt.setInt(5, settings.defaultBaseClaims);
+			stmt.setInt(6, 0);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+	}
+	
 	public boolean doesCityExist(String cityName) {
 		String sql = 	"SELECT * " +
 						"FROM cscities " +
@@ -31,22 +49,5 @@ public class CSCities extends Table {
 		}
 		
 		return false;
-	}
-	
-	public void createCity(String playerName, String cityName) {
-		String sql = 	"INSERT INTO cscities " +
-						"VALUES( ?, ?, ?, NOW(), ?, ?, null);";
-		try {
-			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setString(1, cityName);
-			stmt.setString(2, playerName);
-			stmt.setInt(3, Constants.DEFAULT_TOWN_RANK);
-			stmt.setInt(4, settings.defaultBaseClaims);
-			stmt.setInt(5, 0);
-			stmt.executeUpdate();
-		} catch (SQLException e) {
-			if(settings.debug)
-				e.printStackTrace();
-		}
 	}
 }
