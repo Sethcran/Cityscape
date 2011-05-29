@@ -36,7 +36,7 @@ public class CSClaims extends Table {
 		try {
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setInt(1, x);
-			stmt.setInt(1, z);
+			stmt.setInt(2, z);
 			ResultSet rs = stmt.executeQuery();
 			if(rs.next()) {
 				return rs.getString("city");

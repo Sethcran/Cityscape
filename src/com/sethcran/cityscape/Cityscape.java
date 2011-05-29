@@ -1,5 +1,6 @@
 package com.sethcran.cityscape;
 
+import java.util.HashMap;
 import java.util.logging.Logger;
 
 import org.bukkit.command.Command;
@@ -27,6 +28,7 @@ public class Cityscape extends JavaPlugin {
 	private Settings settings = null;
 	private Database database = null;
 	private CommandHandler commandHandler = null;
+	private HashMap<String, PlayerCache> locationCache = new HashMap<String, PlayerCache>();
 
 	@Override
 	public void onDisable() {
@@ -46,6 +48,8 @@ public class Cityscape extends JavaPlugin {
 				Priority.Monitor, this);
 		pm.registerEvent(Type.PLAYER_JOIN, new CSPlayerListener(this), 
 				Priority.Normal, this);
+		pm.registerEvent(Type.PLAYER_MOVE, new CSPlayerListener(this), 
+				Priority.Normal, this);
 		
 		settings = new Settings();
 		database = new Database(this);
@@ -59,16 +63,24 @@ public class Cityscape extends JavaPlugin {
 		return commandHandler.handleCommand(sender, cmd, commandLabel, args);
 	}
 	
-	public Settings getSettings() {
-		return settings;
+	public PlayerCache getCache(String playerName) {
+		return locationCache.get(playerName);
+	}
+	
+	public CommandHandler getCommandHandler() {
+		return commandHandler;
 	}
 	
 	public Database getDB() {
 		return database;
 	}
 	
-	public CommandHandler getCommandHandler() {
-		return commandHandler;
+	public Settings getSettings() {
+		return settings;
+	}
+	
+	public void insertIntoCache(String playerName, PlayerCache playerCache) {
+		locationCache.put(playerName, playerCache);
 	}
 	
 	private void setupPermissions() {

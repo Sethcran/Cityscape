@@ -108,6 +108,7 @@ public class CreateCity extends CSCommand {
 			return;
 		}
 		
+		// Get the coordinates and world where player is standing
 		Chunk chunk = player.getLocation().getBlock().getChunk();
 		int x = chunk.getX();
 		int z = chunk.getZ();
