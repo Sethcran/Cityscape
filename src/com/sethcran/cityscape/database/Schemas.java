@@ -128,9 +128,9 @@ public class Schemas {
 	}
 	
 	public void createRanksTable() {
-		String sql = 	"CREATE TABLE IF NOTE EXISTS CSRanks(" +
-						"city CHAR(" + Constants.TOWN_MAX_NAME_LENGTH + ")," +
-						"name CHAR(" + Constants.RANK_MAX_NAME_LENGTH + ")," +
+		String sql = 	"CREATE TABLE IF NOT EXISTS CSRanks(" +
+						"city CHAR(" + Constants.TOWN_MAX_NAME_LENGTH + "), " +
+						"name CHAR(" + Constants.RANK_MAX_NAME_LENGTH + "), " +
 						"rank INT, " +
 						"addResident BOOL, " +
 						"removeResident BOOL, " +
@@ -163,8 +163,9 @@ public class Schemas {
 		String sql = 	"CREATE TABLE IF NOT EXISTS CSResidents(" +
 						"player CHAR(" + Constants.PLAYER_MAX_NAME_LENGTH + ") PRIMARY KEY," +
 						"city CHAR(" + Constants.TOWN_MAX_NAME_LENGTH + "), " +
+						"rank CHAR(" + Constants.RANK_MAX_NAME_LENGTH + "), " +
 						"FOREIGN KEY(player) REFERENCES csplayers(name), " +
-						"FOREIGN KEY(city) REFERENCES cscities(name))" +
+						"FOREIGN KEY(city) REFERENCES cscities(name)) " +
 						"ENGINE = InnoDB;";
 		try {
 			con.createStatement().executeUpdate(sql);

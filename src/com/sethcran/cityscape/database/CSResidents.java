@@ -34,7 +34,7 @@ public class CSResidents extends Table {
 	
 	public void insertNewPlayer(String playerName) {
 		String sql = 	"INSERT INTO csresidents " +
-						"VALUES(?, null);";
+						"VALUES(?, null, null);";
 		try {
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, playerName);

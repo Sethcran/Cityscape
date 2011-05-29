@@ -15,6 +15,8 @@ public class Database {
 	private CSClaims csclaims = null;
 	private CSPlayers csplayers = null;
 	private CSPlayerCityData csplayercitydata = null;
+	private CSPlots csplots = null;
+	private CSRanks csranks = null;
 	private CSResidents csresidents = null;
 	
 	public Database(Cityscape plugin) {		
@@ -48,6 +50,8 @@ public class Database {
 		csclaims = new CSClaims(connection, plugin.getSettings());
 		csplayers = new CSPlayers(connection, plugin.getSettings());
 		csplayercitydata = new CSPlayerCityData(connection, plugin.getSettings());
+		csplots = new CSPlots(connection, plugin.getSettings());
+		csranks = new CSRanks(connection, plugin.getSettings());
 		csresidents = new CSResidents(connection, plugin.getSettings());
 	}
 	
@@ -67,8 +71,16 @@ public class Database {
 		return csplayercitydata;
 	}
 	
+	public CSPlots getCSPlots() {
+		return csplots;
+	}
+	
 	public CSPlayers getCSPlayers() {
 		return csplayers;
+	}
+	
+	public CSRanks getCSRanks() {
+		return csranks;
 	}
 	
 	public CSResidents getCSResidents() {
