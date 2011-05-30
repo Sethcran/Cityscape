@@ -90,6 +90,7 @@ public class Cityscape extends JavaPlugin {
 		pm.registerEvent(Type.PLAYER_MOVE, playerListener, Priority.Normal, this);
 		
 		pm.registerEvent(Type.BLOCK_BREAK, blockListener, Priority.High, this);
+		pm.registerEvent(Type.BLOCK_PLACE, blockListener, Priority.High, this);
 	}
 	
 	public void removeFromCache(String playerName) {
