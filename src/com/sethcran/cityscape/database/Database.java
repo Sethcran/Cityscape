@@ -2,9 +2,11 @@ package com.sethcran.cityscape.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.sethcran.cityscape.City;
 import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.RankPermissions;
 import com.sethcran.cityscape.Settings;
@@ -96,8 +98,41 @@ public class Database {
 		return csplayers.doesPlayerExist(playerName);
 	}
 	
-	public String getCityAt(int x, int z) {
+	public String getCityNameAt(int x, int z) {
 		return csclaims.getCityAt(x, z);
+	}
+	
+	public City getCityAt(int x, int z) {
+		String sql = 	"SELECT name, mayor, rank, founded, " +
+						"usedClaims, baseClaims, bonusClaims, " +
+						"spawnX, spawnY, spawnZ " +
+						"FROM cscities, csclaims " +
+						"WHERE cscities.name = csclaims.city " +
+						"AND loc = POINT(?, ?);";
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setInt(1, x);
+			stmt.setInt(2, z);
+			ResultSet rs = stmt.executeQuery();
+			if(rs.next()) {
+				City city = new City();
+				city.setBaseClaims(rs.getInt("baseClaims"));
+				city.setBonusClaims(rs.getInt("bonusClaims"));
+				city.setFounded(rs.getString("founded"));
+				city.setMayor(rs.getString("mayor"));
+				city.setName(rs.getString("name"));
+				city.setRank(rs.getInt("rank"));
+				city.setSpawnX(rs.getInt("spawnX"));
+				city.setSpawnY(rs.getInt("spawnY"));
+				city.setSpawnZ(rs.getInt("spawnZ"));
+				city.setUsedClaims(rs.getInt("usedClaims"));
+				return city;
+			}
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+		return null;		
 	}
 	
 	public Connection getConnection() {

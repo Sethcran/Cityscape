@@ -61,7 +61,7 @@ public class Claim extends CSCommand {
 		Chunk chunk = player.getLocation().getBlock().getChunk();
 		int x = chunk.getX();
 		int z = chunk.getZ();
-		String city = db.getCityAt(x, z);
+		String city = db.getCityNameAt(x, z);
 		
 		if(city != null) {
 			if(city.equals(playerCity)) {

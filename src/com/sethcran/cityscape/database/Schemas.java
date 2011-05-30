@@ -49,7 +49,9 @@ public class Schemas {
 						"usedClaims INT NOT NULL," +
 						"baseClaims INT NOT NULL," +
 						"bonusClaims INT NOT NULL," + 
-						"spawn POINT," +
+						"spawnX INT," +
+						"spawnY INT," +
+						"spawnZ INT," +
 						"FOREIGN KEY(mayor) REFERENCES CSPlayers(name) ON DELETE CASCADE) " +
 						"ENGINE = InnoDB;";
 		
