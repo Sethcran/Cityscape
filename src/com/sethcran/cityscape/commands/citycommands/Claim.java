@@ -1,7 +1,5 @@
 package com.sethcran.cityscape.commands.citycommands;
 
-import java.sql.SQLException;
-
 import org.bukkit.Chunk;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -10,10 +8,7 @@ import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.RankPermissions;
 import com.sethcran.cityscape.commands.CSCommand;
-import com.sethcran.cityscape.database.CSCities;
-import com.sethcran.cityscape.database.CSClaims;
-import com.sethcran.cityscape.database.CSRanks;
-import com.sethcran.cityscape.database.CSResidents;
+import com.sethcran.cityscape.database.Database;
 
 public class Claim extends CSCommand {
 
@@ -35,32 +30,29 @@ public class Claim extends CSCommand {
 			return;
 		}
 		
-		CSResidents csresidents = plugin.getDB().getCSResidents();
-		CSClaims csclaims = plugin.getDB().getCSClaims();
-		CSRanks csranks = plugin.getDB().getCSRanks();
-		CSCities cscities = plugin.getDB().getCSCities();
+		Database db = plugin.getDB();
 		
-		String playerCity = csresidents.getCurrentCity(player.getName());
+		String playerCity = db.getCurrentCity(player.getName());
 		if(playerCity == null) {
 			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
 					"You must be in a town to perform this command.");
 			return;
 		}
 		
-		String rank = csresidents.getRank(player.getName());
+		String rank = db.getRank(player.getName());
 		if(rank == null) {
 			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
 					"You do not have permission to do that.");
 			return;
 		}
-		RankPermissions rp = csranks.getPermissions(playerCity, rank);
+		RankPermissions rp = db.getPermissions(playerCity, rank);
 		if(!rp.getClaim()) {
 			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
 					"You do not have the permission to do that.");
 			return;
 		}
 		
-		if(!cscities.hasClaims(playerCity, 1)) {
+		if(!db.hasClaims(playerCity, 1)) {
 			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
 					"Your town does not have enough claims available!");
 			return;
@@ -69,7 +61,7 @@ public class Claim extends CSCommand {
 		Chunk chunk = player.getLocation().getBlock().getChunk();
 		int x = chunk.getX();
 		int z = chunk.getZ();
-		String city = csclaims.getCityAt(x, z);
+		String city = db.getCityAt(x, z);
 		
 		if(city != null) {
 			if(city.equals(playerCity)) {
@@ -83,16 +75,7 @@ public class Claim extends CSCommand {
 			return;
 		}
 		
-		try {
-			plugin.getDB().getConnection().setAutoCommit(false);
-			csclaims.claimChunk(playerCity, x, z, chunk.getWorld().getName());
-			cscities.addUsedClaims(playerCity, 1);
-			plugin.getDB().getConnection().commit();
-			plugin.getDB().getConnection().setAutoCommit(true);			
-		} catch (SQLException e) {
-			if(plugin.getSettings().debug)
-				e.printStackTrace();
-		}
+		db.claimChunk(playerCity, x, z, chunk.getWorld().getName());
 		
 		player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
 				"Your town has annexed the claim at " + x + ", " + z + ".");

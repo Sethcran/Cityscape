@@ -13,20 +13,6 @@ public class CSPlayerCityData extends Table {
 		super(con, settings);
 	}
 	
-	public void addPlayerToCity(String playerName, String cityName) {
-		String sql = 	"INSERT INTO csplayercitydata " +
-						"VALUES( ?, ?, NOW());";
-		try {
-			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setString(1, playerName);
-			stmt.setString(2, cityName);
-			stmt.executeUpdate();
-		} catch (SQLException e) {
-			if(settings.debug)
-				e.printStackTrace();
-		}
-	}
-	
 	public String getCurrentCity(String playerName) {
 		String sql = 	"SELECT DISTINCT city " +
 						"FROM csplayercitydata t1" +
@@ -53,13 +39,16 @@ public class CSPlayerCityData extends Table {
 		return currentCity;
 	}
 	
-	public boolean removePlayerFromCity(String playerName) {
+	public boolean addPlayerCityHistory(String playerName, String cityName) {
 		String sql = 	"INSERT INTO csplayercitydata " +
 						"VALUES( ?, ?, NOW());";
 		try {
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, playerName);
-			stmt.setString(2, null);
+			if(cityName == null)
+				stmt.setString(2, null);
+			else
+				stmt.setString(2, cityName);
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			if(settings.debug)

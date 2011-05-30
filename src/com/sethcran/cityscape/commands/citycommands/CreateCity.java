@@ -1,7 +1,5 @@
 package com.sethcran.cityscape.commands.citycommands;
 
-import java.sql.SQLException;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.command.CommandSender;
@@ -11,13 +9,8 @@ import com.iConomy.iConomy;
 import com.iConomy.system.Holdings;
 import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
-import com.sethcran.cityscape.RankPermissions;
 import com.sethcran.cityscape.commands.CSCommand;
-import com.sethcran.cityscape.database.CSCities;
-import com.sethcran.cityscape.database.CSClaims;
-import com.sethcran.cityscape.database.CSPlayerCityData;
-import com.sethcran.cityscape.database.CSRanks;
-import com.sethcran.cityscape.database.CSResidents;
+import com.sethcran.cityscape.database.Database;
 
 public class CreateCity extends CSCommand {
 	
@@ -90,14 +83,10 @@ public class CreateCity extends CSCommand {
 		}
 		
 		// Get needed tables;
-		CSCities cscities = plugin.getDB().getCSCities();
-		CSClaims csclaims = plugin.getDB().getCSClaims();
-		CSPlayerCityData csplayercitydata = plugin.getDB().getCSPlayerCityData();
-		CSResidents csresidents = plugin.getDB().getCSResidents();
-		CSRanks csranks = plugin.getDB().getCSRanks();
+		Database db = plugin.getDB();
 		
 		// Check that player is not in a city
-		String currentCity = csresidents.getCurrentCity(player.getName());
+		String currentCity = db.getCurrentCity(player.getName());
 		if(currentCity != null) {
 			player.sendMessage(Constants.CITYSCAPE + ChatColor.RED + 
 				"You must first leave your current city.");
@@ -105,7 +94,7 @@ public class CreateCity extends CSCommand {
 		}
 		
 		// Check that selected cityname does not exist
-		if(cscities.doesCityExist(args[0])) {
+		if(db.doesCityExist(args[0])) {
 			player.sendMessage(Constants.CITYSCAPE + ChatColor.RED +
 					"That city already exists!");
 			return;
@@ -118,32 +107,15 @@ public class CreateCity extends CSCommand {
 		String worldName = chunk.getWorld().getName();
 		
 		// Check that the current chunk is unclaimed
-		if(csclaims.isChunkClaimed(x, z)) {
+		if(db.isChunkClaimed(x, z)) {
 			player.sendMessage(Constants.CITYSCAPE + ChatColor.RED +
 					"A city already owns that spot!");
 		}
 		
-		RankPermissions rp = new RankPermissions(true);
+		db.createCity(player.getName(), args[0], x, z, worldName);
 		
-		// Set as Transaction and execute;
-		try {
-			plugin.getDB().getConnection().setAutoCommit(false);
-		
-			cscities.createCity(player.getName(), args[0]);
-			csclaims.claimChunk(args[0], x, z, worldName);
-			csplayercitydata.addPlayerToCity(player.getName(), args[0]);
-			csresidents.setCurrentCity(player.getName(), args[0]);
-			csranks.createRank(args[0], "Mayor", rp);
-			csresidents.setRank(player.getName(), "Mayor");
-			plugin.getDB().getConnection().commit();
-			plugin.getServer().broadcastMessage(Constants.CITYSCAPE + 
-					ChatColor.GREEN + "The city of " + args[0] + " was founded!");
-			
-			plugin.getDB().getConnection().setAutoCommit(true);			
-		} catch (SQLException e) {
-			if(plugin.getSettings().debug)
-				e.printStackTrace();
-		}
+		plugin.getServer().broadcastMessage(Constants.CITYSCAPE + 
+				ChatColor.GREEN + "The city of " + args[0] + " was founded!");
 		
 		balance.subtract(plugin.getSettings().cityCost);
 	}

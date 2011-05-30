@@ -62,14 +62,18 @@ public class CSResidents extends Table {
 		}
 	}
 	
-	public void setCurrentCity(String playerName, String cityName) {
+	public void setCurrentCity(String playerName, String cityName, String rank) {
 		String sql = 	"UPDATE csresidents " +
-						"SET city = ? " +
+						"SET city = ?, rank = ? " +
 						"WHERE player = ?;";
 		try {
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, cityName);
-			stmt.setString(2, playerName);
+			if(rank == null)
+				stmt.setString(2, null);
+			else
+				stmt.setString(2, rank);
+			stmt.setString(3, playerName);
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			if(settings.debug)
