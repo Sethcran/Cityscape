@@ -46,7 +46,7 @@ public class Claim extends CSCommand {
 			return;
 		}
 		RankPermissions rp = db.getPermissions(playerCity, rank);
-		if(!rp.getClaim()) {
+		if(!rp.isClaim()) {
 			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
 					"You do not have the permission to do that.");
 			return;

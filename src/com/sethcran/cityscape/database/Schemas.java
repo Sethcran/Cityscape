@@ -156,6 +156,9 @@ public class Schemas {
 						"setPrices BOOL, " +
 						"createPlots BOOL, " +
 						"sendChestsToLostAndFound BOOL, " +
+						"cityBuild BOOL, " +
+						"cityDestroy BOOL, " +
+						"citySwitch BOOL, " +
 						"PRIMARY KEY(city, name), " +
 						"FOREIGN KEY(city) REFERENCES cscities(name))" +
 						"ENGINE = InnoDB;";

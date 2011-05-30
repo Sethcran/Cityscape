@@ -80,7 +80,9 @@ public class Database {
 			cscities.createCity(playerName, cityName);
 			csclaims.claimChunk(cityName, x, z, worldName);
 			csplayercitydata.addPlayerCityHistory(playerName, cityName);
-			csranks.createRank(cityName, "Mayor", new RankPermissions(true));
+			RankPermissions rp = new RankPermissions(true);
+			rp.setRankName("Mayor");
+			csranks.createRank(cityName, rp);
 			csresidents.setCurrentCity(playerName, cityName, "Mayor");
 			con.commit();
 			con.setAutoCommit(true);
@@ -145,6 +147,47 @@ public class Database {
 	
 	public RankPermissions getPermissions(String townName, String rank) {
 		return csranks.getPermissions(townName, rank);
+	}
+	
+	public RankPermissions getPermissions(String playerName) {
+		String sql = 	"SELECT * " +
+						"FROM csresidents, csranks " +
+						"WHERE csresidents.player = ? " +
+						"AND csresidents.city = csranks.city " +
+						"AND csresidents.rank = csranks.name;";
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, playerName);
+			ResultSet rs = stmt.executeQuery();
+			if(rs.next()) {
+				RankPermissions rp = new RankPermissions();
+				rp.setAddResident(rs.getBoolean("addResident"));
+				rp.setChangeRankName(rs.getBoolean("changeRankName"));
+				rp.setClaim(rs.getBoolean("claim"));
+				rp.setCreatePlots(rs.getBoolean("createPlots"));
+				rp.setDemote(rs.getBoolean("demote"));
+				rp.setPromote(rs.getBoolean("promote"));
+				rp.setRemoveResident(rs.getBoolean("removeResident"));
+				rp.setSetMayor(rs.getBoolean("setMayor"));
+				rp.setSetName(rs.getBoolean("setName"));
+				rp.setSetPlotSale(rs.getBoolean("setPlotSale"));
+				rp.setSetPrices(rs.getBoolean("setPrices"));
+				rp.setSetTaxes(rs.getBoolean("setTaxes"));
+				rp.setSetWarp(rs.getBoolean("setWarp"));
+				rp.setSetWelcome(rs.getBoolean("setWelcome"));
+				rp.setUnclaim(rs.getBoolean("unclaim"));
+				rp.setWithdraw(rs.getBoolean("withdraw"));
+				rp.setSendChestsToLostAndFound(rs.getBoolean("sendChestsToLostAndFound"));
+				rp.setCityBuild(rs.getBoolean("cityBuild"));
+				rp.setCityDestroy(rs.getBoolean("cityDestroy"));
+				rp.setCitySwitch(rs.getBoolean("citySwitch"));
+				return rp;
+			}
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+		return null;
 	}
 	
 	public String getRank(String playerName) {

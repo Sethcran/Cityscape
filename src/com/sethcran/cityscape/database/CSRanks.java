@@ -14,33 +14,36 @@ public class CSRanks extends Table {
 		super(con, settings);
 	}
 	
-	public void createRank(String townName, String rank, RankPermissions rp) {
+	public void createRank(String townName, RankPermissions rp) {
 		String sql = 	"INSERT INTO csranks " +
 						"VALUES(?, ?, ?, ?, ?, ?, " +
 						"?, ?, ?, ?, ?, ?, " +
 						"?, ?, ?, ?, ?, ?, " +
-						"?);";
+						"?, ?, ?, ?);";
 		try {
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, townName);
-			stmt.setString(2, rank);
-			stmt.setBoolean(3, rp.getAddResident());
-			stmt.setBoolean(4, rp.getRemoveResident());
-			stmt.setBoolean(5, rp.getClaim());
-			stmt.setBoolean(6, rp.getUnclaim());
-			stmt.setBoolean(7, rp.getPromote());
-			stmt.setBoolean(8, rp.getDemote());
-			stmt.setBoolean(9, rp.getWithdraw());
-			stmt.setBoolean(10, rp.getChangeRankName());
-			stmt.setBoolean(11, rp.getSetWelcome());
-			stmt.setBoolean(12, rp.getSetMayor());
-			stmt.setBoolean(13, rp.getSetWarp());
-			stmt.setBoolean(14, rp.getSetName());
-			stmt.setBoolean(15, rp.getSetPlotSale());
-			stmt.setBoolean(16, rp.getSetTaxes());
-			stmt.setBoolean(17, rp.getSetPrices());
-			stmt.setBoolean(18, rp.getCreatePlots());
-			stmt.setBoolean(19, rp.getSendChestsToLostAndFound());
+			stmt.setString(2, rp.getRankName());
+			stmt.setBoolean(3, rp.isAddResident());
+			stmt.setBoolean(4, rp.isRemoveResident());
+			stmt.setBoolean(5, rp.isClaim());
+			stmt.setBoolean(6, rp.isUnclaim());
+			stmt.setBoolean(7, rp.isPromote());
+			stmt.setBoolean(8, rp.isDemote());
+			stmt.setBoolean(9, rp.isWithdraw());
+			stmt.setBoolean(10, rp.isChangeRankName());
+			stmt.setBoolean(11, rp.isSetWelcome());
+			stmt.setBoolean(12, rp.isSetMayor());
+			stmt.setBoolean(13, rp.isSetWarp());
+			stmt.setBoolean(14, rp.isSetName());
+			stmt.setBoolean(15, rp.isSetPlotSale());
+			stmt.setBoolean(16, rp.isSetTaxes());
+			stmt.setBoolean(17, rp.isSetPrices());
+			stmt.setBoolean(18, rp.isCreatePlots());
+			stmt.setBoolean(19, rp.isSendChestsToLostAndFound());
+			stmt.setBoolean(20, rp.isCityBuild());
+			stmt.setBoolean(21, rp.isCityDestroy());
+			stmt.setBoolean(22, rp.isCitySwitch());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			if(settings.debug)
@@ -76,6 +79,9 @@ public class CSRanks extends Table {
 				rp.setUnclaim(rs.getBoolean("unclaim"));
 				rp.setWithdraw(rs.getBoolean("withdraw"));
 				rp.setSendChestsToLostAndFound(rs.getBoolean("sendChestsToLostAndFound"));
+				rp.setCityBuild(rs.getBoolean("cityBuild"));
+				rp.setCityDestroy(rs.getBoolean("cityDestroy"));
+				rp.setCitySwitch(rs.getBoolean("citySwitch"));
 				return rp;
 			}
 		} catch (SQLException e) {

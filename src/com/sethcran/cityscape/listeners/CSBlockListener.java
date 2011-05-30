@@ -9,6 +9,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import com.sethcran.cityscape.City;
 import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
+import com.sethcran.cityscape.RankPermissions;
 
 public class CSBlockListener extends BlockListener {
 	private Cityscape plugin = null;
@@ -44,12 +45,14 @@ public class CSBlockListener extends BlockListener {
 		}
 		
 		if(city.getName().equals(cityName)) {
-			if(!city.isResidentDestroy())
-				if(!city.getMayor().equals(player.getName())) {
+			if(!city.isResidentDestroy()) {
+				RankPermissions rp = plugin.getDB().getPermissions(player.getName());
+				if(!rp.isCityDestroy()) {
 					player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR + 
 							"You can't destroy here.");
 					event.setCancelled(true);
 				}
+			}
 		}
 		else {
 			if(!city.isOutsiderDestroy()) {
@@ -87,12 +90,14 @@ public class CSBlockListener extends BlockListener {
 		}
 		
 		if(city.getName().equals(cityName)) {
-			if(!city.isResidentBuild())
-				if(!city.getMayor().equals(player.getName())) {
+			if(!city.isResidentBuild()) {
+				RankPermissions rp = plugin.getDB().getPermissions(player.getName());
+				if(!rp.isCityBuild()) {
 					player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR + 
 							"You can't build here.");
 					event.setCancelled(true);
 				}
+			}
 		}
 		else {
 			if(!city.isOutsiderBuild()) {
