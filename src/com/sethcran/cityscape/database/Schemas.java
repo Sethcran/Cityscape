@@ -52,6 +52,12 @@ public class Schemas {
 						"spawnX INT," +
 						"spawnY INT," +
 						"spawnZ INT," +
+						"residentBuild BOOL, " +
+						"residentDestroy BOOL, " +
+						"residentSwitch BOOL, " +
+						"outsiderBuild BOOL, " +
+						"outsiderDestroy BOOL, " +
+						"outsiderSwitch BOOL, " +
 						"FOREIGN KEY(mayor) REFERENCES CSPlayers(name) ON DELETE CASCADE) " +
 						"ENGINE = InnoDB;";
 		

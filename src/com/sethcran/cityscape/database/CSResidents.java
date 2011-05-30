@@ -23,8 +23,6 @@ public class CSResidents extends Table {
 			ResultSet rs = stmt.executeQuery();
 			if(rs.next())
 				return rs.getString("city");
-			else
-				return null;
 		} catch (SQLException e) {
 			if(settings.debug)
 				e.printStackTrace();

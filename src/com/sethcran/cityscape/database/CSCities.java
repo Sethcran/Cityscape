@@ -16,7 +16,8 @@ public class CSCities extends Table {
 	
 	public void createCity(String playerName, String cityName) {
 		String sql = 	"INSERT INTO cscities " +
-						"VALUES( ?, ?, ?, NOW(), ?, ?, ?, null, ?, ?, ?);";
+						"VALUES( ?, ?, ?, NOW(), ?, ?, ?, null, null, null, " +
+						"?, ?, ?, ?, ?, ?);";
 		try {
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, cityName);
@@ -25,9 +26,12 @@ public class CSCities extends Table {
 			stmt.setInt(4, 1);
 			stmt.setInt(5, settings.defaultBaseClaims);
 			stmt.setInt(6, 0);
-			stmt.setString(7, null);
-			stmt.setString(8, null);
-			stmt.setString(9, null);
+			stmt.setBoolean(7, settings.defaultResidentBuild);
+			stmt.setBoolean(8, settings.defaultResidentDestroy);
+			stmt.setBoolean(9, settings.defaultResidentSwitch);
+			stmt.setBoolean(10, settings.defaultOutsiderBuild);
+			stmt.setBoolean(11, settings.defaultOutsiderDestroy);
+			stmt.setBoolean(12, settings.defaultOutsiderSwitch);
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			if(settings.debug)

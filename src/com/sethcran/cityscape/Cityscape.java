@@ -16,6 +16,7 @@ import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
 import com.sethcran.cityscape.commands.CommandHandler;
 import com.sethcran.cityscape.database.Database;
+import com.sethcran.cityscape.listeners.CSBlockListener;
 import com.sethcran.cityscape.listeners.CSPlayerListener;
 import com.sethcran.cityscape.listeners.CSServerListener;
 
@@ -79,12 +80,16 @@ public class Cityscape extends JavaPlugin {
 		PluginManager pm = getServer().getPluginManager();
 		CSServerListener serverListener = new CSServerListener(this);
 		CSPlayerListener playerListener = new CSPlayerListener(this);
+		CSBlockListener blockListener = new CSBlockListener(this);
 		
 		pm.registerEvent(Type.PLUGIN_ENABLE, serverListener, Priority.Monitor, this);
 		pm.registerEvent(Type.PLUGIN_DISABLE, serverListener, Priority.Monitor, this);
+		
 		pm.registerEvent(Type.PLAYER_JOIN, playerListener, Priority.Normal, this);
 		pm.registerEvent(Type.PLAYER_QUIT, playerListener, Priority.Normal, this);
 		pm.registerEvent(Type.PLAYER_MOVE, playerListener, Priority.Normal, this);
+		
+		pm.registerEvent(Type.BLOCK_BREAK, blockListener, Priority.High, this);
 	}
 	
 	public void removeFromCache(String playerName) {

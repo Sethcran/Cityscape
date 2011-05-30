@@ -34,7 +34,7 @@ public class CSPlayerListener extends PlayerListener {
 			db.insertNewPlayer(playerName);
 		}
 		
-		String currentCityLoc = db.getCityAt(curLoc.getBlockX(), curLoc.getBlockZ());
+		String currentCityLoc = db.getCityNameAt(curLoc.getBlockX(), curLoc.getBlockZ());
 		
 		plugin.insertIntoCache(playerName, 
 				new PlayerCache(curLoc, null, currentCityLoc));
@@ -54,7 +54,7 @@ public class CSPlayerListener extends PlayerListener {
 		
 		PlayerCache cache = plugin.getCache(player.getName());
 		String lastTown = cache.getLastTownLocation();	
-		String city = db.getCityAt(chunk.getX(), chunk.getZ());
+		String city = db.getCityNameAt(chunk.getX(), chunk.getZ());
 		
 		if(lastTown == null) {
 			if(city != null) {
