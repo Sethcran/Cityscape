@@ -88,6 +88,8 @@ public class Cityscape extends JavaPlugin {
 		pm.registerEvent(Type.PLAYER_JOIN, playerListener, Priority.Normal, this);
 		pm.registerEvent(Type.PLAYER_QUIT, playerListener, Priority.Normal, this);
 		pm.registerEvent(Type.PLAYER_MOVE, playerListener, Priority.Normal, this);
+		pm.registerEvent(Type.PLAYER_BUCKET_EMPTY, playerListener, Priority.High, this);
+		pm.registerEvent(Type.PLAYER_BUCKET_FILL, playerListener, Priority.High, this);
 		
 		pm.registerEvent(Type.BLOCK_BREAK, blockListener, Priority.High, this);
 		pm.registerEvent(Type.BLOCK_PLACE, blockListener, Priority.High, this);
