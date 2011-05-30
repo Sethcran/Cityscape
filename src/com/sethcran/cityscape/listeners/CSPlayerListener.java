@@ -42,7 +42,7 @@ public class CSPlayerListener extends PlayerListener {
 		
 		String currentCityLoc = db.getCityNameAt(curLoc.getBlockX(), curLoc.getBlockZ());
 		
-		plugin.insertIntoCache(playerName, 
+		plugin.insertIntoPlayerCache(playerName, 
 				new PlayerCache(curLoc, null, currentCityLoc));
 	}
 	
@@ -88,7 +88,7 @@ public class CSPlayerListener extends PlayerListener {
 	
 	@Override
 	public void onPlayerQuit(PlayerQuitEvent event) {
-		plugin.removeFromCache(event.getPlayer().getName());
+		plugin.removeFromPlayerCache(event.getPlayer().getName());
 	}
 	
 	@Override

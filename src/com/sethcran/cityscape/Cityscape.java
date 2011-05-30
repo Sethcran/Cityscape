@@ -30,6 +30,7 @@ public class Cityscape extends JavaPlugin {
 	private Database database = null;
 	private CommandHandler commandHandler = null;
 	private HashMap<String, PlayerCache> locationCache = new HashMap<String, PlayerCache>();
+	private HashMap<String, City> cityCache = new HashMap<String, City>();
 
 	@Override
 	public void onDisable() {
@@ -72,7 +73,11 @@ public class Cityscape extends JavaPlugin {
 		return settings;
 	}
 	
-	public void insertIntoCache(String playerName, PlayerCache playerCache) {
+	public void insertIntoCityCache(String cityName, City city) {
+		cityCache.put(cityName, city);
+	}
+	
+	public void insertIntoPlayerCache(String playerName, PlayerCache playerCache) {
 		locationCache.put(playerName, playerCache);
 	}
 	
@@ -95,7 +100,11 @@ public class Cityscape extends JavaPlugin {
 		pm.registerEvent(Type.BLOCK_PLACE, blockListener, Priority.High, this);
 	}
 	
-	public void removeFromCache(String playerName) {
+	public void removeFromCityCache(String cityName) {
+		cityCache.remove(cityName);
+	}
+	
+	public void removeFromPlayerCache(String playerName) {
 		locationCache.remove(playerName);
 	}
 	
