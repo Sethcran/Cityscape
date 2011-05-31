@@ -1,5 +1,6 @@
 package com.sethcran.cityscape;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
@@ -49,6 +50,8 @@ public class Cityscape extends JavaPlugin {
 		database = new Database(this);
 		commandHandler = new CommandHandler(this);
 		
+		populateCityCache();
+		
 		log.info("Cityscape loaded.");
 	}
 	
@@ -59,6 +62,10 @@ public class Cityscape extends JavaPlugin {
 	
 	public PlayerCache getCache(String playerName) {
 		return locationCache.get(playerName);
+	}
+	
+	public City getCity(String cityName) {
+		return cityCache.get(cityName);
 	}
 	
 	public CommandHandler getCommandHandler() {
@@ -79,6 +86,15 @@ public class Cityscape extends JavaPlugin {
 	
 	public void insertIntoPlayerCache(String playerName, PlayerCache playerCache) {
 		locationCache.put(playerName, playerCache);
+	}
+	
+	public void populateCityCache() {
+		ArrayList<City> cityArray = database.getCities();
+		if(cityArray != null) {
+			for(City city : cityArray) {
+				cityCache.put(city.getName(), city);
+			}
+		}
 	}
 	
 	private void registerEvents() {

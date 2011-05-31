@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import com.iConomy.iConomy;
 import com.iConomy.system.Holdings;
+import com.sethcran.cityscape.City;
 import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.commands.CSCommand;
@@ -116,6 +117,9 @@ public class CreateCity extends CSCommand {
 		
 		plugin.getServer().broadcastMessage(Constants.CITYSCAPE + 
 				ChatColor.GREEN + "The city of " + args[0] + " was founded!");
+		
+		City city = plugin.getDB().getCity(args[0]);
+		plugin.insertIntoCityCache(args[0], city);
 		
 		balance.subtract(plugin.getSettings().cityCost);
 	}

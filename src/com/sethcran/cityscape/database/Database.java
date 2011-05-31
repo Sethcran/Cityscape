@@ -5,9 +5,12 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.sethcran.cityscape.City;
 import com.sethcran.cityscape.Cityscape;
+import com.sethcran.cityscape.Plot;
 import com.sethcran.cityscape.RankPermissions;
 import com.sethcran.cityscape.Settings;
 
@@ -100,6 +103,49 @@ public class Database {
 		return csplayers.doesPlayerExist(playerName);
 	}
 	
+	public ArrayList<City> getCities() {
+		
+		ArrayList<City> cityArray = new ArrayList<City>();
+		try {
+			ResultSet rs = cscities.getCities();
+			if(rs == null)
+				return cityArray;
+			while(rs.next()) {
+				City city = new City();
+				city.setBaseClaims(rs.getInt("baseClaims"));
+				city.setBonusClaims(rs.getInt("bonusClaims"));
+				city.setFounded(rs.getString("founded"));
+				city.setMayor(rs.getString("mayor"));
+				city.setName(rs.getString("name"));
+				city.setOutsiderBuild(rs.getBoolean("outsiderBuild"));
+				city.setOutsiderDestroy(rs.getBoolean("outsiderDestroy"));
+				city.setOutsiderSwitch(rs.getBoolean("outsiderSwitch"));
+				city.setRank(rs.getInt("rank"));
+				city.setResidentBuild(rs.getBoolean("residentBuild"));
+				city.setResidentDestroy(rs.getBoolean("residentDestroy"));
+				city.setResidentSwitch(rs.getBoolean("residentSwitch"));
+				city.setSpawnX(rs.getInt("spawnX"));
+				city.setSpawnY(rs.getInt("spawnY"));
+				city.setSpawnZ(rs.getInt("spawnZ"));
+				city.setUsedClaims(rs.getInt("usedClaims"));
+				HashMap<String, Plot> plotMap = getPlots(city.getName());
+				city.loadMap(plotMap);
+				cityArray.add(city);
+			}
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+		return cityArray;
+	}
+	
+	public City getCity(String cityName) {
+		City city = cscities.getCity(cityName);
+		HashMap<String, Plot> plotMap = getPlots(city.getName());
+		city.loadMap(plotMap);
+		return city;
+	}
+	
 	public String getCityNameAt(int x, int z) {
 		return csclaims.getCityAt(x, z);
 	}
@@ -188,6 +234,10 @@ public class Database {
 				e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public HashMap<String, Plot> getPlots(String cityName) {
+		return csplots.getPlots(cityName);
 	}
 	
 	public String getRank(String playerName) {

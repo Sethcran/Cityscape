@@ -1,5 +1,10 @@
 package com.sethcran.cityscape;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import org.khelekore.prtree.PRTree;
+
 public class City {
 	private String name = null;
 	private String mayor = null;
@@ -22,6 +27,20 @@ public class City {
 	private boolean outsiderBuild = false;
 	private boolean outsiderDestroy = false;
 	private boolean outsiderSwitch = false;
+	
+	private PRTree<Plot> plotTree = null;
+	private HashMap<String, Plot> plotMap = null;
+	
+	public City() {
+		plotMap = new HashMap<String, Plot>();
+		plotTree = new PRTree<Plot>(new CSMBRConverter(), Constants.PRTREE_BRANCH_FACTOR);
+	}
+	
+	public void addPlot(Plot plot) {
+		plotMap.put(plot.toString(), plot);
+		plotTree = new PRTree<Plot>(new CSMBRConverter(), Constants.PRTREE_BRANCH_FACTOR);
+		plotTree.load(plotMap.values());
+	}
 
 	public int getBaseClaims() {
 		return baseClaims;
@@ -41,6 +60,15 @@ public class City {
 
 	public String getName() {
 		return name;
+	}
+	
+	public Plot getPlotAt(int x, int z) {
+		ArrayList<Plot> plot = new ArrayList<Plot>();
+		plotTree.find(x, z, x, z, plot);
+		if(plot.isEmpty())
+			return null;
+		else
+			return plot.get(0);
 	}
 
 	public int getRank() {
@@ -85,6 +113,18 @@ public class City {
 		return residentSwitch;
 	}
 	
+	public void loadMap(HashMap<String, Plot> map) {
+		plotMap = map;
+		plotTree = new PRTree<Plot>(new CSMBRConverter(), Constants.PRTREE_BRANCH_FACTOR);
+		plotTree.load(map.values());
+	}
+	
+	public void removePlot(Plot plot) {
+		plotMap.remove(plot.toString());
+		plotTree = new PRTree<Plot>(new CSMBRConverter(), Constants.PRTREE_BRANCH_FACTOR);
+		plotTree.load(plotMap.values());
+	}
+	
 	public void setBaseClaims(int baseClaims) {
 		this.baseClaims = baseClaims;
 	}
@@ -108,15 +148,19 @@ public class City {
 	public void setOutsiderBuild(boolean outsiderBuild) {
 		this.outsiderBuild = outsiderBuild;
 	}
+	
 	public void setOutsiderDestroy(boolean outsiderDestroy) {
 		this.outsiderDestroy = outsiderDestroy;
 	}
+	
 	public void setOutsiderSwitch(boolean outsiderSwitch) {
 		this.outsiderSwitch = outsiderSwitch;
 	}
+	
 	public void setRank(int rank) {
 		this.rank = rank;
 	}
+	
 	public void setResidentBuild(boolean residentBuild) {
 		this.residentBuild = residentBuild;
 	}

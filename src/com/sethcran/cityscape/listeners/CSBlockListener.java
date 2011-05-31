@@ -9,6 +9,8 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import com.sethcran.cityscape.City;
 import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
+import com.sethcran.cityscape.Permissions;
+import com.sethcran.cityscape.Plot;
 import com.sethcran.cityscape.RankPermissions;
 
 public class CSBlockListener extends BlockListener {
@@ -28,14 +30,79 @@ public class CSBlockListener extends BlockListener {
 		int x = block.getChunk().getX();
 		int z = block.getChunk().getZ();
 		
-		City city = plugin.getDB().getCityAt(x, z);
+		String localCity = plugin.getDB().getCityNameAt(x, z);
 		
-		if(city == null)
+		if(localCity == null) {
 			return;
+		}
 		
-		String cityName = plugin.getDB().getCurrentCity(player.getName());
+		City city = plugin.getCity(localCity);
 		
-		if(cityName == null) {
+		String playerCity = plugin.getDB().getCurrentCity(player.getName());
+		
+		Plot plot = city.getPlotAt(block.getX(), block.getZ());
+		if(plot != null) {
+			if(playerCity == null) {
+				if(!plot.isOutsiderDestroy()) {
+					Permissions perms = plot.getPlayerPermissions(player.getName());
+					if(perms == null) {
+						event.setCancelled(true);
+						player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+								"You can't destroy here.");
+						return;
+					}
+					else if(!perms.isCanDestroy()) {
+						event.setCancelled(true);
+						player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+								"You can't destroy here.");
+						return;
+					}
+				}
+			}
+			else if(localCity.equals(playerCity)) {
+				RankPermissions rp = plugin.getDB().getPermissions(player.getName());
+				if(rp != null) {			
+					if(rp.isCityDestroy()) {
+						return;
+					}
+				}
+				if(!plot.isResidentDestroy()) {
+					Permissions perms = plot.getPlayerPermissions(player.getName());
+					if(perms == null) {
+						event.setCancelled(true);
+						player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+								"You can't destroy here.");
+						return;
+					}
+					else if(!perms.isCanDestroy()) {
+						event.setCancelled(true);
+						player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+								"You can't destroy here.");
+						return;
+					}
+				}
+			}
+			else {
+				if(!plot.isOutsiderDestroy()) {
+					Permissions perms = plot.getPlayerPermissions(player.getName());
+					if(perms == null) {
+						event.setCancelled(true);
+						player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+								"You can't destroy here.");
+						return;
+					}
+					else if(!perms.isCanDestroy()) {
+						event.setCancelled(true);
+						player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+								"You can't destroy here.");
+						return;
+					}
+				}
+			}
+			return;
+		}
+		
+		if(playerCity == null) {
 			if(!city.isOutsiderDestroy()) {
 				event.setCancelled(true);
 				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
@@ -44,13 +111,16 @@ public class CSBlockListener extends BlockListener {
 			}
 		}
 		
-		if(city.getName().equals(cityName)) {
+		if(city.getName().equals(playerCity)) {
 			if(!city.isResidentDestroy()) {
 				RankPermissions rp = plugin.getDB().getPermissions(player.getName());
-				if(!rp.isCityDestroy()) {
-					player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR + 
-							"You can't destroy here.");
-					event.setCancelled(true);
+				if(rp != null) {			
+					if(!rp.isCityDestroy()) {
+						player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR + 
+								"You can't destroy here.");
+						event.setCancelled(true);
+						return;
+					}
 				}
 			}
 		}
@@ -73,14 +143,79 @@ public class CSBlockListener extends BlockListener {
 		int x = block.getChunk().getX();
 		int z = block.getChunk().getZ();
 		
-		City city = plugin.getDB().getCityAt(x, z);
+		String localCity = plugin.getDB().getCityNameAt(x, z);
 		
-		if(city == null)
+		if(localCity == null) {
 			return;
+		}
 		
-		String cityName = plugin.getDB().getCurrentCity(player.getName());
+		City city = plugin.getCity(localCity);
 		
-		if(cityName == null) {
+		String playerCity = plugin.getDB().getCurrentCity(player.getName());
+		
+		Plot plot = city.getPlotAt(block.getX(), block.getZ());
+		if(plot != null) {
+			if(playerCity == null) {
+				if(!plot.isOutsiderBuild()) {
+					Permissions perms = plot.getPlayerPermissions(player.getName());
+					if(perms == null) {
+						event.setCancelled(true);
+						player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+								"You can't build here.");
+						return;
+					}
+					else if(!perms.isCanBuild()) {
+						event.setCancelled(true);
+						player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+								"You can't build here.");
+						return;
+					}
+				}
+			}
+			else if(localCity.equals(playerCity)) {
+				RankPermissions rp = plugin.getDB().getPermissions(player.getName());
+				if(rp != null) {			
+					if(rp.isCityBuild()) {
+						return;
+					}
+				}
+				if(!plot.isResidentBuild()) {
+					Permissions perms = plot.getPlayerPermissions(player.getName());
+					if(perms == null) {
+						event.setCancelled(true);
+						player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+								"You can't build here.");
+						return;
+					}
+					else if(!perms.isCanDestroy()) {
+						event.setCancelled(true);
+						player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+								"You can't build here.");
+						return;
+					}
+				}
+			}
+			else {
+				if(!plot.isOutsiderBuild()) {
+					Permissions perms = plot.getPlayerPermissions(player.getName());
+					if(perms == null) {
+						event.setCancelled(true);
+						player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+								"You can't build here.");
+						return;
+					}
+					else if(!perms.isCanBuild()) {
+						event.setCancelled(true);
+						player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+								"You can't build here.");
+						return;
+					}
+				}
+			}
+			return;
+		}
+		
+		if(playerCity == null) {
 			if(!city.isOutsiderBuild()) {
 				event.setCancelled(true);
 				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
@@ -89,13 +224,16 @@ public class CSBlockListener extends BlockListener {
 			}
 		}
 		
-		if(city.getName().equals(cityName)) {
+		if(city.getName().equals(playerCity)) {
 			if(!city.isResidentBuild()) {
 				RankPermissions rp = plugin.getDB().getPermissions(player.getName());
-				if(!rp.isCityBuild()) {
-					player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR + 
-							"You can't build here.");
-					event.setCancelled(true);
+				if(rp != null) {			
+					if(!rp.isCityBuild()) {
+						player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR + 
+								"You can't build here.");
+						event.setCancelled(true);
+						return;
+					}
 				}
 			}
 		}

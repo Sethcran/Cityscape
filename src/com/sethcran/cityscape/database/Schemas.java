@@ -20,6 +20,7 @@ public class Schemas {
 		createChestsTable();
 		createClaimsTable();
 		createPlotsTable();
+		createPlotPermissionsTable();
 		createPlayerCityDataTable();
 		createRanksTable();
 		createResidentsTable();
@@ -119,12 +120,42 @@ public class Schemas {
 		}	
 	}
 	
+	public void createPlotPermissionsTable() {
+		String sql = 	"CREATE TABLE IF NOT EXISTS CSPlotPermissions(" +
+						"xmin INT, " +
+						"xmax INT, " +
+						"zmin INT, " +
+						"zmax INT, " +
+						"name CHAR(" + Constants.PLAYER_MAX_NAME_LENGTH + "), " +
+						"isPlayer BOOL, " +
+						"build BOOL, " +
+						"destroy BOOL, " +
+						"switch BOOL, " +
+						"PRIMARY KEY(xmin, xmax, zmin, zmax)) " +
+						"ENGINE = InnoDB;";
+		try {
+			con.createStatement().executeUpdate(sql);
+		} catch (SQLException e) {
+			Cityscape.log.severe("There was an error creating a database table.");
+			e.printStackTrace();
+		}
+	}
+	
 	public void createPlotsTable() {
 		String sql = 	"CREATE TABLE IF NOT EXISTS CSPlots(" +
-						"loc1 POINT," +
-						"loc2 POINT," + 
 						"city CHAR(" + Constants.TOWN_MAX_NAME_LENGTH + ") NOT NULL," +
-						"PRIMARY KEY(loc1, loc2)) " +
+						"owner CHAR(" + Constants.PLAYER_MAX_NAME_LENGTH + ")," +
+						"xmin INT," +
+						"xmax INT," +
+						"zmin INT," +
+						"zmax INT," +
+						"residentBuild BOOL," +
+						"residentDestroy BOOL," +
+						"residentSwitch BOOL," +
+						"outsiderBuild BOOL," +
+						"outsiderDestroy BOOL," +
+						"outsiderSwitch BOOL," +
+						"PRIMARY KEY(xmin, xmax, zmin, zmax)) " +
 						"ENGINE = InnoDB;";
 		
 		try {

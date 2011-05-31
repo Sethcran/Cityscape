@@ -13,6 +13,7 @@ public class Settings {
 	public String databaseDriver = null;
 	public String databaseUrl = null;
 	
+	public int defaultCityRank = 1;
 	public int defaultBaseClaims = 0;
 	public boolean defaultResidentBuild = false;
 	public boolean defaultResidentDestroy = false;

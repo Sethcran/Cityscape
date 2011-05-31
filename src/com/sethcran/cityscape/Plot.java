@@ -15,11 +15,11 @@ public class Plot {
 	private boolean outsiderDestroy = false;
 	private boolean outsiderSwitch = false;
 
-	String cityName = null;
-	String ownerName = null;
+	private String cityName = null;
+	private String ownerName = null;
 
-	HashMap<String, Permissions> playerPermissions = null;
-	HashMap<String, Permissions> cityPermissions = null;
+	private HashMap<String, Permissions> playerPermissions = null;
+	private HashMap<String, Permissions> cityPermissions = null;
 
 	public Plot(int xmin, int zmin, int xmax, int zmax) {
 		this.xmin = xmin;
@@ -141,5 +141,10 @@ public class Plot {
 	
 	public void setZmin(int zmin) {
 		this.zmin = zmin;
+	}
+	
+	@Override
+	public String toString() {
+		return cityName + ownerName + xmax + xmin + zmax + zmin;
 	}
 }
