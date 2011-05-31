@@ -8,13 +8,14 @@ public class Plot {
 	private int xmax = 0;
 	private int zmax = 0;
 	
+	private int id;
+	
 	private boolean residentBuild = false;
 	private boolean residentDestroy = false;
 	private boolean residentSwitch = false;
 	private boolean outsiderBuild = false;
 	private boolean outsiderDestroy = false;
 	private boolean outsiderSwitch = false;
-
 	private String cityName = null;
 	private String ownerName = null;
 
@@ -30,13 +31,17 @@ public class Plot {
 		playerPermissions = new HashMap<String, Permissions>();
 		cityPermissions = new HashMap<String, Permissions>();
 	}
-
+	
 	public String getCityName() {
 		return cityName;
 	}
 
 	public Permissions getCityPermissions(String cityName) {
 		return cityPermissions.get(cityName);
+	}
+
+	public int getId() {
+		return id;
 	}
 
 	public String getOwnerName() {
@@ -102,9 +107,15 @@ public class Plot {
 	public void setCityName(String cityName) {
 		this.cityName = cityName;
 	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 	public void setOutsiderBuild(boolean outsiderBuild) {
 		this.outsiderBuild = outsiderBuild;
 	}
+	
 	public void setOutsiderDestroy(boolean outsiderDestroy) {
 		this.outsiderDestroy = outsiderDestroy;
 	}
@@ -119,6 +130,7 @@ public class Plot {
 	public void setResidentBuild(boolean residentBuild) {
 		this.residentBuild = residentBuild;
 	}
+	
 	public void setResidentDestroy(boolean residentDestroy) {
 		this.residentDestroy = residentDestroy;
 	}

@@ -1,9 +1,12 @@
 package com.sethcran.cityscape;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 
-import org.khelekore.prtree.PRTree;
+import gnu.trove.TIntObjectHashMap;
+
+import com.infomatiq.jsi.Rectangle;
+import com.infomatiq.jsi.rtree.RTree;
+
+import com.sethcran.cityscape.TreeProcedure;
 
 public class City {
 	private String name = null;
@@ -28,18 +31,20 @@ public class City {
 	private boolean outsiderDestroy = false;
 	private boolean outsiderSwitch = false;
 	
-	private PRTree<Plot> plotTree = null;
-	private HashMap<String, Plot> plotMap = null;
+	private RTree plotTree = null;
+	private TIntObjectHashMap<Plot> plotMap = null;
 	
 	public City() {
-		plotMap = new HashMap<String, Plot>();
-		plotTree = new PRTree<Plot>(new CSMBRConverter(), Constants.PRTREE_BRANCH_FACTOR);
+		plotMap = new TIntObjectHashMap<Plot>();
+		plotTree = new RTree();
+		plotTree.init(null);
 	}
 	
 	public void addPlot(Plot plot) {
-		plotMap.put(plot.toString(), plot);
-		plotTree = new PRTree<Plot>(new CSMBRConverter(), Constants.PRTREE_BRANCH_FACTOR);
-		plotTree.load(plotMap.values());
+		plot.setId(plotTree.size() + 1);
+		plotMap.put(plot.getId(), plot);
+		plotTree.add(new Rectangle(plot.getXmin(), plot.getZmin(), 
+				plot.getXmax(), plot.getZmax()), plot.getId());
 	}
 
 	public int getBaseClaims() {
@@ -63,12 +68,9 @@ public class City {
 	}
 	
 	public Plot getPlotAt(int x, int z) {
-		ArrayList<Plot> plot = new ArrayList<Plot>();
-		plotTree.find(x, z, x, z, plot);
-		if(plot.isEmpty())
-			return null;
-		else
-			return plot.get(0);
+		TreeProcedure tproc = new TreeProcedure();
+		plotTree.intersects(new Rectangle(x, z, x, z), tproc);
+		return plotMap.get(tproc.getId());
 	}
 
 	public int getRank() {
@@ -113,16 +115,10 @@ public class City {
 		return residentSwitch;
 	}
 	
-	public void loadMap(HashMap<String, Plot> map) {
-		plotMap = map;
-		plotTree = new PRTree<Plot>(new CSMBRConverter(), Constants.PRTREE_BRANCH_FACTOR);
-		plotTree.load(map.values());
-	}
-	
 	public void removePlot(Plot plot) {
-		plotMap.remove(plot.toString());
-		plotTree = new PRTree<Plot>(new CSMBRConverter(), Constants.PRTREE_BRANCH_FACTOR);
-		plotTree.load(plotMap.values());
+		plotMap.remove(plot.getId());
+		plotTree.delete(new Rectangle(plot.getXmin(), plot.getZmin(), 
+				plot.getXmax(), plot.getZmax()), plot.getId());
 	}
 	
 	public void setBaseClaims(int baseClaims) {

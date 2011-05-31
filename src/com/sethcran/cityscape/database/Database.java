@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import com.sethcran.cityscape.City;
 import com.sethcran.cityscape.Cityscape;
@@ -128,8 +127,10 @@ public class Database {
 				city.setSpawnY(rs.getInt("spawnY"));
 				city.setSpawnZ(rs.getInt("spawnZ"));
 				city.setUsedClaims(rs.getInt("usedClaims"));
-				HashMap<String, Plot> plotMap = getPlots(city.getName());
-				city.loadMap(plotMap);
+				ArrayList<Plot> plotMap = getPlots(city.getName());
+				for(Plot plot : plotMap) {
+					city.addPlot(plot);
+				}
 				cityArray.add(city);
 			}
 		} catch (SQLException e) {
@@ -141,8 +142,10 @@ public class Database {
 	
 	public City getCity(String cityName) {
 		City city = cscities.getCity(cityName);
-		HashMap<String, Plot> plotMap = getPlots(city.getName());
-		city.loadMap(plotMap);
+		ArrayList<Plot> plotMap = getPlots(city.getName());
+		for(Plot plot : plotMap) {
+			city.addPlot(plot);
+		}
 		return city;
 	}
 	
@@ -236,7 +239,7 @@ public class Database {
 		return null;
 	}
 	
-	public HashMap<String, Plot> getPlots(String cityName) {
+	public ArrayList<Plot> getPlots(String cityName) {
 		return csplots.getPlots(cityName);
 	}
 	

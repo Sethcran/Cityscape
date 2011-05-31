@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.ArrayList;
 
 import com.sethcran.cityscape.Plot;
 import com.sethcran.cityscape.Settings;
@@ -15,11 +15,11 @@ public class CSPlots extends Table {
 		super(con, settings);
 	}
 	
-	HashMap<String, Plot> getPlots(String cityName) {
+	ArrayList<Plot> getPlots(String cityName) {
 		String sql = 	"SELECT * " +
 						"FROM csplots " +
 						"WHERE city = ?;";
-		HashMap<String, Plot> plotMap = new HashMap<String, Plot>();
+		ArrayList<Plot> plotList = new ArrayList<Plot>();
 		try {
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, cityName);
@@ -55,13 +55,13 @@ public class CSPlots extends Table {
 								permResults.getBoolean("switch"));
 					}
 				}
-				plotMap.put(plot.toString(), plot);
+				plotList.add(plot);
 			}
 		} catch (SQLException e) {
 			if(settings.debug)
 				e.printStackTrace();
 		}
-		return plotMap;
+		return plotList;
 	}
 
 }
