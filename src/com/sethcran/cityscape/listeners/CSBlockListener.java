@@ -31,7 +31,6 @@ public class CSBlockListener extends BlockListener {
 		City city = plugin.getCityAt(block.getX(), block.getZ(), block.getWorld().getName());
 		
 		if(city == null) {
-			Cityscape.log.info("City is null!.");
 			return;
 		}
 		
@@ -39,7 +38,6 @@ public class CSBlockListener extends BlockListener {
 		
 		Plot plot = city.getPlotAt(block.getX(), block.getZ());
 		if(plot != null) {
-			Cityscape.log.info("Plot is not null!.");
 			if(playerCity == null) {
 				if(!plot.isOutsiderDestroy()) {
 					Permissions perms = plot.getPlayerPermissions(player.getName());
@@ -101,7 +99,6 @@ public class CSBlockListener extends BlockListener {
 		}
 		
 		if(playerCity == null) {
-			Cityscape.log.info("playerCity is null!.");
 			if(!city.isOutsiderDestroy()) {
 				event.setCancelled(true);
 				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
@@ -111,7 +108,6 @@ public class CSBlockListener extends BlockListener {
 		}
 		
 		if(city.getName().equals(playerCity)) {
-			Cityscape.log.info("Player is in this city.");
 			if(!city.isResidentDestroy()) {
 				RankPermissions rp = plugin.getDB().getPermissions(player.getName());
 				if(rp != null) {			
@@ -125,7 +121,6 @@ public class CSBlockListener extends BlockListener {
 			}
 		}
 		else {
-			Cityscape.log.info("else");
 			if(!city.isOutsiderDestroy()) {
 				event.setCancelled(true);
 				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +

@@ -88,6 +88,9 @@ public class Claim extends CSCommand {
 		}
 		
 		db.claimChunk(playerCity, world, xmin, zmin, xmax, zmax);
+		com.sethcran.cityscape.Claim claim = new com.sethcran.cityscape.Claim(
+				playerCity, world, xmin, zmin, xmax, zmax, db.getLastClaimID());
+		plugin.addClaim(claim);
 		
 		player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
 				"Your town has annexed the claim at " + chunk.getX() + 
