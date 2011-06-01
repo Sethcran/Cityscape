@@ -39,46 +39,12 @@ public class Cityscape extends JavaPlugin {
 	private TIntObjectHashMap<Claim> claimMap = null;
 	private RTree claimTree = null;
 
-	@Override
-	public void onDisable() {
-		log.info("Cityscape unloaded.");
-	}
-
-	@Override
-	public void onEnable() {
-		log = Logger.getLogger("Minecraft");
-		
-		setupPermissions();
-		
-		settings = new Settings();
-		database = new Database(this);
-		commandHandler = new CommandHandler(this);
-		locationCache = new HashMap<String, PlayerCache>();
-		cityCache = new HashMap<String, City>();
-		claimMap = new TIntObjectHashMap<Claim>();
-		claimTree = new RTree();
-		
-		claimTree.init(null);
-		
-		populateCityCache();
-		populateClaimsCache();
-		
-		registerEvents();
-		
-		log.info("Cityscape loaded.");
-	}
-	
-	public boolean onCommand(CommandSender sender, Command cmd, 
-			String commandLabel, String[] args) {
-		return commandHandler.handleCommand(sender, cmd, commandLabel, args);
-	}
-	
 	public void addClaim(Claim claim) {
 		claimMap.put(claim.getId(), claim);
 		claimTree.add(new Rectangle(claim.getXmin(), claim.getZmin(), claim.getXmax(),
 				claim.getZmax()), claim.getId());
 	}
-	
+
 	public PlayerCache getCache(String playerName) {
 		return locationCache.get(playerName);
 	}
@@ -131,6 +97,41 @@ public class Cityscape extends JavaPlugin {
 			}
 		}
 		return false;	
+	}
+	
+	@Override
+	public boolean onCommand(CommandSender sender, Command cmd, 
+			String commandLabel, String[] args) {
+		return commandHandler.handleCommand(sender, cmd, commandLabel, args);
+	}
+	
+	@Override
+	public void onDisable() {
+		log.info("Cityscape unloaded.");
+	}
+	
+	@Override
+	public void onEnable() {
+		log = Logger.getLogger("Minecraft");
+		
+		setupPermissions();
+		
+		settings = new Settings();
+		database = new Database(this);
+		commandHandler = new CommandHandler(this);
+		locationCache = new HashMap<String, PlayerCache>();
+		cityCache = new HashMap<String, City>();
+		claimMap = new TIntObjectHashMap<Claim>();
+		claimTree = new RTree();
+		
+		claimTree.init(null);
+		
+		populateCityCache();
+		populateClaimsCache();
+		
+		registerEvents();
+		
+		log.info("Cityscape loaded.");
 	}
 	
 	public void populateCityCache() {

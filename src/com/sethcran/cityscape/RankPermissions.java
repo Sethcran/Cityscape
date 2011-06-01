@@ -51,72 +51,16 @@ public class RankPermissions {
 		citySwitch = b;
 	}
 
+	public String getRankName() {
+		return rankName;
+	}
+
 	public boolean isAddResident() {
 		return addResident;
 	}
 
-	public boolean isRemoveResident() {
-		return removeResident;
-	}
-
-	public boolean isClaim() {
-		return claim;
-	}
-
-	public boolean isUnclaim() {
-		return unclaim;
-	}
-
-	public boolean isPromote() {
-		return promote;
-	}
-
-	public boolean isDemote() {
-		return demote;
-	}
-
-	public boolean isWithdraw() {
-		return withdraw;
-	}
-
 	public boolean isChangeRankName() {
 		return changeRankName;
-	}
-
-	public boolean isSetWelcome() {
-		return setWelcome;
-	}
-
-	public boolean isSetMayor() {
-		return setMayor;
-	}
-
-	public boolean isSetWarp() {
-		return setWarp;
-	}
-
-	public boolean isSetName() {
-		return setName;
-	}
-
-	public boolean isSetPlotSale() {
-		return setPlotSale;
-	}
-
-	public boolean isSetTaxes() {
-		return setTaxes;
-	}
-
-	public boolean isSetPrices() {
-		return setPrices;
-	}
-
-	public boolean isCreatePlots() {
-		return createPlots;
-	}
-
-	public boolean isSendChestsToLostAndFound() {
-		return sendChestsToLostAndFound;
 	}
 
 	public boolean isCityBuild() {
@@ -131,76 +75,72 @@ public class RankPermissions {
 		return citySwitch;
 	}
 
-	public String getRankName() {
-		return rankName;
+	public boolean isClaim() {
+		return claim;
+	}
+
+	public boolean isCreatePlots() {
+		return createPlots;
+	}
+
+	public boolean isDemote() {
+		return demote;
+	}
+
+	public boolean isPromote() {
+		return promote;
+	}
+
+	public boolean isRemoveResident() {
+		return removeResident;
+	}
+
+	public boolean isSendChestsToLostAndFound() {
+		return sendChestsToLostAndFound;
+	}
+
+	public boolean isSetMayor() {
+		return setMayor;
+	}
+
+	public boolean isSetName() {
+		return setName;
+	}
+
+	public boolean isSetPlotSale() {
+		return setPlotSale;
+	}
+
+	public boolean isSetPrices() {
+		return setPrices;
+	}
+
+	public boolean isSetTaxes() {
+		return setTaxes;
+	}
+
+	public boolean isSetWarp() {
+		return setWarp;
+	}
+
+	public boolean isSetWelcome() {
+		return setWelcome;
+	}
+
+	public boolean isUnclaim() {
+		return unclaim;
+	}
+
+	public boolean isWithdraw() {
+		return withdraw;
 	}
 
 	public void setAddResident(boolean addResident) {
 		this.addResident = addResident;
 	}
 
-	public void setRemoveResident(boolean removeResident) {
-		this.removeResident = removeResident;
-	}
-
-	public void setClaim(boolean claim) {
-		this.claim = claim;
-	}
-
-	public void setUnclaim(boolean unclaim) {
-		this.unclaim = unclaim;
-	}
-
-	public void setPromote(boolean promote) {
-		this.promote = promote;
-	}
-
-	public void setDemote(boolean demote) {
-		this.demote = demote;
-	}
-
-	public void setWithdraw(boolean withdraw) {
-		this.withdraw = withdraw;
-	}
-
 	public void setChangeRankName(boolean changeRankName) {
 		this.changeRankName = changeRankName;
-	}
-
-	public void setSetWelcome(boolean setWelcome) {
-		this.setWelcome = setWelcome;
-	}
-
-	public void setSetMayor(boolean setMayor) {
-		this.setMayor = setMayor;
-	}
-
-	public void setSetWarp(boolean setWarp) {
-		this.setWarp = setWarp;
-	}
-
-	public void setSetName(boolean setName) {
-		this.setName = setName;
-	}
-
-	public void setSetPlotSale(boolean setPlotSale) {
-		this.setPlotSale = setPlotSale;
-	}
-
-	public void setSetTaxes(boolean setTaxes) {
-		this.setTaxes = setTaxes;
-	}
-
-	public void setSetPrices(boolean setPrices) {
-		this.setPrices = setPrices;
-	}
-
-	public void setCreatePlots(boolean createPlots) {
-		this.createPlots = createPlots;
-	}
-
-	public void setSendChestsToLostAndFound(boolean sendChestsToLostAndFound) {
-		this.sendChestsToLostAndFound = sendChestsToLostAndFound;
 	}
 
 	public void setCityBuild(boolean cityBuild) {
@@ -215,7 +155,67 @@ public class RankPermissions {
 		this.citySwitch = citySwitch;
 	}
 
+	public void setClaim(boolean claim) {
+		this.claim = claim;
+	}
+
+	public void setCreatePlots(boolean createPlots) {
+		this.createPlots = createPlots;
+	}
+
+	public void setDemote(boolean demote) {
+		this.demote = demote;
+	}
+
+	public void setPromote(boolean promote) {
+		this.promote = promote;
+	}
+
 	public void setRankName(String rankName) {
 		this.rankName = rankName;
+	}
+
+	public void setRemoveResident(boolean removeResident) {
+		this.removeResident = removeResident;
+	}
+
+	public void setSendChestsToLostAndFound(boolean sendChestsToLostAndFound) {
+		this.sendChestsToLostAndFound = sendChestsToLostAndFound;
+	}
+
+	public void setSetMayor(boolean setMayor) {
+		this.setMayor = setMayor;
+	}
+
+	public void setSetName(boolean setName) {
+		this.setName = setName;
+	}
+
+	public void setSetPlotSale(boolean setPlotSale) {
+		this.setPlotSale = setPlotSale;
+	}
+
+	public void setSetPrices(boolean setPrices) {
+		this.setPrices = setPrices;
+	}
+
+	public void setSetTaxes(boolean setTaxes) {
+		this.setTaxes = setTaxes;
+	}
+
+	public void setSetWarp(boolean setWarp) {
+		this.setWarp = setWarp;
+	}
+
+	public void setSetWelcome(boolean setWelcome) {
+		this.setWelcome = setWelcome;
+	}
+
+	public void setUnclaim(boolean unclaim) {
+		this.unclaim = unclaim;
+	}
+
+	public void setWithdraw(boolean withdraw) {
+		this.withdraw = withdraw;
 	}
 }

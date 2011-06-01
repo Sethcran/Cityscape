@@ -18,24 +18,6 @@ public abstract class CSCommand {
 		this.plugin = plugin;
 	}
 	
-	public abstract void execute(CommandSender sender, String[] args);
-	
-	public String getName() {
-		return name;
-	}
-	
-	public String getDescription() {
-		return description;
-	}
-	
-	public String getUsage() {
-		return usage;
-	}
-	
-	public String[] getAliases() {
-		return aliases;
-	}
-	
 	protected void addToMap(CSCommand cmd, HashMap<String, CSCommand> map) {
 		map.put(cmd.getName(), cmd);
 		
@@ -44,5 +26,23 @@ public abstract class CSCommand {
 				map.put(alias, cmd);
 			}
 		}
+	}
+	
+	public abstract void execute(CommandSender sender, String[] args);
+	
+	public String[] getAliases() {
+		return aliases;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public String getUsage() {
+		return usage;
 	}
 }

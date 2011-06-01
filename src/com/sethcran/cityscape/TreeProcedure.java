@@ -1,8 +1,8 @@
 package com.sethcran.cityscape;
 
-import java.util.ArrayList;
-
 import gnu.trove.TIntProcedure;
+
+import java.util.ArrayList;
 
 public class TreeProcedure implements TIntProcedure {
 	

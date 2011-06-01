@@ -13,19 +13,6 @@ public class Schemas {
 		this.con = con;
 	}
 	
-	public void createCSDatabase() {
-		createPlayersTable();
-		createCitiesTable();
-		
-		createChestsTable();
-		createClaimsTable();
-		createPlotsTable();
-		createPlotPermissionsTable();
-		createPlayerCityDataTable();
-		createRanksTable();
-		createResidentsTable();
-	}
-	
 	public void createChestsTable() {
 		String sql = 	"CREATE TABLE IF NOT EXISTS CSChests(" +
 						"id INT AUTO_INCREMENT PRIMARY KEY," +
@@ -90,6 +77,19 @@ public class Schemas {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	public void createCSDatabase() {
+		createPlayersTable();
+		createCitiesTable();
+		
+		createChestsTable();
+		createClaimsTable();
+		createPlotsTable();
+		createPlotPermissionsTable();
+		createPlayerCityDataTable();
+		createRanksTable();
+		createResidentsTable();
 	}
 	
 	public void createPlayerCityDataTable() {

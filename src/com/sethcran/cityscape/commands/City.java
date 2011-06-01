@@ -8,7 +8,8 @@ import org.bukkit.command.CommandSender;
 
 import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
-import com.sethcran.cityscape.commands.citycommands.*;
+import com.sethcran.cityscape.commands.citycommands.Claim;
+import com.sethcran.cityscape.commands.citycommands.CreateCity;
 
 public class City extends CSCommand {
 	HashMap<String, CSCommand> cityMap = new HashMap<String, CSCommand>();

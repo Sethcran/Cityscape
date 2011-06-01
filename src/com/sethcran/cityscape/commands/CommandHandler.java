@@ -21,6 +21,24 @@ public class CommandHandler {
 		addCSAdminCommands();
 	}
 
+	public void addCityCommands() {
+		City city = new City(plugin);
+		commandMap.put("city", city);
+		commandMap.put("c", city);
+	}
+	
+	public void addCSAdminCommands() {
+		CSAdmin csadmin = new CSAdmin(plugin);
+		commandMap.put("csadmin", csadmin);
+		commandMap.put("csa", csadmin);
+	}
+	
+	public void addPlayerCommands() {
+		Player player = new Player(plugin);
+		commandMap.put("player", player);
+		commandMap.put("p", player);
+	}
+	
 	public boolean handleCommand(CommandSender sender, Command cmd, 
 			String label, String[] args) {
 		String command = cmd.getName().toLowerCase();
@@ -37,23 +55,5 @@ public class CommandHandler {
 		cscommand.execute(sender, args);
 		
 		return true;
-	}
-	
-	public void addCityCommands() {
-		City city = new City(plugin);
-		commandMap.put("city", city);
-		commandMap.put("c", city);
-	}
-	
-	public void addPlayerCommands() {
-		Player player = new Player(plugin);
-		commandMap.put("player", player);
-		commandMap.put("p", player);
-	}
-	
-	public void addCSAdminCommands() {
-		CSAdmin csadmin = new CSAdmin(plugin);
-		commandMap.put("csadmin", csadmin);
-		commandMap.put("csa", csadmin);
 	}
 }

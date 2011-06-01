@@ -15,6 +15,21 @@ public class CSCities extends Table {
 		super(con, settings);
 	}
 	
+	public void addUsedClaims(String cityName, int numClaims) {
+		String sql = 	"UPDATE cscities " +
+						"SET usedClaims = usedClaims + ? " +
+						"WHERE name = ?;";
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setInt(1, numClaims);
+			stmt.setString(2, cityName);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+	}
+	
 	public void createCity(String playerName, String cityName) {
 		String sql = 	"INSERT INTO cscities " +
 						"VALUES( ?, ?, ?, NOW(), ?, ?, ?, null, null, null, " +
@@ -130,20 +145,5 @@ public class CSCities extends Table {
 		}
 		
 		return false;
-	}
-	
-	public void addUsedClaims(String cityName, int numClaims) {
-		String sql = 	"UPDATE cscities " +
-						"SET usedClaims = usedClaims + ? " +
-						"WHERE name = ?;";
-		try {
-			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setInt(1, numClaims);
-			stmt.setString(2, cityName);
-			stmt.executeUpdate();
-		} catch (SQLException e) {
-			if(settings.debug)
-				e.printStackTrace();
-		}
 	}
 }

@@ -28,74 +28,108 @@ public class CSPlayerListener extends PlayerListener {
 	}
 	
 	@Override
-	public void onPlayerJoin(PlayerJoinEvent event) {
-		Database db = plugin.getDB();
-		Player player = event.getPlayer();
-		String playerName = player.getName();
-		Location curLoc = player.getLocation();
-		
-		if(db.doesPlayerExist(playerName)) {
-			db.updatePlayerTimeStamp(playerName);
-		}
-		else {			
-			db.insertNewPlayer(playerName);
-		}
-		
-		City city = plugin.getCityAt(curLoc.getBlockX(), curLoc.getBlockZ(), 
-				curLoc.getWorld().getName());
-		String currentCityLoc = null;
-		if(city != null)
-			currentCityLoc = city.getName();
-		
-		plugin.insertIntoPlayerCache(playerName, 
-				new PlayerCache(curLoc, null, currentCityLoc));
-	}
-	
-	@Override
-	public void onPlayerMove(PlayerMoveEvent event) {  
-		Location from = event.getFrom();
-		Location to = event.getTo();
-		
-		if(from.getBlockX() == to.getBlockX() && from.getBlockZ() == to.getBlockZ())
+	public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
+		if(event.isCancelled())
 			return;
 		
 		Player player = event.getPlayer();
+		Block block = event.getBlockClicked();
 		
-		PlayerCache cache = plugin.getCache(player.getName());
-		String lastTown = cache.getLastTownLocation();	
-		City city = plugin.getCityAt(to.getBlockX(), to.getBlockZ(), 
-				to.getWorld().getName());
-		String currentCityLoc = null;
-		if(city != null)
-			currentCityLoc = city.getName();
+		City city = plugin.getCityAt(block.getX(), block.getZ(), block.getWorld().getName());
 		
-		if(lastTown == null) {
-			if(currentCityLoc != null) {
-				player.sendMessage(ChatColor.GREEN + "You have entered the city of " 
-						+ currentCityLoc + ".");
-				cache.setLastTownLocation(currentCityLoc);
+		String playerCity = plugin.getDB().getCurrentCity(player.getName());
+		
+		Plot plot = city.getPlotAt(block.getX(), block.getZ());
+		if(plot != null) {
+			if(playerCity == null) {
+				if(!plot.isOutsiderBuild()) {
+					Permissions perms = plot.getPlayerPermissions(player.getName());
+					if(perms == null) {
+						event.setCancelled(true);
+						player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+								"You can't build here.");
+						return;
+					}
+					else if(!perms.isCanBuild()) {
+						event.setCancelled(true);
+						player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+								"You can't build here.");
+						return;
+					}
+				}
+			}
+			else if(city.getName().equals(playerCity)) {
+				RankPermissions rp = plugin.getDB().getPermissions(player.getName());
+				if(rp != null) {			
+					if(rp.isCityBuild()) {
+						return;
+					}
+				}
+				if(!plot.isResidentBuild()) {
+					Permissions perms = plot.getPlayerPermissions(player.getName());
+					if(perms == null) {
+						event.setCancelled(true);
+						player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+								"You can't build here.");
+						return;
+					}
+					else if(!perms.isCanDestroy()) {
+						event.setCancelled(true);
+						player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+								"You can't build here.");
+						return;
+					}
+				}
+			}
+			else {
+				if(!plot.isOutsiderBuild()) {
+					Permissions perms = plot.getPlayerPermissions(player.getName());
+					if(perms == null) {
+						event.setCancelled(true);
+						player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+								"You can't build here.");
+						return;
+					}
+					else if(!perms.isCanBuild()) {
+						event.setCancelled(true);
+						player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+								"You can't build here.");
+						return;
+					}
+				}
+			}
+			return;
+		}
+		
+		if(playerCity == null) {
+			if(!city.isOutsiderBuild()) {
+				event.setCancelled(true);
+				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+						"You can't build here.");
+				return;
+			}
+		}
+		
+		if(city.getName().equals(playerCity)) {
+			if(!city.isResidentBuild()) {
+				RankPermissions rp = plugin.getDB().getPermissions(player.getName());
+				if(rp != null) {			
+					if(!rp.isCityBuild()) {
+						player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR + 
+								"You can't build here.");
+						event.setCancelled(true);
+						return;
+					}
+				}
 			}
 		}
 		else {
-			if(currentCityLoc == null) {
-				player.sendMessage(ChatColor.GREEN + "You have entered the wilderness.");
-				cache.setLastTownLocation(null);
+			if(!city.isOutsiderBuild()) {
+				event.setCancelled(true);
+				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+						"You can't build here.");
 			}
-			else {
-				if(!lastTown.equals(currentCityLoc)) {
-					player.sendMessage(ChatColor.GREEN + "You have entered the city of " + 
-							currentCityLoc + ".");
-					cache.setLastTownLocation(currentCityLoc);
-				}
-			}
-				
 		}
-		cache.setLastLocation(to);
-	}
-	
-	@Override
-	public void onPlayerQuit(PlayerQuitEvent event) {
-		plugin.removeFromPlayerCache(event.getPlayer().getName());
 	}
 	
 	@Override
@@ -203,107 +237,74 @@ public class CSPlayerListener extends PlayerListener {
 		}
 	}
 	
-	public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
-		if(event.isCancelled())
+	@Override
+	public void onPlayerJoin(PlayerJoinEvent event) {
+		Database db = plugin.getDB();
+		Player player = event.getPlayer();
+		String playerName = player.getName();
+		Location curLoc = player.getLocation();
+		
+		if(db.doesPlayerExist(playerName)) {
+			db.updatePlayerTimeStamp(playerName);
+		}
+		else {			
+			db.insertNewPlayer(playerName);
+		}
+		
+		City city = plugin.getCityAt(curLoc.getBlockX(), curLoc.getBlockZ(), 
+				curLoc.getWorld().getName());
+		String currentCityLoc = null;
+		if(city != null)
+			currentCityLoc = city.getName();
+		
+		plugin.insertIntoPlayerCache(playerName, 
+				new PlayerCache(curLoc, null, currentCityLoc));
+	}
+	
+	@Override
+	public void onPlayerMove(PlayerMoveEvent event) {  
+		Location from = event.getFrom();
+		Location to = event.getTo();
+		
+		if(from.getBlockX() == to.getBlockX() && from.getBlockZ() == to.getBlockZ())
 			return;
 		
 		Player player = event.getPlayer();
-		Block block = event.getBlockClicked();
 		
-		City city = plugin.getCityAt(block.getX(), block.getZ(), block.getWorld().getName());
+		PlayerCache cache = plugin.getCache(player.getName());
+		String lastTown = cache.getLastTownLocation();	
+		City city = plugin.getCityAt(to.getBlockX(), to.getBlockZ(), 
+				to.getWorld().getName());
+		String currentCityLoc = null;
+		if(city != null)
+			currentCityLoc = city.getName();
 		
-		String playerCity = plugin.getDB().getCurrentCity(player.getName());
-		
-		Plot plot = city.getPlotAt(block.getX(), block.getZ());
-		if(plot != null) {
-			if(playerCity == null) {
-				if(!plot.isOutsiderBuild()) {
-					Permissions perms = plot.getPlayerPermissions(player.getName());
-					if(perms == null) {
-						event.setCancelled(true);
-						player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-								"You can't build here.");
-						return;
-					}
-					else if(!perms.isCanBuild()) {
-						event.setCancelled(true);
-						player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-								"You can't build here.");
-						return;
-					}
-				}
-			}
-			else if(city.getName().equals(playerCity)) {
-				RankPermissions rp = plugin.getDB().getPermissions(player.getName());
-				if(rp != null) {			
-					if(rp.isCityBuild()) {
-						return;
-					}
-				}
-				if(!plot.isResidentBuild()) {
-					Permissions perms = plot.getPlayerPermissions(player.getName());
-					if(perms == null) {
-						event.setCancelled(true);
-						player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-								"You can't build here.");
-						return;
-					}
-					else if(!perms.isCanDestroy()) {
-						event.setCancelled(true);
-						player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-								"You can't build here.");
-						return;
-					}
-				}
-			}
-			else {
-				if(!plot.isOutsiderBuild()) {
-					Permissions perms = plot.getPlayerPermissions(player.getName());
-					if(perms == null) {
-						event.setCancelled(true);
-						player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-								"You can't build here.");
-						return;
-					}
-					else if(!perms.isCanBuild()) {
-						event.setCancelled(true);
-						player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-								"You can't build here.");
-						return;
-					}
-				}
-			}
-			return;
-		}
-		
-		if(playerCity == null) {
-			if(!city.isOutsiderBuild()) {
-				event.setCancelled(true);
-				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-						"You can't build here.");
-				return;
-			}
-		}
-		
-		if(city.getName().equals(playerCity)) {
-			if(!city.isResidentBuild()) {
-				RankPermissions rp = plugin.getDB().getPermissions(player.getName());
-				if(rp != null) {			
-					if(!rp.isCityBuild()) {
-						player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR + 
-								"You can't build here.");
-						event.setCancelled(true);
-						return;
-					}
-				}
+		if(lastTown == null) {
+			if(currentCityLoc != null) {
+				player.sendMessage(ChatColor.GREEN + "You have entered the city of " 
+						+ currentCityLoc + ".");
+				cache.setLastTownLocation(currentCityLoc);
 			}
 		}
 		else {
-			if(!city.isOutsiderBuild()) {
-				event.setCancelled(true);
-				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-						"You can't build here.");
+			if(currentCityLoc == null) {
+				player.sendMessage(ChatColor.GREEN + "You have entered the wilderness.");
+				cache.setLastTownLocation(null);
 			}
+			else {
+				if(!lastTown.equals(currentCityLoc)) {
+					player.sendMessage(ChatColor.GREEN + "You have entered the city of " + 
+							currentCityLoc + ".");
+					cache.setLastTownLocation(currentCityLoc);
+				}
+			}
+				
 		}
+		cache.setLastLocation(to);
+	}
+	
+	@Override
+	public void onPlayerQuit(PlayerQuitEvent event) {
+		plugin.removeFromPlayerCache(event.getPlayer().getName());
 	}
 }

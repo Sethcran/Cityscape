@@ -204,10 +204,6 @@ public class Database {
 		return csclaims.getLastID();
 	}
 	
-	public RankPermissions getPermissions(String townName, String rank) {
-		return csranks.getPermissions(townName, rank);
-	}
-	
 	public RankPermissions getPermissions(String playerName) {
 		String sql = 	"SELECT * " +
 						"FROM csresidents, csranks " +
@@ -247,6 +243,10 @@ public class Database {
 				e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public RankPermissions getPermissions(String townName, String rank) {
+		return csranks.getPermissions(townName, rank);
 	}
 	
 	public ArrayList<Plot> getPlots(String cityName) {

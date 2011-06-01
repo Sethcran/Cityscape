@@ -6,8 +6,6 @@ import gnu.trove.TIntObjectHashMap;
 import com.infomatiq.jsi.Rectangle;
 import com.infomatiq.jsi.rtree.RTree;
 
-import com.sethcran.cityscape.TreeProcedure;
-
 public class City {
 	private String name = null;
 	private String mayor = null;
