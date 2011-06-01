@@ -1,7 +1,5 @@
 package com.sethcran.cityscape.commands;
 
-import java.util.HashMap;
-
 import org.bukkit.command.CommandSender;
 
 import com.sethcran.cityscape.Cityscape;
@@ -16,16 +14,6 @@ public abstract class CSCommand {
 	
 	public CSCommand(Cityscape plugin) {
 		this.plugin = plugin;
-	}
-	
-	protected void addToMap(CSCommand cmd, HashMap<String, CSCommand> map) {
-		map.put(cmd.getName(), cmd);
-		
-		if(cmd.getAliases() != null) {
-			for(String alias : cmd.getAliases()) {
-				map.put(alias, cmd);
-			}
-		}
 	}
 	
 	public abstract void execute(CommandSender sender, String[] args);

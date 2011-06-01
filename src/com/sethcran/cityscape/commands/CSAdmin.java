@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 
 import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
+import com.sethcran.cityscape.commands.csadmincommands.Default;
 
 public class CSAdmin extends CSCommand {
 	
@@ -15,6 +16,8 @@ public class CSAdmin extends CSCommand {
 	
 	public CSAdmin(Cityscape plugin) {
 		super(plugin);
+		
+		addToMap(new Default(plugin));
 	}
 
 	@Override
@@ -40,5 +43,15 @@ public class CSAdmin extends CSCommand {
 			args = null;
 		
 		cscommand.execute(sender, args);
+	}
+	
+	private void addToMap(CSCommand cmd) {
+		csAdminMap.put(cmd.getName(), cmd);
+		
+		if(cmd.getAliases() != null) {
+			for(String alias : cmd.getAliases()) {
+				csAdminMap.put(alias, cmd);
+			}
+		}
 	}
 }

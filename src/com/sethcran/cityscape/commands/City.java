@@ -3,13 +3,14 @@ package com.sethcran.cityscape.commands;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.commands.citycommands.Claim;
 import com.sethcran.cityscape.commands.citycommands.CreateCity;
+import com.sethcran.cityscape.commands.citycommands.Default;
+import com.sethcran.cityscape.commands.citycommands.Leave;
 
 public class City extends CSCommand {
 	HashMap<String, CSCommand> cityMap = new HashMap<String, CSCommand>();
@@ -17,9 +18,10 @@ public class City extends CSCommand {
 	public City(Cityscape plugin) {
 		super(plugin);
 		
-		addToMap(new Claim(plugin), cityMap);
-		addToMap(new CreateCity(plugin), cityMap);
-		addToMap(new com.sethcran.cityscape.commands.citycommands.Default(plugin), cityMap);
+		addToMap(new Claim(plugin));
+		addToMap(new CreateCity(plugin));
+		addToMap(new Default(plugin));
+		addToMap(new Leave(plugin));
 	}
 
 	@Override
@@ -34,7 +36,7 @@ public class City extends CSCommand {
 			cscommand = cityMap.get(args[0]);
 		
 		if(cscommand == null) {
-			sender.sendMessage(Constants.CITYSCAPE + ChatColor.RED + 
+			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR + 
 					"That command does not exist.");
 			return;
 		}
@@ -45,5 +47,15 @@ public class City extends CSCommand {
 			args = null;
 		
 		cscommand.execute(sender, args);
+	}
+
+	private void addToMap(CSCommand cmd) {
+		cityMap.put(cmd.getName(), cmd);
+		
+		if(cmd.getAliases() != null) {
+			for(String alias : cmd.getAliases()) {
+				cityMap.put(alias, cmd);
+			}
+		}
 	}
 }

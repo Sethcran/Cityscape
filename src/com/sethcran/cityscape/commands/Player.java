@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 
 import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
+import com.sethcran.cityscape.commands.playercommands.Default;
 
 public class Player extends CSCommand {
 
@@ -16,8 +17,7 @@ public class Player extends CSCommand {
 	public Player(Cityscape plugin) {
 		super(plugin);
 		
-		addToMap(new com.sethcran.cityscape.commands.playercommands.Default(plugin), 
-				playerMap);
+		addToMap(new Default(plugin));
 	}
 
 	@Override
@@ -43,6 +43,16 @@ public class Player extends CSCommand {
 			args = null;
 		
 		cscommand.execute(sender, args);
+	}
+	
+	private void addToMap(CSCommand cmd) {
+		playerMap.put(cmd.getName(), cmd);
+		
+		if(cmd.getAliases() != null) {
+			for(String alias : cmd.getAliases()) {
+				playerMap.put(alias, cmd);
+			}
+		}
 	}
 
 }

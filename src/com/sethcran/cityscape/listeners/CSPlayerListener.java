@@ -257,8 +257,10 @@ public class CSPlayerListener extends PlayerListener {
 		if(city != null)
 			currentCityLoc = city.getName();
 		
+		String playerCity = db.getPlayerCity(playerName);
+		
 		plugin.insertIntoPlayerCache(playerName, 
-				new PlayerCache(curLoc, null, currentCityLoc));
+				new PlayerCache(curLoc, null, currentCityLoc, playerCity));
 	}
 	
 	@Override

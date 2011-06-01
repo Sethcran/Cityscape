@@ -129,6 +129,7 @@ public class CreateCity extends CSCommand {
 		com.sethcran.cityscape.Claim claim = new com.sethcran.cityscape.Claim(
 				args[0], worldName, xmin, zmin, xmax, zmax, db.getLastClaimID());
 		plugin.addClaim(claim);
+		plugin.changePlayerCityInCache(player.getName(), args[0]);
 		
 		balance.subtract(plugin.getSettings().cityCost);
 	}

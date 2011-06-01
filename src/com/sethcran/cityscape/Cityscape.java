@@ -34,7 +34,7 @@ public class Cityscape extends JavaPlugin {
 	private Settings settings = null;
 	private Database database = null;
 	private CommandHandler commandHandler = null;
-	private HashMap<String, PlayerCache> locationCache = null;
+	private HashMap<String, PlayerCache> playerCache = null;
 	private HashMap<String, City> cityCache = null;
 	private TIntObjectHashMap<Claim> claimMap = null;
 	private RTree claimTree = null;
@@ -44,9 +44,13 @@ public class Cityscape extends JavaPlugin {
 		claimTree.add(new Rectangle(claim.getXmin(), claim.getZmin(), claim.getXmax(),
 				claim.getZmax()), claim.getId());
 	}
+	
+	public void changePlayerCityInCache(String playerName, String cityName) {
+		getCache(playerName).setCity(cityName);
+	}
 
 	public PlayerCache getCache(String playerName) {
-		return locationCache.get(playerName);
+		return playerCache.get(playerName);
 	}
 	
 	public City getCity(String cityName) {
@@ -81,7 +85,7 @@ public class Cityscape extends JavaPlugin {
 	}
 	
 	public void insertIntoPlayerCache(String playerName, PlayerCache playerCache) {
-		locationCache.put(playerName, playerCache);
+		this.playerCache.put(playerName, playerCache);
 	}
 	
 	public boolean isChunkClaimed(int xmin, int zmin, int xmax, int zmax, String world) {
@@ -119,7 +123,7 @@ public class Cityscape extends JavaPlugin {
 		settings = new Settings();
 		database = new Database(this);
 		commandHandler = new CommandHandler(this);
-		locationCache = new HashMap<String, PlayerCache>();
+		playerCache = new HashMap<String, PlayerCache>();
 		cityCache = new HashMap<String, City>();
 		claimMap = new TIntObjectHashMap<Claim>();
 		claimTree = new RTree();
@@ -182,7 +186,7 @@ public class Cityscape extends JavaPlugin {
 	}
 	
 	public void removeFromPlayerCache(String playerName) {
-		locationCache.remove(playerName);
+		playerCache.remove(playerName);
 	}
 	
 	private void setupPermissions() {

@@ -249,6 +249,10 @@ public class Database {
 		return csranks.getPermissions(townName, rank);
 	}
 	
+	public String getPlayerCity(String playerName) {
+		return csresidents.getCurrentCity(playerName);
+	}
+	
 	public ArrayList<Plot> getPlots(String cityName) {
 		return csplots.getPlots(cityName);
 	}
@@ -270,6 +274,19 @@ public class Database {
 			con.commit();
 			con.setAutoCommit(true);
 		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+	}
+	
+	public void leaveCity(String playerName) {
+		try {
+			con.setAutoCommit(false);
+			csresidents.setCurrentCity(playerName, null, null);
+			csplayercitydata.addPlayerCityHistory(playerName, null);
+			con.commit();
+			con.setAutoCommit(true);
+		} catch(SQLException e) {
 			if(settings.debug)
 				e.printStackTrace();
 		}
