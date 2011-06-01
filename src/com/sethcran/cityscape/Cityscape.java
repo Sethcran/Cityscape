@@ -1,5 +1,7 @@
 package com.sethcran.cityscape;
 
+import gnu.trove.TIntObjectHashMap;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Logger;
@@ -13,6 +15,8 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.iConomy.iConomy;
+import com.infomatiq.jsi.Rectangle;
+import com.infomatiq.jsi.rtree.RTree;
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
 import com.sethcran.cityscape.commands.CommandHandler;
@@ -30,8 +34,10 @@ public class Cityscape extends JavaPlugin {
 	private Settings settings = null;
 	private Database database = null;
 	private CommandHandler commandHandler = null;
-	private HashMap<String, PlayerCache> locationCache = new HashMap<String, PlayerCache>();
-	private HashMap<String, City> cityCache = new HashMap<String, City>();
+	private HashMap<String, PlayerCache> locationCache = null;
+	private HashMap<String, City> cityCache = null;
+	private TIntObjectHashMap<Claim> claimMap = null;
+	private RTree claimTree = null;
 
 	@Override
 	public void onDisable() {
@@ -44,13 +50,20 @@ public class Cityscape extends JavaPlugin {
 		
 		setupPermissions();
 		
-		registerEvents();
-		
 		settings = new Settings();
 		database = new Database(this);
 		commandHandler = new CommandHandler(this);
+		locationCache = new HashMap<String, PlayerCache>();
+		cityCache = new HashMap<String, City>();
+		claimMap = new TIntObjectHashMap<Claim>();
+		claimTree = new RTree();
+		
+		claimTree.init(null);
 		
 		populateCityCache();
+		populateClaimsCache();
+		
+		registerEvents();
 		
 		log.info("Cityscape loaded.");
 	}
@@ -60,12 +73,29 @@ public class Cityscape extends JavaPlugin {
 		return commandHandler.handleCommand(sender, cmd, commandLabel, args);
 	}
 	
+	public void addClaim(Claim claim) {
+		claimMap.put(claim.getId(), claim);
+		claimTree.add(new Rectangle(claim.getXmin(), claim.getZmin(), claim.getXmax(),
+				claim.getZmax()), claim.getId());
+	}
+	
 	public PlayerCache getCache(String playerName) {
 		return locationCache.get(playerName);
 	}
 	
 	public City getCity(String cityName) {
 		return cityCache.get(cityName);
+	}
+	
+	public City getCityAt(int x, int z, String world) {
+		TreeProcedure tproc = new TreeProcedure();
+		claimTree.intersects(new Rectangle(x, z, x, z), tproc);
+		for(int i : tproc.getId()) {
+			Claim claim = claimMap.get(i);
+			if(claim.getWorld().equals(world))
+				return getCity(claim.getCityName());
+		}
+		return null;
 	}
 	
 	public CommandHandler getCommandHandler() {
@@ -88,11 +118,35 @@ public class Cityscape extends JavaPlugin {
 		locationCache.put(playerName, playerCache);
 	}
 	
+	public boolean isChunkClaimed(int xmin, int zmin, int xmax, int zmax, String world) {
+		TreeProcedure tproc = new TreeProcedure();
+		claimTree.intersects(new Rectangle(xmin, zmin, xmax, zmax), tproc);
+		if(tproc.getId().size() == 0)
+			return false;
+		else {
+			for(int i : tproc.getId()) {
+				Claim claim = claimMap.get(i);
+				if(claim.getWorld().equals(world))
+					return true;
+			}
+		}
+		return false;	
+	}
+	
 	public void populateCityCache() {
 		ArrayList<City> cityArray = database.getCities();
 		if(cityArray != null) {
 			for(City city : cityArray) {
 				cityCache.put(city.getName(), city);
+			}
+		}
+	}
+	
+	public void populateClaimsCache() {
+		ArrayList<Claim> claimsArray = database.getClaims();
+		if(claimsArray != null) {
+			for(Claim claim : claimsArray) {
+				addClaim(claim);
 			}
 		}
 	}
@@ -114,6 +168,12 @@ public class Cityscape extends JavaPlugin {
 		
 		pm.registerEvent(Type.BLOCK_BREAK, blockListener, Priority.High, this);
 		pm.registerEvent(Type.BLOCK_PLACE, blockListener, Priority.High, this);
+	}
+	
+	public void removeClaim(Claim claim) {
+		claimMap.remove(claim.getId());
+		claimTree.delete(new Rectangle(claim.getXmin(), claim.getZmin(), claim.getXmax(),
+				claim.getZmax()), claim.getId());
 	}
 	
 	public void removeFromCityCache(String cityName) {

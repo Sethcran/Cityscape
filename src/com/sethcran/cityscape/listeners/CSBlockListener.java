@@ -27,21 +27,19 @@ public class CSBlockListener extends BlockListener {
 		
 		Player player = event.getPlayer();
 		Block block = event.getBlock();
-		int x = block.getChunk().getX();
-		int z = block.getChunk().getZ();
 		
-		String localCity = plugin.getDB().getCityNameAt(x, z);
+		City city = plugin.getCityAt(block.getX(), block.getZ(), block.getWorld().getName());
 		
-		if(localCity == null) {
+		if(city == null) {
+			Cityscape.log.info("City is null!.");
 			return;
 		}
-		
-		City city = plugin.getCity(localCity);
 		
 		String playerCity = plugin.getDB().getCurrentCity(player.getName());
 		
 		Plot plot = city.getPlotAt(block.getX(), block.getZ());
 		if(plot != null) {
+			Cityscape.log.info("Plot is not null!.");
 			if(playerCity == null) {
 				if(!plot.isOutsiderDestroy()) {
 					Permissions perms = plot.getPlayerPermissions(player.getName());
@@ -59,7 +57,7 @@ public class CSBlockListener extends BlockListener {
 					}
 				}
 			}
-			else if(localCity.equals(playerCity)) {
+			else if(city.getName().equals(playerCity)) {
 				RankPermissions rp = plugin.getDB().getPermissions(player.getName());
 				if(rp != null) {			
 					if(rp.isCityDestroy()) {
@@ -103,6 +101,7 @@ public class CSBlockListener extends BlockListener {
 		}
 		
 		if(playerCity == null) {
+			Cityscape.log.info("playerCity is null!.");
 			if(!city.isOutsiderDestroy()) {
 				event.setCancelled(true);
 				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
@@ -112,6 +111,7 @@ public class CSBlockListener extends BlockListener {
 		}
 		
 		if(city.getName().equals(playerCity)) {
+			Cityscape.log.info("Player is in this city.");
 			if(!city.isResidentDestroy()) {
 				RankPermissions rp = plugin.getDB().getPermissions(player.getName());
 				if(rp != null) {			
@@ -125,6 +125,7 @@ public class CSBlockListener extends BlockListener {
 			}
 		}
 		else {
+			Cityscape.log.info("else");
 			if(!city.isOutsiderDestroy()) {
 				event.setCancelled(true);
 				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
@@ -140,16 +141,11 @@ public class CSBlockListener extends BlockListener {
 		
 		Player player = event.getPlayer();
 		Block block = event.getBlock();
-		int x = block.getChunk().getX();
-		int z = block.getChunk().getZ();
 		
-		String localCity = plugin.getDB().getCityNameAt(x, z);
+		City city = plugin.getCityAt(block.getX(), block.getZ(), block.getWorld().getName());
 		
-		if(localCity == null) {
+		if(city == null)
 			return;
-		}
-		
-		City city = plugin.getCity(localCity);
 		
 		String playerCity = plugin.getDB().getCurrentCity(player.getName());
 		
@@ -172,7 +168,7 @@ public class CSBlockListener extends BlockListener {
 					}
 				}
 			}
-			else if(localCity.equals(playerCity)) {
+			else if(city.getName().equals(playerCity)) {
 				RankPermissions rp = plugin.getDB().getPermissions(player.getName());
 				if(rp != null) {			
 					if(rp.isCityBuild()) {

@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
+import com.sethcran.cityscape.Claim;
 import com.sethcran.cityscape.Settings;
 
 public class CSClaims extends Table {
@@ -13,15 +15,18 @@ public class CSClaims extends Table {
 		super(con, settings);
 	}
 	
-	public void claimChunk(String cityName, int x, int z, String worldName) {
+	public void claimChunk(String cityName, String worldName, 
+			int xmin, int zmin, int xmax, int zmax) {
 		String sql = 	"INSERT INTO csclaims " +
-						"VALUES(?, POINT(?, ?), ?);";
+						"VALUES(?, ?, ?, ?, ?, ?, null);";
 		try {
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, cityName);
-			stmt.setInt(2, x);
-			stmt.setInt(3, z);
-			stmt.setString(4, worldName);
+			stmt.setString(2, worldName);
+			stmt.setInt(3, xmin);
+			stmt.setInt(4, zmin);
+			stmt.setInt(5, xmax);
+			stmt.setInt(6, zmax);
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			if(settings.debug)
@@ -29,20 +34,29 @@ public class CSClaims extends Table {
 		}
 	}
 	
-	public String getCityAt(int x, int z) {
-		String sql = 	"SELECT city " +
+	public Claim getClaimAt(String world, int xmin, int zmin, int xmax, int zmax) {
+		String sql = 	"SELECT * " +
 						"FROM csclaims " +
-						"WHERE loc = POINT(?, ?);";
+						"WHERE xmin = ? AND zmin = ? " +
+						"AND xmax = ? AND zmax = ?;";
 		try {
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setInt(1, x);
-			stmt.setInt(2, z);
+			stmt.setInt(1, xmin);
+			stmt.setInt(2, zmin);
+			stmt.setInt(3, xmax);
+			stmt.setInt(4, zmax);
 			ResultSet rs = stmt.executeQuery();
 			if(rs.next()) {
-				return rs.getString("city");
+				Claim claim = new Claim();
+				claim.setCityName(rs.getString("city"));
+				claim.setWorld(rs.getString("world"));
+				claim.setXmin(rs.getInt("xmin"));
+				claim.setZmin(rs.getInt("zmin"));
+				claim.setXmax(rs.getInt("xmax"));
+				claim.setZmax(rs.getInt("zmax"));
+				claim.setId(rs.getInt("id"));
+				return claim;
 			}
-			else
-				return null;
 		} catch (SQLException e) {
 			if(settings.debug)
 				e.printStackTrace();
@@ -50,23 +64,39 @@ public class CSClaims extends Table {
 		return null;
 	}
 	
-	public boolean isChunkClaimed(int x, int z) {
+	public ArrayList<Claim> getClaims() {
 		String sql = 	"SELECT * " +
-						"FROM csclaims " +
-						"WHERE loc = POINT(?, ?);";
+						"FROM csclaims;";
+		ArrayList<Claim> claimList = new ArrayList<Claim>();
 		try {
-			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setInt(1, x);
-			stmt.setInt(2, z);
-			ResultSet rs = stmt.executeQuery();
-			if(rs.next())
-				return true;
-			else
-				return false;
+			ResultSet rs = con.createStatement().executeQuery(sql);
+			while(rs.next()) {
+				Claim claim = new Claim(rs.getString("city"), 
+						rs.getString("world"),
+						rs.getInt("xmin"), 
+						rs.getInt("zmin"), 
+						rs.getInt("xmax"), 
+						rs.getInt("zmax"), 
+						rs.getInt("id"));
+				claimList.add(claim);
+			}
 		} catch (SQLException e) {
 			if(settings.debug)
 				e.printStackTrace();
 		}
-		return true;
+		return claimList;
+	}
+	
+	public int getLastID() {
+		String sql = 	"SELECT LAST_INSERT_ID();";
+		try {
+			ResultSet rs = con.createStatement().executeQuery(sql);
+			if(rs.next())
+				return rs.getInt(1);
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+		return 0;
 	}
 }

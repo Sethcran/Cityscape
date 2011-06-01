@@ -1,19 +1,21 @@
 package com.sethcran.cityscape;
 
+import java.util.ArrayList;
+
 import gnu.trove.TIntProcedure;
 
 public class TreeProcedure implements TIntProcedure {
 	
-	private int id = 0;
+	ArrayList<Integer> intArray = new ArrayList<Integer>();
 
 	@Override
 	public boolean execute(int id) {
-		this.id = id;
+		intArray.add(id);
 		return false;
 	}
 	
-	public int getId() {
-		return id;
+	public ArrayList<Integer> getId() {
+		return intArray;
 	}
 
 }

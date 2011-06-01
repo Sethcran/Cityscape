@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import com.sethcran.cityscape.City;
 import com.sethcran.cityscape.Cityscape;
+import com.sethcran.cityscape.Claim;
 import com.sethcran.cityscape.Plot;
 import com.sethcran.cityscape.RankPermissions;
 import com.sethcran.cityscape.Settings;
@@ -62,10 +63,11 @@ public class Database {
 		csresidents = new CSResidents(con, plugin.getSettings());
 	}
 	
-	public void claimChunk(String cityName, int x, int z, String worldName) {
+	public void claimChunk(String cityName, String worldName,
+			int xmin, int zmin, int xmax, int zmax) {
 		try {
 			con.setAutoCommit(false);
-			csclaims.claimChunk(cityName, x, z, worldName);
+			csclaims.claimChunk(cityName, worldName, xmin, zmin, xmax, zmax);
 			cscities.addUsedClaims(cityName, 1);
 			con.commit();
 			con.setAutoCommit(true);
@@ -75,12 +77,12 @@ public class Database {
 		}
 	}
 
-	public void createCity(String playerName, String cityName, 
-			int x, int z, String worldName) {
+	public void createCity(String playerName, String cityName, String worldName,
+			int xmin, int zmin, int xmax, int zmax ) {
 		try {
 			con.setAutoCommit(false);
 			cscities.createCity(playerName, cityName);
-			csclaims.claimChunk(cityName, x, z, worldName);
+			csclaims.claimChunk(cityName, worldName, xmin, zmin, xmax, zmax);
 			csplayercitydata.addPlayerCityHistory(playerName, cityName);
 			RankPermissions rp = new RankPermissions(true);
 			rp.setRankName("Mayor");
@@ -149,10 +151,6 @@ public class Database {
 		return city;
 	}
 	
-	public String getCityNameAt(int x, int z) {
-		return csclaims.getCityAt(x, z);
-	}
-	
 	public City getCityAt(int x, int z) {
 		String sql = 	"SELECT name, mayor, rank, founded, " +
 						"usedClaims, baseClaims, bonusClaims, " +
@@ -186,12 +184,24 @@ public class Database {
 		return null;		
 	}
 	
+	public Claim getClaimAt(String world, int xmin, int zmin, int xmax, int zmax) {
+		return csclaims.getClaimAt(world, xmin, zmin, xmax, zmax);
+	}
+	
+	public ArrayList<Claim> getClaims() {
+		return csclaims.getClaims();
+	}
+	
 	public Connection getConnection() {
 		return con;
 	}
 	
 	public String getCurrentCity(String playerName) {
 		return csresidents.getCurrentCity(playerName);
+	}
+	
+	public int getLastClaimID() {
+		return csclaims.getLastID();
 	}
 	
 	public RankPermissions getPermissions(String townName, String rank) {
@@ -263,10 +273,6 @@ public class Database {
 			if(settings.debug)
 				e.printStackTrace();
 		}
-	}
-	
-	public boolean isChunkClaimed(int x, int z) {
-		return csclaims.isChunkClaimed(x, z);
 	}
 	
 	public void updatePlayerTimeStamp(String playerName) {

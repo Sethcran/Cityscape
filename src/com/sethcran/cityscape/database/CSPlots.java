@@ -35,6 +35,7 @@ public class CSPlots extends Table {
 				plot.setResidentBuild(rs.getBoolean("residentBuild"));
 				plot.setResidentDestroy(rs.getBoolean("residentDestroy"));
 				plot.setResidentSwitch(rs.getBoolean("residentSwitch"));
+				plot.setId(rs.getInt("id"));
 				
 				sql = 	"SELECT * " +
 						"FROM csplotpermissions " +

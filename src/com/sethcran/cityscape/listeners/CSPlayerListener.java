@@ -1,7 +1,6 @@
 package com.sethcran.cityscape.listeners;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -42,7 +41,11 @@ public class CSPlayerListener extends PlayerListener {
 			db.insertNewPlayer(playerName);
 		}
 		
-		String currentCityLoc = db.getCityNameAt(curLoc.getBlockX(), curLoc.getBlockZ());
+		City city = plugin.getCityAt(curLoc.getBlockX(), curLoc.getBlockZ(), 
+				curLoc.getWorld().getName());
+		String currentCityLoc = null;
+		if(city != null)
+			currentCityLoc = city.getName();
 		
 		plugin.insertIntoPlayerCache(playerName, 
 				new PlayerCache(curLoc, null, currentCityLoc));
@@ -56,31 +59,33 @@ public class CSPlayerListener extends PlayerListener {
 		if(from.getBlockX() == to.getBlockX() && from.getBlockZ() == to.getBlockZ())
 			return;
 		
-		Player player = event.getPlayer();		
-		Chunk chunk = to.getBlock().getChunk();
-		Database db = plugin.getDB();
+		Player player = event.getPlayer();
 		
 		PlayerCache cache = plugin.getCache(player.getName());
 		String lastTown = cache.getLastTownLocation();	
-		String city = db.getCityNameAt(chunk.getX(), chunk.getZ());
+		City city = plugin.getCityAt(to.getBlockX(), to.getBlockZ(), 
+				to.getWorld().getName());
+		String currentCityLoc = null;
+		if(city != null)
+			currentCityLoc = city.getName();
 		
 		if(lastTown == null) {
-			if(city != null) {
+			if(currentCityLoc != null) {
 				player.sendMessage(ChatColor.GREEN + "You have entered the city of " 
-						+ city + ".");
-				cache.setLastTownLocation(city);
+						+ currentCityLoc + ".");
+				cache.setLastTownLocation(currentCityLoc);
 			}
 		}
 		else {
-			if(city == null) {
+			if(currentCityLoc == null) {
 				player.sendMessage(ChatColor.GREEN + "You have entered the wilderness.");
 				cache.setLastTownLocation(null);
 			}
 			else {
-				if(!lastTown.equals(city)) {
+				if(!lastTown.equals(currentCityLoc)) {
 					player.sendMessage(ChatColor.GREEN + "You have entered the city of " + 
-							city + ".");
-					cache.setLastTownLocation(city);
+							currentCityLoc + ".");
+					cache.setLastTownLocation(currentCityLoc);
 				}
 			}
 				
@@ -100,16 +105,8 @@ public class CSPlayerListener extends PlayerListener {
 		
 		Player player = event.getPlayer();
 		Block block = event.getBlockClicked();
-		int x = block.getChunk().getX();
-		int z = block.getChunk().getZ();
 		
-		String localCity = plugin.getDB().getCityNameAt(x, z);
-		
-		if(localCity == null) {
-			return;
-		}
-		
-		City city = plugin.getCity(localCity);
+		City city = plugin.getCityAt(block.getX(), block.getZ(), block.getWorld().getName());
 		
 		String playerCity = plugin.getDB().getCurrentCity(player.getName());
 		
@@ -132,7 +129,7 @@ public class CSPlayerListener extends PlayerListener {
 					}
 				}
 			}
-			else if(localCity.equals(playerCity)) {
+			else if(city.getName().equals(playerCity)) {
 				RankPermissions rp = plugin.getDB().getPermissions(player.getName());
 				if(rp != null) {			
 					if(rp.isCityDestroy()) {
@@ -212,16 +209,8 @@ public class CSPlayerListener extends PlayerListener {
 		
 		Player player = event.getPlayer();
 		Block block = event.getBlockClicked();
-		int x = block.getChunk().getX();
-		int z = block.getChunk().getZ();
 		
-		String localCity = plugin.getDB().getCityNameAt(x, z);
-		
-		if(localCity == null) {
-			return;
-		}
-		
-		City city = plugin.getCity(localCity);
+		City city = plugin.getCityAt(block.getX(), block.getZ(), block.getWorld().getName());
 		
 		String playerCity = plugin.getDB().getCurrentCity(player.getName());
 		
@@ -244,7 +233,7 @@ public class CSPlayerListener extends PlayerListener {
 					}
 				}
 			}
-			else if(localCity.equals(playerCity)) {
+			else if(city.getName().equals(playerCity)) {
 				RankPermissions rp = plugin.getDB().getPermissions(player.getName());
 				if(rp != null) {			
 					if(rp.isCityBuild()) {

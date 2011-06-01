@@ -73,8 +73,13 @@ public class Schemas {
 	public void createClaimsTable() {
 		String sql = 	"CREATE TABLE IF NOT EXISTS CSClaims(" +
 						"city CHAR(" + Constants.TOWN_MAX_NAME_LENGTH + ") NOT NULL, " + 
-						"loc POINT PRIMARY KEY," +
 						"world CHAR(" + Constants.WORLD_MAX_NAME_LENGTH + ") NOT NULL, " +
+						"xmin INT, " +
+						"zmin INT, " +
+						"xmax INT, " +
+						"zmax INT, " +
+						"id INT AUTO_INCREMENT, " +
+						"PRIMARY KEY(id), " +
 						"FOREIGN KEY(city) REFERENCES cscities(name))" +
 						"ENGINE = InnoDB;";
 		
@@ -155,7 +160,8 @@ public class Schemas {
 						"outsiderBuild BOOL," +
 						"outsiderDestroy BOOL," +
 						"outsiderSwitch BOOL," +
-						"PRIMARY KEY(xmin, xmax, zmin, zmax)) " +
+						"id INT AUTO_INCREMENT, " +
+						"PRIMARY KEY(id)) " +
 						"ENGINE = InnoDB;";
 		
 		try {

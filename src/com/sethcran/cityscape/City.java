@@ -70,7 +70,10 @@ public class City {
 	public Plot getPlotAt(int x, int z) {
 		TreeProcedure tproc = new TreeProcedure();
 		plotTree.intersects(new Rectangle(x, z, x, z), tproc);
-		return plotMap.get(tproc.getId());
+		for(int i : tproc.getId()) {
+			return plotMap.get(i);
+		}
+		return null;
 	}
 
 	public int getRank() {

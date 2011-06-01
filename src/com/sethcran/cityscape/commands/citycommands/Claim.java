@@ -1,9 +1,11 @@
 package com.sethcran.cityscape.commands.citycommands;
 
 import org.bukkit.Chunk;
+import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.sethcran.cityscape.City;
 import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.RankPermissions;
@@ -59,12 +61,22 @@ public class Claim extends CSCommand {
 		}
 		
 		Chunk chunk = player.getLocation().getBlock().getChunk();
-		int x = chunk.getX();
-		int z = chunk.getZ();
-		String city = db.getCityNameAt(x, z);
+		String world = chunk.getWorld().getName();
+		
+		Block minBlock = chunk.getBlock(0, 0, 0);
+		Block maxBlock = chunk.getBlock(15, 0, 15);
+		int xmin = minBlock.getX();
+		int zmin = minBlock.getZ();
+		int xmax = maxBlock.getX();
+		int zmax = maxBlock.getZ();
+		
+		int x = player.getLocation().getBlockX();
+		int z = player.getLocation().getBlockZ();
+		
+		City city = plugin.getCityAt(x, z, world);
 		
 		if(city != null) {
-			if(city.equals(playerCity)) {
+			if(city.getName().equals(playerCity)) {
 				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
 						"Your city already owns that claim!");
 			}
@@ -75,9 +87,10 @@ public class Claim extends CSCommand {
 			return;
 		}
 		
-		db.claimChunk(playerCity, x, z, chunk.getWorld().getName());
+		db.claimChunk(playerCity, world, xmin, zmin, xmax, zmax);
 		
 		player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
-				"Your town has annexed the claim at " + x + ", " + z + ".");
+				"Your town has annexed the claim at " + chunk.getX() + 
+				", " + chunk.getZ() + ".");
 	}
 }
