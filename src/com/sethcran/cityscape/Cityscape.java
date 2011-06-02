@@ -4,10 +4,13 @@ import gnu.trove.TIntObjectHashMap;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event.Type;
 import org.bukkit.plugin.Plugin;
@@ -187,6 +190,16 @@ public class Cityscape extends JavaPlugin {
 	
 	public void removeFromPlayerCache(String playerName) {
 		playerCache.remove(playerName);
+	}
+	
+	public void sendMessageToCity(String message, String city) {
+		Set<Entry<String, PlayerCache>> cache = playerCache.entrySet();
+		for(Entry<String, PlayerCache> entry : cache) {
+			if(city.equals(entry.getValue().getCity())) {
+				Player player = getServer().getPlayer(entry.getKey());
+				player.sendMessage(message);
+			}
+		}
 	}
 	
 	private void setupPermissions() {

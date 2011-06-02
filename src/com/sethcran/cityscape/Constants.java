@@ -15,4 +15,5 @@ public class Constants {
 	public static String CITYSCAPE = ChatColor.GOLD + "[Cityscape] ";
 	public static String ERROR_COLOR = "" + ChatColor.RED;
 	public static String SUCCESS_COLOR = "" + ChatColor.AQUA;
+	public static String TOWN_COLOR = "" + ChatColor.DARK_AQUA;
 }

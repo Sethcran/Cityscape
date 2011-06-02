@@ -69,6 +69,19 @@ public class Database {
 		csinvites.addInvite(player, city);
 	}
 	
+	public void addPlayerToCity(String player, String city) {
+		try {
+			con.setAutoCommit(false);
+			csresidents.setCurrentCity(player, city, null);
+			csplayercitydata.addPlayerCityHistory(player, city);
+			con.commit();
+			con.setAutoCommit(true);
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+	}
+	
 	public void claimChunk(String cityName, String worldName,
 			int xmin, int zmin, int xmax, int zmax) {
 		try {
