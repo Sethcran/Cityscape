@@ -7,6 +7,7 @@ public class Constants {
 	public static int PLAYER_MAX_NAME_LENGTH = 32;
 	public static int RANK_MAX_NAME_LENGTH = 16;
 	public static int WORLD_MAX_NAME_LENGTH = 16;
+	public static int CHAT_LINE_LENGTH = 45;
 	
 	public static int DEFAULT_TOWN_RANK = 1;
 	

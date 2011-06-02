@@ -77,14 +77,14 @@ public class CSCities extends Table {
 	public ResultSet getCities() {
 		String sql = 	"Select * " +
 						"FROM cscities; ";
-		ResultSet rs = null;
 		try {
-			rs = con.createStatement().executeQuery(sql);
+			ResultSet rs = con.createStatement().executeQuery(sql);
+			return rs;
 		} catch(SQLException e) {
 			if(settings.debug)
 				e.printStackTrace();
 		}
-		return rs;
+		return null;
 	}
 	
 	public City getCity(String cityName) {

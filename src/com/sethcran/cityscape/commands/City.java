@@ -23,6 +23,7 @@ public class City extends CSCommand {
 		addToMap(new Invite(plugin));
 		addToMap(new Invites(plugin));
 		addToMap(new Leave(plugin));
+		addToMap(new List(plugin));
 		addToMap(new Remove(plugin));
 	}
 
