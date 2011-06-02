@@ -1,5 +1,7 @@
 package com.sethcran.cityscape.listeners;
 
+import java.util.ArrayList;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -261,6 +263,13 @@ public class CSPlayerListener extends PlayerListener {
 		
 		plugin.insertIntoPlayerCache(playerName, 
 				new PlayerCache(curLoc, null, currentCityLoc, playerCity));
+		
+		ArrayList<String> invites = db.getInvites(player.getName());
+		if(invites.size() > 0) {
+			player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
+					"You have invitations to join cities. Type '/c invites' to " +
+					"view the list of cities who have invited you.");
+		}
 	}
 	
 	@Override
