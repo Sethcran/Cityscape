@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import com.sethcran.cityscape.RankPermissions;
 import com.sethcran.cityscape.Settings;
@@ -108,6 +109,24 @@ public class CSRanks extends Table {
 				e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public ArrayList<String> getRanks(String city) {
+		String sql = 	"SELECT name " +
+						"FROM csranks " +
+						"WHERE city = ?;";
+		ArrayList<String> rankList = new ArrayList<String>();
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, city);
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next())
+				rankList.add(rs.getString("name"));
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+		return rankList;
 	}
 
 }

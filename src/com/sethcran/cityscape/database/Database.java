@@ -303,6 +303,10 @@ public class Database {
 		return csresidents.getRank(playerName);
 	}
 	
+	public ArrayList<String> getRanks(String city) {
+		return csranks.getRanks(city);
+	}
+	
 	public ArrayList<String> getResidents(String city) {
 		return csresidents.getResidents(city);
 	}
