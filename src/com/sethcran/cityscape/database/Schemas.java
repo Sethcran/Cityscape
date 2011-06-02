@@ -115,11 +115,11 @@ public class Schemas {
 	
 	public void createInvitesTable() {
 		String sql = 	"CREATE TABLE IF NOT EXISTS CSInvites(" +
-						"name CHAR(" + Constants.PLAYER_MAX_NAME_LENGTH + "), " +
+						"player CHAR(" + Constants.PLAYER_MAX_NAME_LENGTH + "), " +
 						"city CHAR(" + Constants.TOWN_MAX_NAME_LENGTH + "), " +
 						"day DATE, " +
-						"PRIMARY KEY(name, city), " +
-						"FOREIGN KEY(name) REFERENCES csplayers(name) ON DELETE CASCADE, " +
+						"PRIMARY KEY(player, city), " +
+						"FOREIGN KEY(player) REFERENCES csplayers(name) ON DELETE CASCADE, " +
 						"FOREIGN KEY(city) REFERENCES cscities(name) ON DELETE CASCADE) " +
 						"ENGINE = InnoDB;";
 		try {

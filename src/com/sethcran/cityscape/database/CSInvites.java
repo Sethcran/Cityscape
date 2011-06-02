@@ -75,6 +75,19 @@ public class CSInvites extends Table {
 		return false;
 	}
 	
+	public void removeAllInvites(String player) {
+		String sql = 	"DELETE FROM csinvites " +
+						"WHERE player = ?;";
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, player);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+	}
+	
 	public void removeInvite(String player, String city) {
 		String sql = 	"DELETE FROM csinvites " +
 						"WHERE player = ? AND city = ?;";

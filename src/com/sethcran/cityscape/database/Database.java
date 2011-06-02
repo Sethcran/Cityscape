@@ -323,6 +323,10 @@ public class Database {
 		}
 	}
 	
+	public void removeAllInvites(String player) {
+		csinvites.removeAllInvites(player);
+	}
+	
 	public void removeInvite(String player, String city) {
 		csinvites.removeInvite(player, city);
 	}

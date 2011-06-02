@@ -8,13 +8,13 @@ import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.RankPermissions;
 import com.sethcran.cityscape.commands.CSCommand;
 
-public class Invite extends CSCommand {
+public class Remove extends CSCommand {
 
-	public Invite(Cityscape plugin) {
+	public Remove(Cityscape plugin) {
 		super(plugin);
-		name = "invite";
-		description = "Invites the specified player to join your town.";
-		usage = "/c invite playername";
+		name = "remove";
+		description = "Removes a resident from the city.";
+		usage = "/c remove residentname";
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class Invite extends CSCommand {
 		
 		if(args == null) {
 			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You must specify the player's name to invite.");
+					"You must specify the player's name to remove.");
 			return;
 		}
 		
@@ -41,7 +41,7 @@ public class Invite extends CSCommand {
 			return;
 		}
 		
-		if(!rp.isAddResident()) {
+		if(!rp.isRemoveResident()) {
 			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
 					"You do not have permission to do that.");
 			return;
@@ -49,20 +49,24 @@ public class Invite extends CSCommand {
 		
 		for(String resident : args) {
 			if(plugin.getDB().doesPlayerExist(resident)) {
+				String cityName = plugin.getCache(player.getName()).getCity();
 				String city = plugin.getDB().getCurrentCity(resident);
-				if(city != null) {
+				if(city == null) {
 					player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-							"The user " + resident + " is already in a city!");
+							"The user " + resident + " is not in your city!");
 				} 
+				else if(!city.equals(cityName)) {
+					player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+							"The user " + resident + " is not in your city!");
+				}
 				else {
-					String cityName = plugin.getCache(player.getName()).getCity();
-					plugin.getDB().addInvite(resident, cityName);
+					plugin.getDB().leaveCity(resident);
 					
 					player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
-							"You have invited " + resident + ".");
-					Player invited = plugin.getServer().getPlayer(resident);
-					invited.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
-							"You have been invited to join the city of " + cityName + ".");
+							"You have removed " + resident + " from the city.");
+					Player removed = plugin.getServer().getPlayer(resident);
+					removed.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
+							"You have been removed from the city of " + cityName + ".");
 				}
 			}
 			else {
