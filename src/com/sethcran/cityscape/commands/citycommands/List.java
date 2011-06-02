@@ -2,9 +2,9 @@ package com.sethcran.cityscape.commands.citycommands;
 
 import java.util.ArrayList;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
-import com.sethcran.cityscape.City;
 import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.commands.CSCommand;
@@ -20,22 +20,22 @@ public class List extends CSCommand {
 
 	@Override
 	public void execute(CommandSender sender, String[] args) {
-		ArrayList<City> cityList = plugin.getDB().getCities();
+		ArrayList<String> cityList = plugin.getDB().getCityNames();
 		
 		sender.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
 				"City List: ");
-		String message = Constants.SUCCESS_COLOR;
-		for(City city : cityList) {
+		String message = "" + ChatColor.WHITE;
+		for(String city : cityList) {
 			if(message.length() > Constants.CHAT_LINE_LENGTH) {
 				sender.sendMessage(message);
-				message = Constants.SUCCESS_COLOR;
+				message = "" + ChatColor.WHITE;
 			}
-			else if(!message.equals(Constants.SUCCESS_COLOR))
+			else if(!message.equals("" + ChatColor.WHITE))
 				message = message.concat(", ");
-			message = message.concat(city.getName());
+			message += city;
 		}
 		
-		if(!message.equals(Constants.SUCCESS_COLOR))
+		if(!message.equals("" + ChatColor.WHITE))
 			sender.sendMessage(message);
 	}
 

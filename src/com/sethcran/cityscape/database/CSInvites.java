@@ -30,7 +30,7 @@ public class CSInvites extends Table {
 	
 	public void deleteOldInvites() {
 		String sql = 	"DELETE FROM csinvites " +
-						"WHERE day < DATE_SUB(NOW(), INTERVAL 1 WEEK);";
+						"WHERE day < DATE_SUB(NOW(), INTERVAL 48 HOUR);";
 		try {
 			con.createStatement().executeUpdate(sql);
 		} catch (SQLException e) {

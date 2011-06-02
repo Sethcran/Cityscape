@@ -117,7 +117,7 @@ public class Schemas {
 		String sql = 	"CREATE TABLE IF NOT EXISTS CSInvites(" +
 						"player CHAR(" + Constants.PLAYER_MAX_NAME_LENGTH + "), " +
 						"city CHAR(" + Constants.TOWN_MAX_NAME_LENGTH + "), " +
-						"day DATE, " +
+						"day DATETIME, " +
 						"PRIMARY KEY(player, city), " +
 						"FOREIGN KEY(player) REFERENCES csplayers(name) ON DELETE CASCADE, " +
 						"FOREIGN KEY(city) REFERENCES cscities(name) ON DELETE CASCADE) " +

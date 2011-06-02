@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import com.sethcran.cityscape.Settings;
 
@@ -45,6 +46,24 @@ public class CSResidents extends Table {
 				e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public ArrayList<String> getResidents(String city) {
+		String sql = 	"SELECT player " +
+						"FROM csresidents " +
+						"WHERE city = ?;";
+		ArrayList<String> residents = new ArrayList<String>();
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, city);
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next())
+				residents.add(rs.getString("player"));
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+		return residents;
 	}
 	
 	public void insertNewPlayer(String playerName) {

@@ -6,7 +6,6 @@ import java.util.HashMap;
 import org.bukkit.command.CommandSender;
 
 import com.sethcran.cityscape.Cityscape;
-import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.commands.citycommands.*;
 
 public class City extends CSCommand {
@@ -25,23 +24,18 @@ public class City extends CSCommand {
 		addToMap(new Leave(plugin));
 		addToMap(new List(plugin));
 		addToMap(new Remove(plugin));
+		addToMap(new Residents(plugin));
 	}
 
 	@Override
 	public void execute(CommandSender sender, String[] args) {
 		CSCommand cscommand = null;
 		
-		if(args == null)
-			cscommand = cityMap.get("default");
-		else if(args.length == 0)
-			cscommand = cityMap.get("default");
-		else
+		if(args.length > 0)
 			cscommand = cityMap.get(args[0]);
 		
 		if(cscommand == null) {
-			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR + 
-					"That command does not exist.");
-			return;
+			cscommand = cityMap.get("default");
 		}
 		
 		if(args.length > 1)

@@ -207,6 +207,10 @@ public class Database {
 		return null;		
 	}
 	
+	public ArrayList<String> getCityNames() {
+		return cscities.getCityNames();
+	}
+	
 	public Claim getClaimAt(String world, int xmin, int zmin, int xmax, int zmax) {
 		return csclaims.getClaimAt(world, xmin, zmin, xmax, zmax);
 	}
@@ -286,6 +290,10 @@ public class Database {
 	
 	public String getRank(String playerName) {
 		return csresidents.getRank(playerName);
+	}
+	
+	public ArrayList<String> getResidents(String city) {
+		return csresidents.getResidents(city);
 	}
 	
 	public boolean hasClaims(String cityName, int numClaims) {

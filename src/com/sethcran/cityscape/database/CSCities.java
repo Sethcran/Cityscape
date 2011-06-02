@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import com.sethcran.cityscape.City;
 import com.sethcran.cityscape.Constants;
@@ -120,6 +121,21 @@ public class CSCities extends Table {
 				e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public ArrayList<String> getCityNames() {
+		String sql = 	"SELECT name " +
+						"FROM cscities;";
+		ArrayList<String> cityList = new ArrayList<String>();
+		try {
+			ResultSet rs = con.createStatement().executeQuery(sql);
+			while(rs.next())
+				cityList.add(rs.getString("name"));
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+		return cityList;
 	}
 	
 	public boolean hasClaims(String cityName, int numClaims) {
