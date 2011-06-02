@@ -21,6 +21,7 @@ public class Database {
 	
 	private CSCities cscities = null;
 	private CSClaims csclaims = null;
+	private CSInvites csinvites = null;
 	private CSPlayers csplayers = null;
 	private CSPlayerCityData csplayercitydata = null;
 	private CSPlots csplots = null;
@@ -56,11 +57,16 @@ public class Database {
 		
 		cscities = new CSCities(con, plugin.getSettings());
 		csclaims = new CSClaims(con, plugin.getSettings());
+		csinvites = new CSInvites(con, plugin.getSettings());
 		csplayers = new CSPlayers(con, plugin.getSettings());
 		csplayercitydata = new CSPlayerCityData(con, plugin.getSettings());
 		csplots = new CSPlots(con, plugin.getSettings());
 		csranks = new CSRanks(con, plugin.getSettings());
 		csresidents = new CSResidents(con, plugin.getSettings());
+	}
+	
+	public void addInvite(String player, String city) {
+		csinvites.addInvite(player, city);
 	}
 	
 	public void claimChunk(String cityName, String worldName,
@@ -94,6 +100,10 @@ public class Database {
 			if(settings.debug)
 				e.printStackTrace();
 		}
+	}
+	
+	public void deleteOldInvites() {
+		csinvites.deleteOldInvites();
 	}
 	
 	public boolean doesCityExist(String cityName) {
@@ -200,6 +210,10 @@ public class Database {
 		return csresidents.getCurrentCity(playerName);
 	}
 	
+	public ArrayList<String> getInvites(String player) {
+		return csinvites.getInvites(player);
+	}
+	
 	public int getLastClaimID() {
 		return csclaims.getLastID();
 	}
@@ -279,6 +293,10 @@ public class Database {
 		}
 	}
 	
+	public boolean isInvited(String player, String city) {
+		return csinvites.isInvited(player, city);
+	}
+	
 	public void leaveCity(String playerName) {
 		try {
 			con.setAutoCommit(false);
@@ -290,6 +308,10 @@ public class Database {
 			if(settings.debug)
 				e.printStackTrace();
 		}
+	}
+	
+	public void removeInvite(String player, String city) {
+		csinvites.removeInvite(player, city);
 	}
 	
 	public void updatePlayerTimeStamp(String playerName) {

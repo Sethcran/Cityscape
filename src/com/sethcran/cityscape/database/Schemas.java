@@ -67,7 +67,7 @@ public class Schemas {
 						"zmax INT, " +
 						"id INT AUTO_INCREMENT, " +
 						"PRIMARY KEY(id), " +
-						"FOREIGN KEY(city) REFERENCES cscities(name))" +
+						"FOREIGN KEY(city) REFERENCES cscities(name) ON DELETE CASCADE)" +
 						"ENGINE = InnoDB;";
 		
 		try {
@@ -85,6 +85,9 @@ public class Schemas {
 		
 		createChestsTable();
 		createClaimsTable();
+		
+		createInvitesTable();
+		
 		createPlotsTable();
 		createPlotPermissionsTable();
 		createPlayerCityDataTable();
@@ -102,6 +105,23 @@ public class Schemas {
 						"FOREIGN KEY(city) REFERENCES CSCities(name) ON DELETE NO ACTION) " +
 						"ENGINE = InnoDB;";
 		
+		try {
+			con.createStatement().executeUpdate(sql);
+		} catch (SQLException e) {
+			Cityscape.log.severe("There was an error creating a database table.");
+			e.printStackTrace();
+		}
+	}
+	
+	public void createInvitesTable() {
+		String sql = 	"CREATE TABLE IF NOT EXISTS CSInvites(" +
+						"name CHAR(" + Constants.PLAYER_MAX_NAME_LENGTH + "), " +
+						"city CHAR(" + Constants.TOWN_MAX_NAME_LENGTH + "), " +
+						"day DATE, " +
+						"PRIMARY KEY(name, city), " +
+						"FOREIGN KEY(name) REFERENCES csplayers(name) ON DELETE CASCADE, " +
+						"FOREIGN KEY(city) REFERENCES cscities(name) ON DELETE CASCADE) " +
+						"ENGINE = InnoDB;";
 		try {
 			con.createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
@@ -161,7 +181,8 @@ public class Schemas {
 						"outsiderDestroy BOOL," +
 						"outsiderSwitch BOOL," +
 						"id INT AUTO_INCREMENT, " +
-						"PRIMARY KEY(id)) " +
+						"PRIMARY KEY(id), " +
+						"FOREIGN KEY(city) REFERENCES cscities(name) ON DELETE CASCADE) " +
 						"ENGINE = InnoDB;";
 		
 		try {
@@ -197,7 +218,7 @@ public class Schemas {
 						"cityDestroy BOOL, " +
 						"citySwitch BOOL, " +
 						"PRIMARY KEY(city, name), " +
-						"FOREIGN KEY(city) REFERENCES cscities(name))" +
+						"FOREIGN KEY(city) REFERENCES cscities(name) ON DELETE CASCADE)" +
 						"ENGINE = InnoDB;";
 		try {
 			con.createStatement().executeUpdate(sql);
@@ -212,8 +233,8 @@ public class Schemas {
 						"player CHAR(" + Constants.PLAYER_MAX_NAME_LENGTH + ") PRIMARY KEY," +
 						"city CHAR(" + Constants.TOWN_MAX_NAME_LENGTH + "), " +
 						"rank CHAR(" + Constants.RANK_MAX_NAME_LENGTH + "), " +
-						"FOREIGN KEY(player) REFERENCES csplayers(name), " +
-						"FOREIGN KEY(city) REFERENCES cscities(name)) " +
+						"FOREIGN KEY(player) REFERENCES csplayers(name) ON DELETE CASCADE, " +
+						"FOREIGN KEY(city) REFERENCES cscities(name) ON DELETE NO ACTION) " +
 						"ENGINE = InnoDB;";
 		try {
 			con.createStatement().executeUpdate(sql);

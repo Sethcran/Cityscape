@@ -10,6 +10,7 @@ import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.commands.citycommands.Claim;
 import com.sethcran.cityscape.commands.citycommands.CreateCity;
 import com.sethcran.cityscape.commands.citycommands.Default;
+import com.sethcran.cityscape.commands.citycommands.Invite;
 import com.sethcran.cityscape.commands.citycommands.Leave;
 
 public class City extends CSCommand {
@@ -21,6 +22,7 @@ public class City extends CSCommand {
 		addToMap(new Claim(plugin));
 		addToMap(new CreateCity(plugin));
 		addToMap(new Default(plugin));
+		addToMap(new Invite(plugin));
 		addToMap(new Leave(plugin));
 	}
 
