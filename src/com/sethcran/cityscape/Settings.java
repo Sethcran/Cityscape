@@ -15,12 +15,16 @@ public class Settings {
 	
 	public int defaultCityRank = 1;
 	public int defaultBaseClaims = 0;
+	public int maxCityRanks = 0;
+	
 	public boolean defaultResidentBuild = false;
 	public boolean defaultResidentDestroy = false;
 	public boolean defaultResidentSwitch = false;
 	public boolean defaultOutsiderBuild = false;
 	public boolean defaultOutsiderDestroy = false;
 	public boolean defaultOutsiderSwitch = false;
+	public boolean taxes = false;
+	public boolean cityWarps = false;
 	
 	public double cityCost = 0.0;
 	
@@ -44,12 +48,17 @@ public class Settings {
 		databaseUrl = config.getString("database.url");
 		
 		defaultBaseClaims = config.getInt("cityscape.defaultbaseclaims", 0);
+		maxCityRanks = config.getInt("cityscape.maxcityranks", 10);
+		
 		defaultResidentBuild = config.getBoolean("cityscape.defaultresidentbuild", false);
 		defaultResidentDestroy = config.getBoolean("cityscape.defaultresidentdestroy", false);
 		defaultResidentSwitch = config.getBoolean("cityscape.defaultresidentswitch", false);
 		defaultOutsiderBuild = config.getBoolean("cityscape.defaultoutsiderbuild", false);
 		defaultOutsiderDestroy = config.getBoolean("cityscape.defaultoutsiderdestroy", false);
 		defaultOutsiderSwitch = config.getBoolean("cityscape.defaultoutsiderswitch", false);
+		
+		taxes = config.getBoolean("cityscape.taxes", false);
+		cityWarps = config.getBoolean("cityscape.citywarps", false);
 		
 		cityCost = config.getDouble("iconomy.citycost", 0.0);
 	}
@@ -71,12 +80,16 @@ public class Settings {
 		config.setProperty("database.url", "jdbc:mysql://localhost/minecraft");
 		
 		config.setProperty("cityscape.defaultbaseclaims", 16);
+		config.setProperty("cityscape.maxcityranks", 10);
 		config.setProperty("cityscape.defaultresidentbuild", false);
 		config.setProperty("cityscape.defaultresidentdestroy", false);
 		config.setProperty("cityscape.defaultresidentswitch", false);
 		config.setProperty("cityscape.defaultoutsiderbuild", false);
 		config.setProperty("cityscape.defaultoutsiderdestroy", false);
 		config.setProperty("cityscape.defaultoutsiderswitch", false);
+		
+		config.setProperty("cityscape.taxes", false);
+		config.setProperty("cityscape.citywarps", false);
 		
 		config.setProperty("iconomy.citycost", 0.0);
 		config.save();

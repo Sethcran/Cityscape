@@ -19,7 +19,7 @@ public class CSRanks extends Table {
 						"VALUES(?, ?, ?, ?, ?, ?, " +
 						"?, ?, ?, ?, ?, ?, " +
 						"?, ?, ?, ?, ?, ?, " +
-						"?, ?, ?, ?);";
+						"?, ?, ?, ?, ?);";
 		try {
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, townName);
@@ -44,11 +44,29 @@ public class CSRanks extends Table {
 			stmt.setBoolean(20, rp.isCityBuild());
 			stmt.setBoolean(21, rp.isCityDestroy());
 			stmt.setBoolean(22, rp.isCitySwitch());
+			stmt.setBoolean(23, rp.isChangeCityPlotPerms());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			if(settings.debug)
 				e.printStackTrace();
 		}
+	}
+	
+	public int getNumRanks(String city) {
+		String sql = 	"SELECT COUNT(*) " +
+						"FROM csranks " +
+						"WHERE city = ?;";
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, city);
+			ResultSet rs = stmt.executeQuery();
+			if(rs.next())
+				return rs.getInt(1);
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+		return 0;
 	}
 	
 	public RankPermissions getPermissions(String townName, String rank) {
@@ -82,6 +100,7 @@ public class CSRanks extends Table {
 				rp.setCityBuild(rs.getBoolean("cityBuild"));
 				rp.setCityDestroy(rs.getBoolean("cityDestroy"));
 				rp.setCitySwitch(rs.getBoolean("citySwitch"));
+				rp.setChangeCityPlotPerms(rs.getBoolean("changeCityPlotPerms"));
 				return rp;
 			}
 		} catch (SQLException e) {

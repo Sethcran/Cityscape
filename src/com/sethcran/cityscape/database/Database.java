@@ -115,6 +115,12 @@ public class Database {
 		}
 	}
 	
+	public void createRank(String city, String rank) {
+		RankPermissions rp = new RankPermissions(false);
+		rp.setRankName(rank);
+		csranks.createRank(city, rp);
+	}
+	
 	public void deleteOldInvites() {
 		csinvites.deleteOldInvites();
 	}
@@ -235,6 +241,10 @@ public class Database {
 		return csclaims.getLastID();
 	}
 	
+	public int getNumRanks(String city) {
+		return csranks.getNumRanks(city);
+	}
+	
 	public RankPermissions getPermissions(String playerName) {
 		String sql = 	"SELECT * " +
 						"FROM csresidents, csranks " +
@@ -267,6 +277,7 @@ public class Database {
 				rp.setCityBuild(rs.getBoolean("cityBuild"));
 				rp.setCityDestroy(rs.getBoolean("cityDestroy"));
 				rp.setCitySwitch(rs.getBoolean("citySwitch"));
+				rp.setChangeCityPlotPerms(rs.getBoolean("changeCityPlotPerms"));
 				return rp;
 			}
 		} catch (SQLException e) {

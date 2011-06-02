@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 
 import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
+import com.sethcran.cityscape.PlayerCache;
 import com.sethcran.cityscape.RankPermissions;
 import com.sethcran.cityscape.commands.CSCommand;
 
@@ -61,6 +62,9 @@ public class Remove extends CSCommand {
 				}
 				else {
 					plugin.getDB().leaveCity(resident);
+					PlayerCache pc = plugin.getCache(resident);
+					if(pc != null)
+						pc.setCity(null);
 					
 					player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
 							"You have removed " + resident + " from the city.");

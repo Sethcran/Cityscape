@@ -217,6 +217,7 @@ public class Schemas {
 						"cityBuild BOOL, " +
 						"cityDestroy BOOL, " +
 						"citySwitch BOOL, " +
+						"changeCityPlotPerms BOOL, " +
 						"PRIMARY KEY(city, name), " +
 						"FOREIGN KEY(city) REFERENCES cscities(name) ON DELETE CASCADE)" +
 						"ENGINE = InnoDB;";
