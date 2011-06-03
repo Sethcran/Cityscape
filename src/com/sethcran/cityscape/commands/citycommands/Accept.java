@@ -51,8 +51,7 @@ public class Accept extends CSCommand {
 			return;
 		}
 		
-		String message = Constants.TOWN_COLOR + "[" + args[0] + "] " + 
-			Constants.SUCCESS_COLOR + player.getName() + " has joined the city.";
+		String message = player.getName() + " has joined the city.";
 		
 		plugin.sendMessageToCity(message, args[0]);
 		plugin.getDB().addPlayerToCity(player.getName(), args[0]);

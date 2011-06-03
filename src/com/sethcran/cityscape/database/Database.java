@@ -133,6 +133,10 @@ public class Database {
 		return csplayers.doesPlayerExist(playerName);
 	}
 	
+	public boolean doesRankExist(String city, String rank) {
+		return csranks.doesRankExist(city, rank);
+	}
+	
 	public ArrayList<City> getCities() {
 		
 		ArrayList<City> cityArray = new ArrayList<City>();
@@ -352,6 +356,10 @@ public class Database {
 	
 	public void removeInvite(String player, String city) {
 		csinvites.removeInvite(player, city);
+	}
+	
+	public void setRank(String player, String rank) {
+		csresidents.setRank(player, rank);
 	}
 	
 	public void setRankPermissions(String city, RankPermissions rp) {

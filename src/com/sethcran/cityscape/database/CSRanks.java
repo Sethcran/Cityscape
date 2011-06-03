@@ -53,6 +53,25 @@ public class CSRanks extends Table {
 		}
 	}
 	
+	public boolean doesRankExist(String city, String rank) {
+		String sql = 	"SELECT name " +
+						"FROM csranks " +
+						"WHERE city = ? " +
+						"AND name = ?;";
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, city);
+			stmt.setString(2, rank);
+			ResultSet rs = stmt.executeQuery();
+			if(rs.next())
+				return true;
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+		return false;
+	}
+	
 	public int getNumRanks(String city) {
 		String sql = 	"SELECT COUNT(*) " +
 						"FROM csranks " +

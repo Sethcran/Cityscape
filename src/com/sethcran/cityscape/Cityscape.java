@@ -211,11 +211,13 @@ public class Cityscape extends JavaPlugin {
 	}
 	
 	public void sendMessageToCity(String message, String city) {
+		String m = Constants.TOWN_COLOR + "[" + city + "] " + 
+				Constants.MESSAGE_COLOR + message;
 		Set<Entry<String, PlayerCache>> cache = playerCache.entrySet();
 		for(Entry<String, PlayerCache> entry : cache) {
 			if(city.equals(entry.getValue().getCity())) {
 				Player player = getServer().getPlayer(entry.getKey());
-				player.sendMessage(message);
+				player.sendMessage(m);
 			}
 		}
 	}
