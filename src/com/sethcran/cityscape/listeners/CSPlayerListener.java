@@ -123,6 +123,12 @@ public class CSPlayerListener extends PlayerListener {
 						return;
 					}
 				}
+				else {
+					player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR + 
+							"You can't build here.");
+					event.setCancelled(true);
+					return;
+				}
 			}
 		}
 		else {
@@ -227,6 +233,12 @@ public class CSPlayerListener extends PlayerListener {
 						event.setCancelled(true);
 						return;
 					}
+				}
+				else {
+					player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR + 
+							"You can't destroy here.");
+					event.setCancelled(true);
+					return;
 				}
 			}
 		}
