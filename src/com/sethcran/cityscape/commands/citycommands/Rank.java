@@ -74,6 +74,18 @@ public class Rank extends CSCommand {
 					"Your city already has the maximum number of ranks available!");
 		}
 		
+		if(rank.length() > Constants.RANK_MAX_NAME_LENGTH ) {
+			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR + 
+					"That rank exceeds the maximum name length.");
+			return;
+		}
+		
+		if(!rank.matches("[a-zA-Z]+")) {
+			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+					"The rank name must consist only of alphabetic characters.");
+			return;
+		}
+		
 		plugin.getDB().createRank(cityName, rank);
 		player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
 				"The rank of " + rank + " has been created!");

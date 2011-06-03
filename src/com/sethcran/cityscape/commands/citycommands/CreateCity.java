@@ -52,7 +52,7 @@ public class CreateCity extends CSCommand {
 		// Check that town name is of appropriate length
 		if(args[0].length() > Constants.TOWN_MAX_NAME_LENGTH) {
 			player.sendMessage(Constants.CITYSCAPE + ChatColor.RED + 
-					"The town name must be under " + Constants.TOWN_MAX_NAME_LENGTH + 
+					"The city name must be under " + Constants.TOWN_MAX_NAME_LENGTH + 
 					" characters.");
 			return;
 		}
@@ -60,7 +60,7 @@ public class CreateCity extends CSCommand {
 		// Check that town name is alphabetic
 		if(!args[0].matches("[a-zA-Z]+")) {
 			player.sendMessage(Constants.CITYSCAPE + ChatColor.RED +
-					"The town name must consist only of alphabetic characters.");
+					"The city name must consist only of alphabetic characters.");
 			return;
 		}
 		
