@@ -354,6 +354,10 @@ public class Database {
 		csinvites.removeInvite(player, city);
 	}
 	
+	public void setRankPermissions(String city, RankPermissions rp) {
+		csranks.setPermissions(city, rp);
+	}
+	
 	public void updatePlayerTimeStamp(String playerName) {
 		csplayers.updatePlayerTimeStamp(playerName);
 	}

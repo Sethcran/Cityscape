@@ -102,6 +102,7 @@ public class CSRanks extends Table {
 				rp.setCityDestroy(rs.getBoolean("cityDestroy"));
 				rp.setCitySwitch(rs.getBoolean("citySwitch"));
 				rp.setChangeCityPlotPerms(rs.getBoolean("changeCityPlotPerms"));
+				rp.setRankName(rank);
 				return rp;
 			}
 		} catch (SQLException e) {
@@ -127,6 +128,63 @@ public class CSRanks extends Table {
 				e.printStackTrace();
 		}
 		return rankList;
+	}
+	
+	public void setPermissions(String city, RankPermissions rp) {
+		String sql = 	"UPDATE csranks SET " +
+						"addResident = ?, " +
+						"removeResident = ?, " +
+						"claim = ?, " +
+						"unclaim = ?, " +
+						"promote = ?, " +
+						"demote = ?, " +
+						"withdraw = ?, " +
+						"changeRankName = ?, " +
+						"setWelcome = ?, " +
+						"setMayor = ?, " +
+						"setWarp = ?, " +
+						"setName = ?, " +
+						"setPlotSale = ?, " +
+						"setTaxes = ?, " +
+						"setPrices = ?, " +
+						"createPlots = ?, " +
+						"sendChestsToLostAndFound = ?, " +
+						"cityBuild = ?, " +
+						"cityDestroy = ?, " +
+						"citySwitch = ?, " +
+						"changeCityPlotPerms = ? " +
+						"WHERE city = ?" +
+						"AND name = ?;";
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setBoolean(1, rp.isAddResident());
+			stmt.setBoolean(2, rp.isRemoveResident());
+			stmt.setBoolean(3, rp.isClaim());
+			stmt.setBoolean(4, rp.isUnclaim());
+			stmt.setBoolean(5, rp.isPromote());
+			stmt.setBoolean(6, rp.isDemote());
+			stmt.setBoolean(7, rp.isWithdraw());
+			stmt.setBoolean(8, rp.isChangeRankName());
+			stmt.setBoolean(9, rp.isSetWelcome());
+			stmt.setBoolean(10, rp.isSetMayor());
+			stmt.setBoolean(11, rp.isSetWarp());
+			stmt.setBoolean(12, rp.isSetName());
+			stmt.setBoolean(13, rp.isSetPlotSale());
+			stmt.setBoolean(14, rp.isSetTaxes());
+			stmt.setBoolean(15, rp.isSetPrices());
+			stmt.setBoolean(16, rp.isCreatePlots());
+			stmt.setBoolean(17, rp.isSendChestsToLostAndFound());
+			stmt.setBoolean(18, rp.isCityBuild());
+			stmt.setBoolean(19, rp.isCityDestroy());
+			stmt.setBoolean(20, rp.isCitySwitch());
+			stmt.setBoolean(21, rp.isChangeCityPlotPerms());
+			stmt.setString(22, city);
+			stmt.setString(23, rp.getRankName());
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
 	}
 
 }

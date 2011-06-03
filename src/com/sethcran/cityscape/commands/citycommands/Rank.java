@@ -122,7 +122,7 @@ public class Rank extends CSCommand {
 		if(rp.isClaim())
 			sender.sendMessage(Constants.SUCCESS_COLOR + "Can claim land for the city.");
 		if(rp.isUnclaim())
-			sender.sendMessage(Constants.SUCCESS_COLOR + "Can unclaim land of the cities.");
+			sender.sendMessage(Constants.SUCCESS_COLOR + "Can unclaim land of the city.");
 		if(rp.isCreatePlots())
 			sender.sendMessage(Constants.SUCCESS_COLOR + "Can create plots in the city.");
 		if(rp.isChangeCityPlotPerms())

@@ -15,6 +15,7 @@ public class City extends CSCommand {
 		super(plugin);
 		
 		addToMap(new Accept(plugin));
+		addToMap(new Change(plugin));
 		addToMap(new Claim(plugin));
 		addToMap(new CreateCity(plugin));
 		addToMap(new Decline(plugin));
