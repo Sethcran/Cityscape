@@ -86,9 +86,15 @@ public class Rank extends CSCommand {
 			return;
 		}
 		
+		if(plugin.getDB().doesRankExist(cityName, rank)) {
+			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+					"That rank already exists!");
+			return;
+		}
+		
 		plugin.getDB().createRank(cityName, rank);
-		player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
-				"The rank of " + rank + " has been created!");
+		plugin.sendMessageToCity(player.getName() + " created the rank of " + rank + ".", 
+				cityName);
 	}
 	
 	public void viewRankInfo(CommandSender sender, String city, String rank) {

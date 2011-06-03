@@ -25,6 +25,7 @@ public class City extends CSCommand {
 		addToMap(new Invites(plugin));
 		addToMap(new Leave(plugin));
 		addToMap(new List(plugin));
+		addToMap(new Promote(plugin));
 		addToMap(new Rank(plugin));
 		addToMap(new Ranks(plugin));
 		addToMap(new Remove(plugin));
@@ -35,18 +36,22 @@ public class City extends CSCommand {
 	@Override
 	public void execute(CommandSender sender, String[] args) {
 		CSCommand cscommand = null;
+		boolean wasNull = false;
 		
 		if(args.length > 0)
 			cscommand = cityMap.get(args[0]);
 		
 		if(cscommand == null) {
+			wasNull = true;
 			cscommand = cityMap.get("default");
-			cscommand.execute(sender, args);
-			return;
 		}
 		
-		if(args.length > 1)
-			args = Arrays.copyOfRange(args, 1, args.length);
+		if(args.length > 1) {
+			if(wasNull)
+				args = null;
+			else
+				args = Arrays.copyOfRange(args, 1, args.length);
+		}
 		else
 			args = null;
 		

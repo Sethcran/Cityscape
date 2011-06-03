@@ -70,12 +70,18 @@ public class Promote extends CSCommand {
 			return;
 		}
 		
-		if(args[1].equalsIgnoreCase("mayor")) {
+		if(args[1].equals("Mayor")) {
 			if(!plugin.getCity(playerCity).getMayor().equals(player.getName())) {
 				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
 						"You do not have permission to do that.");
 				return;
 			}
+			plugin.getDB().setRank(args[0], args[1]);
+			plugin.getDB().setRank(player.getName(), null);
+			plugin.getCity(playerCity).setMayor(args[0]);
+			plugin.sendMessageToCity(args[0] + " has been promoted to " + args[1] + ".", 
+					playerCity);
+			return;
 		}
 		
 		if(!plugin.getDB().doesRankExist(playerCity, args[1])) {

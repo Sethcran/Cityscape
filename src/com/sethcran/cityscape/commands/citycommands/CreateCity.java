@@ -130,6 +130,7 @@ public class CreateCity extends CSCommand {
 				args[0], worldName, xmin, zmin, xmax, zmax, db.getLastClaimID());
 		plugin.addClaim(claim);
 		plugin.changePlayerCityInCache(player.getName(), args[0]);
+		plugin.getDB().removeAllInvites(player.getName());
 		
 		balance.subtract(plugin.getSettings().cityCost);
 	}

@@ -18,7 +18,8 @@ public class Schemas {
 						"id INT AUTO_INCREMENT PRIMARY KEY," +
 						"player CHAR(" + Constants.PLAYER_MAX_NAME_LENGTH + ")," +
 						"FOREIGN KEY(player) REFERENCES CSPlayers(name) ON DELETE SET NULL) " +
-						"ENGINE = InnoDB;";
+						"ENGINE = InnoDB," +
+						"CHARACTER SET latin1 COLLATE latin1_general_cs;";
 		
 		try {
 			con.createStatement().executeUpdate(sql);
@@ -47,7 +48,8 @@ public class Schemas {
 						"outsiderDestroy BOOL, " +
 						"outsiderSwitch BOOL, " +
 						"FOREIGN KEY(mayor) REFERENCES CSPlayers(name) ON DELETE CASCADE) " +
-						"ENGINE = InnoDB;";
+						"ENGINE = InnoDB," +
+						"CHARACTER SET latin1 COLLATE latin1_general_cs;";
 		
 		try {
 			con.createStatement().executeUpdate(sql);
@@ -68,7 +70,8 @@ public class Schemas {
 						"id INT AUTO_INCREMENT, " +
 						"PRIMARY KEY(id), " +
 						"FOREIGN KEY(city) REFERENCES cscities(name) ON DELETE CASCADE)" +
-						"ENGINE = InnoDB;";
+						"ENGINE = InnoDB," +
+						"CHARACTER SET latin1 COLLATE latin1_general_cs;";
 		
 		try {
 			con.createStatement().executeUpdate(sql);
@@ -103,7 +106,8 @@ public class Schemas {
 						"PRIMARY KEY(player, startingfrom)," +
 						"FOREIGN KEY(player) REFERENCES CSPlayers(name) ON DELETE CASCADE," +
 						"FOREIGN KEY(city) REFERENCES CSCities(name) ON DELETE NO ACTION) " +
-						"ENGINE = InnoDB;";
+						"ENGINE = InnoDB," +
+						"CHARACTER SET latin1 COLLATE latin1_general_cs;";
 		
 		try {
 			con.createStatement().executeUpdate(sql);
@@ -121,7 +125,8 @@ public class Schemas {
 						"PRIMARY KEY(player, city), " +
 						"FOREIGN KEY(player) REFERENCES csplayers(name) ON DELETE CASCADE, " +
 						"FOREIGN KEY(city) REFERENCES cscities(name) ON DELETE CASCADE) " +
-						"ENGINE = InnoDB;";
+						"ENGINE = InnoDB," +
+						"CHARACTER SET latin1 COLLATE latin1_general_cs;";
 		try {
 			con.createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
@@ -135,7 +140,8 @@ public class Schemas {
 						"name CHAR(" + Constants.PLAYER_MAX_NAME_LENGTH + ") PRIMARY KEY," +
 						"firstLogin DATETIME NOT NULL," +
 						"lastLogin DATETIME NOT NULL) " +
-						"ENGINE = InnoDB;";
+						"ENGINE = InnoDB," +
+						"CHARACTER SET latin1 COLLATE latin1_general_cs;";
 		
 		try {
 			con.createStatement().executeUpdate(sql);
@@ -157,7 +163,8 @@ public class Schemas {
 						"destroy BOOL, " +
 						"switch BOOL, " +
 						"PRIMARY KEY(xmin, xmax, zmin, zmax)) " +
-						"ENGINE = InnoDB;";
+						"ENGINE = InnoDB," +
+						"CHARACTER SET latin1 COLLATE latin1_general_cs;";
 		try {
 			con.createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
@@ -183,7 +190,8 @@ public class Schemas {
 						"id INT AUTO_INCREMENT, " +
 						"PRIMARY KEY(id), " +
 						"FOREIGN KEY(city) REFERENCES cscities(name) ON DELETE CASCADE) " +
-						"ENGINE = InnoDB;";
+						"ENGINE = InnoDB," +
+						"CHARACTER SET latin1 COLLATE latin1_general_cs;";
 		
 		try {
 			con.createStatement().executeUpdate(sql);
@@ -220,7 +228,8 @@ public class Schemas {
 						"changeCityPlotPerms BOOL, " +
 						"PRIMARY KEY(city, name), " +
 						"FOREIGN KEY(city) REFERENCES cscities(name) ON DELETE CASCADE)" +
-						"ENGINE = InnoDB;";
+						"ENGINE = InnoDB," +
+						"CHARACTER SET latin1 COLLATE latin1_general_cs;";
 		try {
 			con.createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
@@ -236,7 +245,8 @@ public class Schemas {
 						"rank CHAR(" + Constants.RANK_MAX_NAME_LENGTH + "), " +
 						"FOREIGN KEY(player) REFERENCES csplayers(name) ON DELETE CASCADE, " +
 						"FOREIGN KEY(city) REFERENCES cscities(name) ON DELETE NO ACTION) " +
-						"ENGINE = InnoDB;";
+						"ENGINE = InnoDB," +
+						"CHARACTER SET latin1 COLLATE latin1_general_cs;";
 		try {
 			con.createStatement().executeUpdate(sql);
 		} catch (SQLException e) {

@@ -31,7 +31,7 @@ public class Default extends CSCommand {
 			return;
 		}
 		
-		selectedCity(sender, args);
+		selectedCity(sender, args[0]);
 	}
 	
 	public void displayCityToSender(CommandSender sender, City city) {
@@ -96,11 +96,16 @@ public class Default extends CSCommand {
 			displayCityToSender(sender, city);
 	}
 	
-	public void selectedCity(CommandSender sender, String[] args) {
-		City city = plugin.getCity(args[0]);
+	public void selectedCity(CommandSender sender, String args) {
+		if(args == null) {
+			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR + 
+					"You are not in a city!");
+			return;
+		}
+		City city = plugin.getCity(args);
 		if(city == null) {
 			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"That city does not exist: " + args[0]);
+					"That city does not exist: " + args);
 			return;
 		}
 		displayCityToSender(sender, city);

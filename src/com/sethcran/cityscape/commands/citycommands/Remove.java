@@ -60,6 +60,10 @@ public class Remove extends CSCommand {
 					player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
 							"The user " + resident + " is not in your city!");
 				}
+				else if(player.getName().equals(resident)) {
+					player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+							"You can't remove yourself from the city. Use /leave.");
+				}
 				else {
 					plugin.getDB().leaveCity(resident);
 					PlayerCache pc = plugin.getCache(resident);
