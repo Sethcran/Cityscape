@@ -358,6 +358,19 @@ public class Database {
 		csranks.setPermissions(city, rp);
 	}
 	
+	public void unclaimChunk(Claim claim) {
+		try {
+			con.setAutoCommit(false);
+			csclaims.unclaimChunk(claim);
+			cscities.removeUsedClaims(claim.getCityName(), 1);
+			con.commit();
+			con.setAutoCommit(true);
+		} catch(SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+	}
+	
 	public void updatePlayerTimeStamp(String playerName) {
 		csplayers.updatePlayerTimeStamp(playerName);
 	}

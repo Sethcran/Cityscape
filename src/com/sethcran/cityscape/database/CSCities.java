@@ -162,4 +162,19 @@ public class CSCities extends Table {
 		
 		return false;
 	}
+	
+	public void removeUsedClaims(String city, int numClaims) {
+		String sql = 	"UPDATE cscities " +
+						"SET usedClaims = usedClaims - ? " +
+						"WHERE name = ?;";
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setInt(1, numClaims);
+			stmt.setString(2, city);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+	}
 }

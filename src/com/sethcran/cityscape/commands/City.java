@@ -29,6 +29,7 @@ public class City extends CSCommand {
 		addToMap(new Ranks(plugin));
 		addToMap(new Remove(plugin));
 		addToMap(new Residents(plugin));
+		addToMap(new Unclaim(plugin));
 	}
 
 	@Override
@@ -40,6 +41,8 @@ public class City extends CSCommand {
 		
 		if(cscommand == null) {
 			cscommand = cityMap.get("default");
+			cscommand.execute(sender, args);
+			return;
 		}
 		
 		if(args.length > 1)

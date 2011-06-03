@@ -48,6 +48,11 @@ public class Cityscape extends JavaPlugin {
 				claim.getZmax()), claim.getId());
 	}
 	
+	public void addUsedClaim(String cityName) {
+		City city = getCity(cityName);
+		city.setUsedClaims(city.getUsedClaims() + 1);
+	}
+	
 	public void changePlayerCityInCache(String playerName, String cityName) {
 		getCache(playerName).setCity(cityName);
 	}
@@ -67,6 +72,17 @@ public class Cityscape extends JavaPlugin {
 			Claim claim = claimMap.get(i);
 			if(claim.getWorld().equals(world))
 				return getCity(claim.getCityName());
+		}
+		return null;
+	}
+	
+	public Claim getClaimAt(int x, int z, String world) {
+		TreeProcedure tproc = new TreeProcedure();
+		claimTree.intersects(new Rectangle(x, z, x, z), tproc);
+		for(int i : tproc.getId()) {
+			Claim claim = claimMap.get(i);
+			if(claim.getWorld().equals(world))
+				return claim;
 		}
 		return null;
 	}
@@ -182,6 +198,8 @@ public class Cityscape extends JavaPlugin {
 		claimMap.remove(claim.getId());
 		claimTree.delete(new Rectangle(claim.getXmin(), claim.getZmin(), claim.getXmax(),
 				claim.getZmax()), claim.getId());
+		City city = getCity(claim.getCityName());
+		city.setUsedClaims(city.getUsedClaims() - 1);
 	}
 	
 	public void removeFromCityCache(String cityName) {

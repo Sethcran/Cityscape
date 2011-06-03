@@ -99,4 +99,17 @@ public class CSClaims extends Table {
 		}
 		return 0;
 	}
+	
+	public void unclaimChunk(Claim claim) {
+		String sql = 	"DELETE FROM csclaims " +
+						"WHERE id = ?;";
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setInt(1, claim.getId());
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+	}
 }
