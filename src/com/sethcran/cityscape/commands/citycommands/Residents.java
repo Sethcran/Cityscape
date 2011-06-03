@@ -69,12 +69,12 @@ public class Residents extends CSCommand {
 		
 		String message = "" + ChatColor.WHITE;
 		for(String resident : residents) {
-			if(message.length() > Constants.CHAT_LINE_LENGTH) {
+			if(message.length() + resident.length() > Constants.CHAT_LINE_LENGTH) {
 				sender.sendMessage(message);
 				message = "" + ChatColor.WHITE;
 			}
 			else if(!message.equals("" + ChatColor.WHITE))
-				message = message.concat(", ");
+				message += ", ";
 			message += resident;
 		}
 		

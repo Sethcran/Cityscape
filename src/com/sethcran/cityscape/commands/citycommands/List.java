@@ -26,12 +26,12 @@ public class List extends CSCommand {
 				"City List: ");
 		String message = "" + ChatColor.WHITE;
 		for(String city : cityList) {
-			if(message.length() > Constants.CHAT_LINE_LENGTH) {
+			if(message.length() + city.length() > Constants.CHAT_LINE_LENGTH) {
 				sender.sendMessage(message);
 				message = "" + ChatColor.WHITE;
 			}
 			else if(!message.equals("" + ChatColor.WHITE))
-				message = message.concat(", ");
+				message += ", ";
 			message += city;
 		}
 		

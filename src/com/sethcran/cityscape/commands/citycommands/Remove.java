@@ -70,8 +70,8 @@ public class Remove extends CSCommand {
 					if(pc != null)
 						pc.setCity(null);
 					
-					player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
-							"You have removed " + resident + " from the city.");
+					plugin.sendMessageToCity(player.getName() + " has removed " + 
+							resident + " from the city.", cityName);
 					Player removed = plugin.getServer().getPlayer(resident);
 					removed.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
 							"You have been removed from the city of " + cityName + ".");

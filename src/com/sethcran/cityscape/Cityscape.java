@@ -154,6 +154,8 @@ public class Cityscape extends JavaPlugin {
 		
 		registerEvents();
 		
+		database.deleteOldInvites();
+		
 		log.info("Cityscape loaded.");
 	}
 	
