@@ -35,6 +35,7 @@ public class Here extends CSCommand {
 		if(city == null) {
 			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR + 
 					"You are in the wilderness.");
+			return;
 		}
 		
 		Default def = new Default(plugin);

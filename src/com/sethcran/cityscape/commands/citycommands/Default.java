@@ -100,7 +100,7 @@ public class Default extends CSCommand {
 		City city = plugin.getCity(args[0]);
 		if(city == null) {
 			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"That city does not exist.");
+					"That city does not exist: " + args[0]);
 			return;
 		}
 		displayCityToSender(sender, city);
