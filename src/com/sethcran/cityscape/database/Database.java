@@ -82,6 +82,10 @@ public class Database {
 		}
 	}
 	
+	public void addPlot(Plot plot) {
+		csplots.addPlot(plot);
+	}
+	
 	public void claimChunk(String cityName, String worldName,
 			int xmin, int zmin, int xmax, int zmax) {
 		try {
@@ -243,6 +247,10 @@ public class Database {
 	
 	public int getLastClaimID() {
 		return csclaims.getLastID();
+	}
+	
+	public int getLastPlotID() {
+		return csplots.getLastID();
 	}
 	
 	public int getNumRanks(String city) {

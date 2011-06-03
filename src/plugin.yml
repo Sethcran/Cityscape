@@ -4,8 +4,23 @@ version: 0.0.0.1
 
 commands:
     city:
-        description: commands
+        description: citycommands
         usage: /city
     c:
-        description: commands
+        description: citycommands
         usage: /c
+    csa:
+        description: csadmincommands
+        usage: /csa
+    csadmin:
+        description: csadmincommands
+        usage: /csadmin
+    player:
+        description: playercommands
+        usage: /player
+    p:
+        description: playercommands
+        usage: /p
+    plot:
+        description: plotcommands
+        usage: /plot

@@ -37,6 +37,7 @@ public class Cityscape extends JavaPlugin {
 	private Settings settings = null;
 	private Database database = null;
 	private CommandHandler commandHandler = null;
+	private HashMap<String, Selection> selectionMap = null;
 	private HashMap<String, PlayerCache> playerCache = null;
 	private HashMap<String, City> cityCache = null;
 	private TIntObjectHashMap<Claim> claimMap = null;
@@ -95,6 +96,10 @@ public class Cityscape extends JavaPlugin {
 		return database;
 	}
 	
+	public Selection getSelection(String player) {
+		return selectionMap.get(player);
+	}
+	
 	public Settings getSettings() {
 		return settings;
 	}
@@ -105,6 +110,10 @@ public class Cityscape extends JavaPlugin {
 	
 	public void insertIntoPlayerCache(String playerName, PlayerCache playerCache) {
 		this.playerCache.put(playerName, playerCache);
+	}
+	
+	public void insertSelection(String player, Selection selection) {
+		selectionMap.put(player, selection);
 	}
 	
 	public boolean isChunkClaimed(int xmin, int zmin, int xmax, int zmax, String world) {
@@ -142,6 +151,7 @@ public class Cityscape extends JavaPlugin {
 		settings = new Settings();
 		database = new Database(this);
 		commandHandler = new CommandHandler(this);
+		selectionMap = new HashMap<String, Selection>();
 		playerCache = new HashMap<String, PlayerCache>();
 		cityCache = new HashMap<String, City>();
 		claimMap = new TIntObjectHashMap<Claim>();
@@ -189,6 +199,7 @@ public class Cityscape extends JavaPlugin {
 		pm.registerEvent(Type.PLAYER_JOIN, playerListener, Priority.Normal, this);
 		pm.registerEvent(Type.PLAYER_QUIT, playerListener, Priority.Normal, this);
 		pm.registerEvent(Type.PLAYER_MOVE, playerListener, Priority.Normal, this);
+		pm.registerEvent(Type.PLAYER_INTERACT, playerListener, Priority.Normal, this);
 		pm.registerEvent(Type.PLAYER_BUCKET_EMPTY, playerListener, Priority.High, this);
 		pm.registerEvent(Type.PLAYER_BUCKET_FILL, playerListener, Priority.High, this);
 		
@@ -210,6 +221,10 @@ public class Cityscape extends JavaPlugin {
 	
 	public void removeFromPlayerCache(String playerName) {
 		playerCache.remove(playerName);
+	}
+	
+	public void removeSelection(String player) {
+		selectionMap.remove(player);
 	}
 	
 	public void sendMessageToCity(String message, String city) {

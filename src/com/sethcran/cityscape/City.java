@@ -1,6 +1,5 @@
 package com.sethcran.cityscape;
 
-
 import gnu.trove.TIntObjectHashMap;
 
 import com.infomatiq.jsi.Rectangle;
@@ -39,7 +38,6 @@ public class City {
 	}
 	
 	public void addPlot(Plot plot) {
-		plot.setId(plotTree.size() + 1);
 		plotMap.put(plot.getId(), plot);
 		plotTree.add(new Rectangle(plot.getXmin(), plot.getZmin(), 
 				plot.getXmax(), plot.getZmax()), plot.getId());
@@ -102,6 +100,16 @@ public class City {
 	
 	public boolean isOutsiderSwitch() {
 		return outsiderSwitch;
+	}
+	
+	public Plot isPlotIntersect(int xmin, int zmin, int xmax, int zmax) {
+		TreeProcedure tproc = new TreeProcedure();
+		plotTree.intersects(new Rectangle(xmin, zmin, xmax, zmax), tproc);
+		for(int i : tproc.getId()) {
+			Plot plot = plotMap.get(i);
+			return plot;
+		}
+		return null;
 	}
 	
 	public boolean isResidentBuild() {

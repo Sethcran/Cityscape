@@ -40,12 +40,12 @@ public class CreateCity extends CSCommand {
 		// Check that arguments were provided correctly
 		if(args == null) {
 			player.sendMessage(Constants.CITYSCAPE + ChatColor.RED +
-					"You must provide a townname.");
+					"You must provide a city name.");
 			return;
 		}
 		if(args.length > 1) {
 			player.sendMessage(Constants.CITYSCAPE + ChatColor.RED + 
-					"Spaces are not allowed in town names.");
+					"Spaces are not allowed in city names.");
 			return;
 		}
 		

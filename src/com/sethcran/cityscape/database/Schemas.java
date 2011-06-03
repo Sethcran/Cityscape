@@ -153,16 +153,13 @@ public class Schemas {
 	
 	public void createPlotPermissionsTable() {
 		String sql = 	"CREATE TABLE IF NOT EXISTS CSPlotPermissions(" +
-						"xmin INT, " +
-						"xmax INT, " +
-						"zmin INT, " +
-						"zmax INT, " +
+						"id INT, " +
 						"name CHAR(" + Constants.PLAYER_MAX_NAME_LENGTH + "), " +
 						"isPlayer BOOL, " +
 						"build BOOL, " +
 						"destroy BOOL, " +
 						"switch BOOL, " +
-						"PRIMARY KEY(xmin, xmax, zmin, zmax)) " +
+						"PRIMARY KEY(id, name, isPlayer)) " +
 						"ENGINE = InnoDB," +
 						"CHARACTER SET latin1 COLLATE latin1_general_cs;";
 		try {

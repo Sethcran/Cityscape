@@ -6,8 +6,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -20,6 +22,7 @@ import com.sethcran.cityscape.Permissions;
 import com.sethcran.cityscape.PlayerCache;
 import com.sethcran.cityscape.Plot;
 import com.sethcran.cityscape.RankPermissions;
+import com.sethcran.cityscape.Selection;
 import com.sethcran.cityscape.database.Database;
 
 public class CSPlayerListener extends PlayerListener {
@@ -252,6 +255,60 @@ public class CSPlayerListener extends PlayerListener {
 	}
 	
 	@Override
+	public void onPlayerInteract(PlayerInteractEvent event) {
+		Selection selection = plugin.getSelection(event.getPlayer().getName());
+		if(selection == null)
+			return;
+		
+		Player player = event.getPlayer();
+		
+		if(event.getAction() == Action.LEFT_CLICK_BLOCK) {
+			Block block = event.getClickedBlock();
+			City city = plugin.getCityAt(block.getX(), block.getZ(), 
+					block.getWorld().getName());
+			
+			if(city == null) {
+				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+						"You must select in your city.");
+				return;
+			}
+			String playerCity = plugin.getCache(player.getName()).getCity();
+			if(!city.getName().equals(playerCity)) {
+				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+						"You must select in your city.");
+				return;
+			}
+			
+			selection.setFirst(block.getX(), block.getZ(), block.getWorld().getName());
+			player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
+					"Set first position to " + block.getX() + ", " + block.getZ() + ".");
+			event.setCancelled(true);
+		}
+		else if(event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+			Block block = event.getClickedBlock();
+			City city = plugin.getCityAt(block.getX(), block.getZ(), 
+					block.getWorld().getName());
+			
+			if(city == null) {
+				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+						"You must select in your city.");
+				return;
+			}
+			String playerCity = plugin.getCache(player.getName()).getCity();
+			if(!city.getName().equals(playerCity)) {
+				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+						"You must select in your city.");
+				return;
+			}
+			
+			selection.setSecond(block.getX(), block.getZ(), block.getWorld().getName());
+			player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
+					"Set second position to " + block.getX() + ", " + block.getZ() + ".");
+			event.setCancelled(true);
+		}
+	}
+	
+	@Override
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Database db = plugin.getDB();
 		Player player = event.getPlayer();
@@ -313,6 +370,7 @@ public class CSPlayerListener extends PlayerListener {
 			if(currentCityLoc == null) {
 				player.sendMessage(ChatColor.GREEN + "You have entered the wilderness.");
 				cache.setLastTownLocation(null);
+				cache.setLastPlotLocation(null);
 			}
 			else {
 				if(!lastTown.equals(currentCityLoc)) {
@@ -323,11 +381,38 @@ public class CSPlayerListener extends PlayerListener {
 			}
 				
 		}
+		
 		cache.setLastLocation(to);
+		
+		if(city == null)
+			return;
+		
+		Plot plot = city.getPlotAt(to.getBlockX(), to.getBlockZ());
+		if(cache.getLastPlotLocation() == null) {
+			if(plot != null) {
+				player.sendMessage(ChatColor.DARK_GREEN + "You have entered a plot owned" +
+						" by " + plot.getOwnerName() + ".");
+				cache.setLastPlotLocation(plot.getOwnerName());
+			}
+		}
+		if(plot == null) {
+			if(cache.getLastPlotLocation() != null) {
+				player.sendMessage(ChatColor.DARK_GREEN + "You have entered city grounds.");
+				cache.setLastPlotLocation(null);
+			}
+		}
+		else {
+			if(!plot.getOwnerName().equals(cache.getLastPlotLocation())) {
+				player.sendMessage(ChatColor.DARK_GREEN + "You have entered a plot owned" +
+						" by " + plot.getOwnerName() + ".");
+				cache.setLastPlotLocation(plot.getOwnerName());
+			}
+		}
 	}
 	
 	@Override
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		plugin.removeFromPlayerCache(event.getPlayer().getName());
+		plugin.removeSelection(event.getPlayer().getName());
 	}
 }

@@ -18,6 +18,7 @@ public class CommandHandler {
 		this.plugin = plugin;
 		addCityCommands();
 		addPlayerCommands();
+		addPlotCommands();
 		addCSAdminCommands();
 	}
 
@@ -37,6 +38,11 @@ public class CommandHandler {
 		Player player = new Player(plugin);
 		commandMap.put("player", player);
 		commandMap.put("p", player);
+	}
+	
+	public void addPlotCommands() {
+		Plot plot = new Plot(plugin);
+		commandMap.put("plot", plot);
 	}
 	
 	public boolean handleCommand(CommandSender sender, Command cmd, 
