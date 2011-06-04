@@ -13,10 +13,13 @@ public class Plot extends CSCommand {
 	
 	public Plot(Cityscape plugin) {
 		super(plugin);
+		addToMap(new Build(plugin));
 		addToMap(new Create(plugin));
 		addToMap(new Default(plugin));
+		addToMap(new Destroy(plugin));
 		addToMap(new Perms(plugin));
 		addToMap(new Select(plugin));
+		addToMap(new Switch(plugin));
 		addToMap(new Unselect(plugin));
 	}
 

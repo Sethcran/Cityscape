@@ -1,6 +1,8 @@
 package com.sethcran.cityscape;
 
 import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.Set;
 
 public class Plot {
 	private int xmin = 0;
@@ -51,6 +53,14 @@ public class Plot {
 
 	public Permissions getPlayerPermissions(String playerName) {
 		return playerPermissions.get(playerName);
+	}
+	
+	public Set<Entry<String, Permissions>> getCitiesWithPermissions() {
+		return cityPermissions.entrySet();
+	}
+	
+	public Set<Entry<String, Permissions>> getPlayersWithPermissions() {
+		return playerPermissions.entrySet();
 	}
 
 	public int getXmax() {
