@@ -17,6 +17,7 @@ public class Plot extends CSCommand {
 		addToMap(new Default(plugin));
 		addToMap(new Perms(plugin));
 		addToMap(new Select(plugin));
+		addToMap(new Unselect(plugin));
 	}
 
 	@Override
