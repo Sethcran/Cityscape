@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import com.sethcran.cityscape.City;
 import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Claim;
+import com.sethcran.cityscape.Permissions;
 import com.sethcran.cityscape.Plot;
 import com.sethcran.cityscape.RankPermissions;
 import com.sethcran.cityscape.Settings;
@@ -279,6 +280,15 @@ public class Database {
 	
 	public void removeInvite(String player, String city) {
 		csinvites.removeInvite(player, city);
+	}
+	
+	public void removePlotPermissions(int id, String name, boolean isPlayer) {
+		csplots.removePlotPermissions(id, name, isPlayer);
+	}
+	
+	public void setPlotPermissions(int id, String name, Permissions perms, 
+			boolean isPlayer) {
+		csplots.setPlotPermissions(id, name, perms, isPlayer);
 	}
 	
 	public void setRank(String player, String rank) {

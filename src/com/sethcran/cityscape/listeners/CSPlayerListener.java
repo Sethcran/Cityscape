@@ -409,6 +409,12 @@ public class CSPlayerListener extends PlayerListener {
 		Plot plot = city.getPlotAt(to.getBlockX(), to.getBlockZ());
 		if(cache.getLastPlotLocation() == null) {
 			if(plot != null) {
+				if(plot.isCityPlot()) {
+					player.sendMessage(ChatColor.DARK_GREEN + 
+							"You have entered a city plot.");
+					cache.setLastPlotLocation(plot.getOwnerName());
+					return;
+				}
 				player.sendMessage(ChatColor.DARK_GREEN + "You have entered a plot owned" +
 						" by " + plot.getOwnerName() + ".");
 				cache.setLastPlotLocation(plot.getOwnerName());
@@ -422,6 +428,12 @@ public class CSPlayerListener extends PlayerListener {
 		}
 		else {
 			if(!plot.getOwnerName().equals(cache.getLastPlotLocation())) {
+				if(plot.isCityPlot()) {
+					player.sendMessage(ChatColor.DARK_GREEN + 
+							"You have entered a city plot.");
+					cache.setLastPlotLocation(plot.getOwnerName());
+					return;
+				}
 				player.sendMessage(ChatColor.DARK_GREEN + "You have entered a plot owned" +
 						" by " + plot.getOwnerName() + ".");
 				cache.setLastPlotLocation(plot.getOwnerName());

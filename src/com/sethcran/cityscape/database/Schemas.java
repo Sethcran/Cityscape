@@ -184,6 +184,7 @@ public class Schemas {
 						"outsiderBuild BOOL," +
 						"outsiderDestroy BOOL," +
 						"outsiderSwitch BOOL," +
+						"cityPlot BOOL, " +
 						"id INT AUTO_INCREMENT, " +
 						"PRIMARY KEY(id), " +
 						"FOREIGN KEY(city) REFERENCES cscities(name) ON DELETE CASCADE) " +

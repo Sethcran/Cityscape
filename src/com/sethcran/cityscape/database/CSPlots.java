@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.sethcran.cityscape.Permissions;
 import com.sethcran.cityscape.Plot;
 import com.sethcran.cityscape.Settings;
 
@@ -18,7 +19,7 @@ public class CSPlots extends Table {
 	public void addPlot(Plot plot) {
 		String sql = 	"INSERT INTO csplots VALUES(" +
 						"?, ?, ?, ?, ?, ?, " +
-						"?, ?, ?, ?, ?, ?, null)";
+						"?, ?, ?, ?, ?, ?, ?, null)";
 		try {
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, plot.getCityName());
@@ -33,6 +34,7 @@ public class CSPlots extends Table {
 			stmt.setBoolean(10, plot.isOutsiderBuild());
 			stmt.setBoolean(11, plot.isOutsiderDestroy());
 			stmt.setBoolean(12, plot.isOutsiderSwitch());
+			stmt.setBoolean(13, plot.isCityPlot());
 			stmt.executeUpdate();			
 		} catch (SQLException e) {
 			if(settings.debug)
@@ -73,6 +75,7 @@ public class CSPlots extends Table {
 				plot.setResidentBuild(rs.getBoolean("residentBuild"));
 				plot.setResidentDestroy(rs.getBoolean("residentDestroy"));
 				plot.setResidentSwitch(rs.getBoolean("residentSwitch"));
+				plot.setCityPlot(rs.getBoolean("cityPlot"));
 				plot.setId(rs.getInt("id"));
 				
 				sql = 	"SELECT * " +
@@ -84,15 +87,15 @@ public class CSPlots extends Table {
 				while(permResults.next()) {
 					if(permResults.getBoolean("isPlayer")) {
 						plot.insertIntoPlayerPermissions(permResults.getString("name"),
-								permResults.getBoolean("build"), 
+								new Permissions(permResults.getBoolean("build"), 
 								permResults.getBoolean("destroy"), 
-								permResults.getBoolean("switch"));
+								permResults.getBoolean("switch")));
 					}
 					else {
 						plot.insertIntoCityPermissions(permResults.getString("name"),
-								permResults.getBoolean("build"), 
+								new Permissions(permResults.getBoolean("build"), 
 								permResults.getBoolean("destroy"), 
-								permResults.getBoolean("switch"));
+								permResults.getBoolean("switch")));
 					}
 				}
 				plotList.add(plot);
@@ -102,6 +105,58 @@ public class CSPlots extends Table {
 				e.printStackTrace();
 		}
 		return plotList;
+	}
+	
+	public void removePlotPermissions(int id, String name, boolean isPlayer) {
+		String sql = 	"DELETE FROM csplotpermissions " +
+						"WHERE id = ? " +
+						"AND name = ? " +
+						"AND isPlayer = ?;";
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setInt(1, id);
+			stmt.setString(2, name);
+			stmt.setBoolean(3, isPlayer);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+	}
+	
+	public void setPlotPermissions(int id, String name, Permissions perms,
+			boolean isPlayer) {
+		String sql = 	"UPDATE csplotpermissions " +
+						"SET build = ?, " +
+						"destroy = ?, switch = ? " +
+						"WHERE id = ? " +
+						"AND name = ? " +
+						"AND isPlayer = ?;";
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setBoolean(1, perms.isCanBuild());
+			stmt.setBoolean(2, perms.isCanDestroy());
+			stmt.setBoolean(3, perms.isCanSwitch());
+			stmt.setInt(4, id);
+			stmt.setString(5, name);
+			stmt.setBoolean(6, isPlayer);
+			int i = stmt.executeUpdate();
+			if(i == 0) {
+				sql = 	"INSERT INTO csplotpermissions VALUES(" +
+						"?, ?, ?, ?, ?, ?);";
+				stmt = con.prepareStatement(sql);
+				stmt.setInt(1, id);
+				stmt.setString(2, name);
+				stmt.setBoolean(3, isPlayer);
+				stmt.setBoolean(4, perms.isCanBuild());
+				stmt.setBoolean(5, perms.isCanDestroy());
+				stmt.setBoolean(6, perms.isCanSwitch());
+				stmt.executeUpdate();
+			}
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
 	}
 
 }

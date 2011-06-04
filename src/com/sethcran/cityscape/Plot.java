@@ -16,6 +16,8 @@ public class Plot {
 	private boolean outsiderBuild = false;
 	private boolean outsiderDestroy = false;
 	private boolean outsiderSwitch = false;
+	private boolean cityPlot = false;
+	
 	private String cityName = null;
 	private String ownerName = null;
 
@@ -31,7 +33,6 @@ public class Plot {
 		playerPermissions = new HashMap<String, Permissions>();
 		cityPermissions = new HashMap<String, Permissions>();
 	}
-	
 	public String getCityName() {
 		return cityName;
 	}
@@ -39,7 +40,7 @@ public class Plot {
 	public Permissions getCityPermissions(String cityName) {
 		return cityPermissions.get(cityName);
 	}
-
+	
 	public int getId() {
 		return id;
 	}
@@ -68,16 +69,16 @@ public class Plot {
 		return zmin;
 	}
 
-	public void insertIntoCityPermissions(String cityName, boolean canBuild,
-			boolean canDestroy, boolean canSwitch) {
-		Permissions p = new Permissions(canBuild, canDestroy, canSwitch);
-		cityPermissions.put(cityName, p);
+	public void insertIntoCityPermissions(String cityName, Permissions perms) {
+		cityPermissions.put(cityName, perms);
 	}
 
-	public void insertIntoPlayerPermissions(String playerName, boolean canBuild, 
-			boolean canDestroy, boolean canSwitch) {
-		Permissions p = new Permissions(canBuild, canDestroy, canSwitch);
-		playerPermissions.put(playerName, p);
+	public void insertIntoPlayerPermissions(String playerName, Permissions perms) {
+		playerPermissions.put(playerName, perms);
+	}
+
+	public boolean isCityPlot() {
+		return cityPlot;
 	}
 
 	public boolean isOutsiderBuild() {
@@ -103,9 +104,21 @@ public class Plot {
 	public boolean isResidentSwitch() {
 		return residentSwitch;
 	}
+	
+	public void removeFromCityPermissions(String city) {
+		cityPermissions.remove(city);
+	}
+	
+	public void removeFromPlayerPermissions(String player) {
+		playerPermissions.remove(player);
+	}
 
 	public void setCityName(String cityName) {
 		this.cityName = cityName;
+	}
+
+	public void setCityPlot(boolean cityPlot) {
+		this.cityPlot = cityPlot;
 	}
 
 	public void setId(int id) {
