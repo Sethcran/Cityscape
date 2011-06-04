@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.sethcran.cityscape.City;
 import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.commands.CSCommand;
@@ -53,10 +54,11 @@ public class Ranks extends CSCommand {
 		displayRanks(sender, args[0]);
 	}
 	
-	public void displayRanks(CommandSender sender, String city) {
-		ArrayList<String> ranks = plugin.getDB().getRanks(city);
+	public void displayRanks(CommandSender sender, String cityName) {
+		City city = plugin.getCity(cityName);
+		ArrayList<String> ranks = city.getRanks();
 		sender.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
-				"Ranks in the city of " + city + ":");
+				"Ranks in the city of " + cityName + ":");
 		for(String rank : ranks) {
 			sender.sendMessage(Constants.SUCCESS_COLOR + rank);
 		}

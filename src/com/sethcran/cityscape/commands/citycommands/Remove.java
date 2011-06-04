@@ -35,7 +35,7 @@ public class Remove extends CSCommand {
 			return;
 		}
 		
-		RankPermissions rp = plugin.getDB().getPermissions(player.getName());
+		RankPermissions rp = plugin.getPermissions(player.getName());
 		if(rp == null) {
 			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
 					"You can not do that.");
@@ -67,8 +67,10 @@ public class Remove extends CSCommand {
 				else {
 					plugin.getDB().leaveCity(resident);
 					PlayerCache pc = plugin.getCache(resident);
-					if(pc != null)
+					if(pc != null) {
 						pc.setCity(null);
+						pc.setRank(null);
+					}
 					
 					plugin.sendMessageToCity(player.getName() + " has removed " + 
 							resident + " from the city.", cityName);

@@ -96,6 +96,19 @@ public class Cityscape extends JavaPlugin {
 		return database;
 	}
 	
+	public RankPermissions getPermissions(String player) {
+		PlayerCache cache = getCache(player);
+		
+		if(cache.getCity() == null)
+			return null;
+		
+		if(cache.getRank() == null)
+			return null;
+		
+		City city = getCity(cache.getCity());
+		return city.getRank(cache.getRank());
+	}
+	
 	public Selection getSelection(String player) {
 		return selectionMap.get(player);
 	}

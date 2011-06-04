@@ -2,7 +2,6 @@ package com.sethcran.cityscape.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -137,10 +136,6 @@ public class Database {
 		return csplayers.doesPlayerExist(playerName);
 	}
 	
-	public boolean doesRankExist(String city, String rank) {
-		return csranks.doesRankExist(city, rank);
-	}
-	
 	public ArrayList<City> getCities() {
 		
 		ArrayList<City> cityArray = new ArrayList<City>();
@@ -166,10 +161,17 @@ public class Database {
 				city.setSpawnY(rs.getInt("spawnY"));
 				city.setSpawnZ(rs.getInt("spawnZ"));
 				city.setUsedClaims(rs.getInt("usedClaims"));
-				ArrayList<Plot> plotMap = getPlots(city.getName());
-				for(Plot plot : plotMap) {
+				
+				ArrayList<Plot> plotList = getPlots(city.getName());
+				for(Plot plot : plotList) {
 					city.addPlot(plot);
 				}
+				
+				ArrayList<RankPermissions> rankList = csranks.getRanks(city.getName());
+				for(RankPermissions rp : rankList) {
+					city.addRank(rp);
+				}
+				
 				cityArray.add(city);
 			}
 		} catch (SQLException e) {
@@ -186,39 +188,6 @@ public class Database {
 			city.addPlot(plot);
 		}
 		return city;
-	}
-	
-	public City getCityAt(int x, int z) {
-		String sql = 	"SELECT name, mayor, rank, founded, " +
-						"usedClaims, baseClaims, bonusClaims, " +
-						"spawnX, spawnY, spawnZ " +
-						"FROM cscities, csclaims " +
-						"WHERE cscities.name = csclaims.city " +
-						"AND loc = POINT(?, ?);";
-		try {
-			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setInt(1, x);
-			stmt.setInt(2, z);
-			ResultSet rs = stmt.executeQuery();
-			if(rs.next()) {
-				City city = new City();
-				city.setBaseClaims(rs.getInt("baseClaims"));
-				city.setBonusClaims(rs.getInt("bonusClaims"));
-				city.setFounded(rs.getString("founded"));
-				city.setMayor(rs.getString("mayor"));
-				city.setName(rs.getString("name"));
-				city.setRank(rs.getInt("rank"));
-				city.setSpawnX(rs.getInt("spawnX"));
-				city.setSpawnY(rs.getInt("spawnY"));
-				city.setSpawnZ(rs.getInt("spawnZ"));
-				city.setUsedClaims(rs.getInt("usedClaims"));
-				return city;
-			}
-		} catch (SQLException e) {
-			if(settings.debug)
-				e.printStackTrace();
-		}
-		return null;		
 	}
 	
 	public ArrayList<String> getCityNames() {
@@ -253,56 +222,6 @@ public class Database {
 		return csplots.getLastID();
 	}
 	
-	public int getNumRanks(String city) {
-		return csranks.getNumRanks(city);
-	}
-	
-	public RankPermissions getPermissions(String playerName) {
-		String sql = 	"SELECT * " +
-						"FROM csresidents, csranks " +
-						"WHERE csresidents.player = ? " +
-						"AND csresidents.city = csranks.city " +
-						"AND csresidents.rank = csranks.name;";
-		try {
-			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setString(1, playerName);
-			ResultSet rs = stmt.executeQuery();
-			if(rs.next()) {
-				RankPermissions rp = new RankPermissions();
-				rp.setAddResident(rs.getBoolean("addResident"));
-				rp.setChangeRankName(rs.getBoolean("changeRankName"));
-				rp.setClaim(rs.getBoolean("claim"));
-				rp.setCreatePlots(rs.getBoolean("createPlots"));
-				rp.setDemote(rs.getBoolean("demote"));
-				rp.setPromote(rs.getBoolean("promote"));
-				rp.setRemoveResident(rs.getBoolean("removeResident"));
-				rp.setSetMayor(rs.getBoolean("setMayor"));
-				rp.setSetName(rs.getBoolean("setName"));
-				rp.setSetPlotSale(rs.getBoolean("setPlotSale"));
-				rp.setSetPrices(rs.getBoolean("setPrices"));
-				rp.setSetTaxes(rs.getBoolean("setTaxes"));
-				rp.setSetWarp(rs.getBoolean("setWarp"));
-				rp.setSetWelcome(rs.getBoolean("setWelcome"));
-				rp.setUnclaim(rs.getBoolean("unclaim"));
-				rp.setWithdraw(rs.getBoolean("withdraw"));
-				rp.setSendChestsToLostAndFound(rs.getBoolean("sendChestsToLostAndFound"));
-				rp.setCityBuild(rs.getBoolean("cityBuild"));
-				rp.setCityDestroy(rs.getBoolean("cityDestroy"));
-				rp.setCitySwitch(rs.getBoolean("citySwitch"));
-				rp.setChangeCityPlotPerms(rs.getBoolean("changeCityPlotPerms"));
-				return rp;
-			}
-		} catch (SQLException e) {
-			if(settings.debug)
-				e.printStackTrace();
-		}
-		return null;
-	}
-	
-	public RankPermissions getPermissions(String townName, String rank) {
-		return csranks.getPermissions(townName, rank);
-	}
-	
 	public String getPlayerCity(String playerName) {
 		return csresidents.getCurrentCity(playerName);
 	}
@@ -313,10 +232,6 @@ public class Database {
 	
 	public String getRank(String playerName) {
 		return csresidents.getRank(playerName);
-	}
-	
-	public ArrayList<String> getRanks(String city) {
-		return csranks.getRanks(city);
 	}
 	
 	public ArrayList<String> getResidents(String city) {

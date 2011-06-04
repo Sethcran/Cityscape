@@ -5,6 +5,7 @@ import java.util.Arrays;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.sethcran.cityscape.City;
 import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.RankPermissions;
@@ -52,13 +53,15 @@ public class Change extends CSCommand {
 			return;
 		}
 		
-		if(!plugin.getCity(cityName).getMayor().equals(player.getName())) {
+		City city = plugin.getCity(cityName);
+		
+		if(!city.getMayor().equals(player.getName())) {
 			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
 					"Only the city mayor can do that!");
 			return;
 		}
 		
-		RankPermissions rp = plugin.getDB().getPermissions(cityName, args[0]);
+		RankPermissions rp = city.getRank(args[0]);
 		
 		if(rp == null) {
 			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
@@ -237,6 +240,7 @@ public class Change extends CSCommand {
 	
 	public void update(Player player, String cityName, RankPermissions rp) {
 		plugin.getDB().setRankPermissions(cityName, rp);
+		plugin.getCity(cityName).changeRank(rp);
 		player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
 				"You have updated the permissions of " + rp.getRankName() + ".");
 	}

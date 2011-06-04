@@ -9,13 +9,15 @@ public class PlayerCache {
 	private Location lastLocation;
 	
 	private String city;
+	private String rank;
 	
 	public PlayerCache(Location lastLocation, String lastPlotLocation, 
-			String lastCityLocation, String city) {
+			String lastCityLocation, String city, String rank) {
 		this.lastLocation = lastLocation;
 		this.lastPlotLocation = lastPlotLocation;
 		this.lastCityLocation = lastCityLocation;
 		this.city = city;
+		this.rank = rank;
 	}
 	
 	public String getCity() {
@@ -29,9 +31,13 @@ public class PlayerCache {
 	public String getLastPlotLocation() {
 		return lastPlotLocation;
 	}
-	
+
 	public String getLastTownLocation() {
 		return lastCityLocation;
+	}
+
+	public String getRank() {
+		return rank;
 	}
 	
 	public void setCity(String city) {
@@ -48,5 +54,9 @@ public class PlayerCache {
 	
 	public void setLastTownLocation(String lastCityLocation) {
 		this.lastCityLocation = lastCityLocation;
+	}
+	
+	public void setRank(String rank) {
+		this.rank = rank;
 	}
 }

@@ -30,7 +30,7 @@ public class Select extends CSCommand {
 			return;
 		}
 		
-		RankPermissions rp = plugin.getDB().getPermissions(player.getName());
+		RankPermissions rp = plugin.getPermissions(player.getName());
 		if(rp == null) {
 			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
 					"You do not have permission to do that.");

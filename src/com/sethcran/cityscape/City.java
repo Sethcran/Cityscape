@@ -1,5 +1,9 @@
 package com.sethcran.cityscape;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
+
 import gnu.trove.TIntObjectHashMap;
 
 import com.infomatiq.jsi.Rectangle;
@@ -30,8 +34,10 @@ public class City {
 	
 	private RTree plotTree = null;
 	private TIntObjectHashMap<Plot> plotMap = null;
+	private HashMap<String, RankPermissions> rankMap = null;
 	
 	public City() {
+		rankMap = new HashMap<String, RankPermissions>();
 		plotMap = new TIntObjectHashMap<Plot>();
 		plotTree = new RTree();
 		plotTree.init(null);
@@ -42,7 +48,23 @@ public class City {
 		plotTree.add(new Rectangle(plot.getXmin(), plot.getZmin(), 
 				plot.getXmax(), plot.getZmax()), plot.getId());
 	}
+	
+	public void addRank(RankPermissions rp) {
+		rankMap.put(rp.getRankName(), rp);
+	}
+	
+	public void changeRank(RankPermissions rp) {
+		rankMap.remove(rp.getRankName());
+		rankMap.put(rp.getRankName(), rp);
+	}
 
+	public boolean doesRankExist(String rank) {
+		RankPermissions rp = rankMap.get(rank);
+		if(rp == null)
+			return false;
+		return true;
+	}
+	
 	public int getBaseClaims() {
 		return baseClaims;
 	}
@@ -63,6 +85,10 @@ public class City {
 		return name;
 	}
 	
+	public int getNumRanks() {
+		return rankMap.size();
+	}
+	
 	public Plot getPlotAt(int x, int z) {
 		TreeProcedure tproc = new TreeProcedure();
 		plotTree.intersects(new Rectangle(x, z, x, z), tproc);
@@ -74,6 +100,19 @@ public class City {
 
 	public int getRank() {
 		return rank;
+	}
+	
+	public RankPermissions getRank(String rankName) {
+		return rankMap.get(rankName);
+	}
+	
+	public ArrayList<String> getRanks() {
+		Set<String> set = rankMap.keySet();
+		ArrayList<String> list = new ArrayList<String>();
+		for(String s : set) {
+			list.add(s);
+		}
+		return list;
 	}
 
 	public int getSpawnX() {
@@ -128,6 +167,10 @@ public class City {
 		plotMap.remove(plot.getId());
 		plotTree.delete(new Rectangle(plot.getXmin(), plot.getZmin(), 
 				plot.getXmax(), plot.getZmax()), plot.getId());
+	}
+	
+	public void removeRank(String rank) {
+		rankMap.remove(rank);
 	}
 	
 	public void setBaseClaims(int baseClaims) {

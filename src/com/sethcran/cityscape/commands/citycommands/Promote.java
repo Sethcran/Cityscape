@@ -3,8 +3,10 @@ package com.sethcran.cityscape.commands.citycommands;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.sethcran.cityscape.City;
 import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
+import com.sethcran.cityscape.PlayerCache;
 import com.sethcran.cityscape.RankPermissions;
 import com.sethcran.cityscape.commands.CSCommand;
 
@@ -63,7 +65,7 @@ public class Promote extends CSCommand {
 			return;
 		}
 		
-		RankPermissions rp = plugin.getDB().getPermissions(player.getName());
+		RankPermissions rp = plugin.getPermissions(player.getName());
 		if(!rp.isPromote()) {
 			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
 					"You do not have permission to do that.");
@@ -79,18 +81,27 @@ public class Promote extends CSCommand {
 			plugin.getDB().setRank(args[0], args[1]);
 			plugin.getDB().setRank(player.getName(), null);
 			plugin.getCity(playerCity).setMayor(args[0]);
+			PlayerCache cache = plugin.getCache(player.getName());
+			cache.setRank(null);
+			cache = plugin.getCache(args[0]);
+			if(cache != null)
+				cache.setRank("Mayor");
 			plugin.sendMessageToCity(args[0] + " has been promoted to " + args[1] + ".", 
 					playerCity);
 			return;
 		}
 		
-		if(!plugin.getDB().doesRankExist(playerCity, args[1])) {
+		City city = plugin.getCity(playerCity);
+		if(!city.doesRankExist(args[1])) {
 			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
 					"That rank does not exist.");
 			return;
 		}
 		
 		plugin.getDB().setRank(args[0], args[1]);
+		PlayerCache cache = plugin.getCache(args[0]);
+		if(cache != null)
+			cache.setRank(args[1]);
 		plugin.sendMessageToCity(args[0] + " has been promoted to " + args[1] + ".", 
 				playerCity);
 	}

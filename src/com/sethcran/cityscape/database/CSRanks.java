@@ -131,17 +131,41 @@ public class CSRanks extends Table {
 		return null;
 	}
 	
-	public ArrayList<String> getRanks(String city) {
-		String sql = 	"SELECT name " +
+	public ArrayList<RankPermissions> getRanks(String city) {
+		String sql = 	"SELECT * " +
 						"FROM csranks " +
 						"WHERE city = ?;";
-		ArrayList<String> rankList = new ArrayList<String>();
+		ArrayList<RankPermissions> rankList = new ArrayList<RankPermissions>();
 		try {
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, city);
 			ResultSet rs = stmt.executeQuery();
-			while(rs.next())
-				rankList.add(rs.getString("name"));
+			while(rs.next()) {
+				RankPermissions rp = new RankPermissions();
+				rp.setAddResident(rs.getBoolean("addResident"));
+				rp.setChangeRankName(rs.getBoolean("changeRankName"));
+				rp.setClaim(rs.getBoolean("claim"));
+				rp.setCreatePlots(rs.getBoolean("createPlots"));
+				rp.setDemote(rs.getBoolean("demote"));
+				rp.setPromote(rs.getBoolean("promote"));
+				rp.setRemoveResident(rs.getBoolean("removeResident"));
+				rp.setSetMayor(rs.getBoolean("setMayor"));
+				rp.setSetName(rs.getBoolean("setName"));
+				rp.setSetPlotSale(rs.getBoolean("setPlotSale"));
+				rp.setSetPrices(rs.getBoolean("setPrices"));
+				rp.setSetTaxes(rs.getBoolean("setTaxes"));
+				rp.setSetWarp(rs.getBoolean("setWarp"));
+				rp.setSetWelcome(rs.getBoolean("setWelcome"));
+				rp.setUnclaim(rs.getBoolean("unclaim"));
+				rp.setWithdraw(rs.getBoolean("withdraw"));
+				rp.setSendChestsToLostAndFound(rs.getBoolean("sendChestsToLostAndFound"));
+				rp.setCityBuild(rs.getBoolean("cityBuild"));
+				rp.setCityDestroy(rs.getBoolean("cityDestroy"));
+				rp.setCitySwitch(rs.getBoolean("citySwitch"));
+				rp.setChangeCityPlotPerms(rs.getBoolean("changeCityPlotPerms"));
+				rp.setRankName(rs.getString("name"));
+				rankList.add(rp);
+			}
 		} catch (SQLException e) {
 			if(settings.debug)
 				e.printStackTrace();

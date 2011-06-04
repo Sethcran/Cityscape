@@ -69,7 +69,7 @@ public class Rank extends CSCommand {
 			return;
 		}
 		
-		if(plugin.getDB().getNumRanks(cityName) >= plugin.getSettings().maxCityRanks) {
+		if(city.getNumRanks() >= plugin.getSettings().maxCityRanks) {
 			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR + 
 					"Your city already has the maximum number of ranks available!");
 		}
@@ -86,25 +86,29 @@ public class Rank extends CSCommand {
 			return;
 		}
 		
-		if(plugin.getDB().doesRankExist(cityName, rank)) {
+		if(city.doesRankExist(rank)) {
 			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
 					"That rank already exists!");
 			return;
 		}
 		
 		plugin.getDB().createRank(cityName, rank);
+		RankPermissions perms = new RankPermissions(false);
+		perms.setRankName(rank);
+		city.addRank(perms);
 		plugin.sendMessageToCity(player.getName() + " created the rank of " + rank + ".", 
 				cityName);
 	}
 	
-	public void viewRankInfo(CommandSender sender, String city, String rank) {
-		if(city == null) {
+	public void viewRankInfo(CommandSender sender, String cityName, String rank) {
+		if(cityName == null) {
 			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
 					"That city does not exist.");
 			return;
 		}
 		
-		RankPermissions rp = plugin.getDB().getPermissions(city, rank);
+		City city = plugin.getCity(cityName);
+		RankPermissions rp = city.getRank(rank);
 		
 		if(rp == null) {
 			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
@@ -115,7 +119,7 @@ public class Rank extends CSCommand {
 		sender.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
 				"Rank Information: " + ChatColor.DARK_AQUA + rank + 
 				Constants.SUCCESS_COLOR + " of " + ChatColor.DARK_AQUA +
-				city);
+				cityName);
 		
 		if(rp.areAll(true)) {
 			sender.sendMessage(Constants.SUCCESS_COLOR + "Can do everything.");

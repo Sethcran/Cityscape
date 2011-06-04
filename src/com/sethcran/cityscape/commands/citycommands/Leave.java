@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 
 import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
+import com.sethcran.cityscape.PlayerCache;
 import com.sethcran.cityscape.commands.CSCommand;
 
 public class Leave extends CSCommand {
@@ -48,7 +49,9 @@ public class Leave extends CSCommand {
 		}
 		
 		plugin.getDB().leaveCity(player.getName());
-		plugin.getCache(player.getName()).setCity(null);
+		PlayerCache cache = plugin.getCache(player.getName());
+		cache.setCity(null);
+		cache.setRank(null);
 		plugin.sendMessageToCity(player.getName() + " has left the city.", playerCity);
 		player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR + 
 				"You have left your town.");

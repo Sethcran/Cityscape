@@ -34,7 +34,7 @@ public class Invite extends CSCommand {
 			return;
 		}
 		
-		RankPermissions rp = plugin.getDB().getPermissions(player.getName());
+		RankPermissions rp = plugin.getPermissions(player.getName());
 		if(rp == null) {
 			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
 					"You can not do that.");

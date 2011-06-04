@@ -64,7 +64,7 @@ public class CSPlayerListener extends PlayerListener {
 				}
 			}
 			else if(city.getName().equals(playerCity)) {
-				RankPermissions rp = plugin.getDB().getPermissions(player.getName());
+				RankPermissions rp = plugin.getPermissions(player.getName());
 				if(rp != null) {			
 					if(rp.isCityBuild()) {
 						return;
@@ -117,7 +117,7 @@ public class CSPlayerListener extends PlayerListener {
 		
 		if(city.getName().equals(playerCity)) {
 			if(!city.isResidentBuild()) {
-				RankPermissions rp = plugin.getDB().getPermissions(player.getName());
+				RankPermissions rp = plugin.getPermissions(player.getName());
 				if(rp != null) {			
 					if(!rp.isCityBuild()) {
 						player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR + 
@@ -175,7 +175,7 @@ public class CSPlayerListener extends PlayerListener {
 				}
 			}
 			else if(city.getName().equals(playerCity)) {
-				RankPermissions rp = plugin.getDB().getPermissions(player.getName());
+				RankPermissions rp = plugin.getPermissions(player.getName());
 				if(rp != null) {			
 					if(rp.isCityDestroy()) {
 						return;
@@ -228,7 +228,7 @@ public class CSPlayerListener extends PlayerListener {
 		
 		if(city.getName().equals(playerCity)) {
 			if(!city.isResidentDestroy()) {
-				RankPermissions rp = plugin.getDB().getPermissions(player.getName());
+				RankPermissions rp = plugin.getPermissions(player.getName());
 				if(rp != null) {			
 					if(!rp.isCityDestroy()) {
 						player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR + 
@@ -329,9 +329,10 @@ public class CSPlayerListener extends PlayerListener {
 			currentCityLoc = city.getName();
 		
 		String playerCity = db.getPlayerCity(playerName);
+		String rank = db.getRank(playerName);
 		
 		plugin.insertIntoPlayerCache(playerName, 
-				new PlayerCache(curLoc, null, currentCityLoc, playerCity));
+				new PlayerCache(curLoc, null, currentCityLoc, playerCity, rank));
 		
 		ArrayList<String> invites = db.getInvites(player.getName());
 		if(invites.size() > 0) {

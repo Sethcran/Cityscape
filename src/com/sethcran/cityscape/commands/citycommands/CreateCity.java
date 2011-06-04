@@ -11,6 +11,8 @@ import com.iConomy.system.Holdings;
 import com.sethcran.cityscape.City;
 import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
+import com.sethcran.cityscape.PlayerCache;
+import com.sethcran.cityscape.RankPermissions;
 import com.sethcran.cityscape.commands.CSCommand;
 import com.sethcran.cityscape.database.Database;
 
@@ -129,7 +131,14 @@ public class CreateCity extends CSCommand {
 		com.sethcran.cityscape.Claim claim = new com.sethcran.cityscape.Claim(
 				args[0], worldName, xmin, zmin, xmax, zmax, db.getLastClaimID());
 		plugin.addClaim(claim);
-		plugin.changePlayerCityInCache(player.getName(), args[0]);
+		
+		PlayerCache cache = plugin.getCache(player.getName());
+		cache.setCity(args[0]);
+		cache.setRank("Mayor");
+		RankPermissions rp = new RankPermissions(true);
+		rp.setRankName("Mayor");
+		city.addRank(rp);
+		
 		plugin.getDB().removeAllInvites(player.getName());
 		
 		balance.subtract(plugin.getSettings().cityCost);
