@@ -47,6 +47,7 @@ public class Schemas {
 						"outsiderBuild BOOL, " +
 						"outsiderDestroy BOOL, " +
 						"outsiderSwitch BOOL, " +
+						"snow BOOL, " +
 						"FOREIGN KEY(mayor) REFERENCES CSPlayers(name) ON DELETE CASCADE) " +
 						"ENGINE = InnoDB," +
 						"CHARACTER SET latin1 COLLATE latin1_general_cs;";
@@ -185,6 +186,7 @@ public class Schemas {
 						"outsiderDestroy BOOL," +
 						"outsiderSwitch BOOL," +
 						"cityPlot BOOL, " +
+						"snow BOOL, " +
 						"id INT AUTO_INCREMENT, " +
 						"PRIMARY KEY(id), " +
 						"FOREIGN KEY(city) REFERENCES cscities(name) ON DELETE CASCADE) " +
@@ -210,7 +212,7 @@ public class Schemas {
 						"promote BOOL, " +
 						"demote BOOL, " +
 						"withdraw BOOL, " +
-						"changeRankName BOOL, " +
+						"settings BOOL, " +
 						"setWelcome BOOL, " +
 						"setMayor BOOL, " +
 						"setWarp BOOL, " +

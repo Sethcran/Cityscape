@@ -8,7 +8,7 @@ public class RankPermissions {
 	private boolean promote = false;
 	private boolean demote = false;
 	private boolean withdraw = false;
-	private boolean changeRankName = false;
+	private boolean settings = false;
 	private boolean changeCityPlotPerms = false;
 	private boolean setWelcome = false;
 	private boolean setMayor = false;
@@ -22,9 +22,7 @@ public class RankPermissions {
 	private boolean cityBuild = false;
 	private boolean cityDestroy = false;
 	private boolean citySwitch = false;
-	
 	private String rankName = null;
-	
 	public RankPermissions() {
 		
 	}
@@ -37,7 +35,7 @@ public class RankPermissions {
 		promote = b;
 		demote = b;
 		withdraw = b;
-		changeRankName = b;
+		settings = b;
 		changeCityPlotPerms = b;
 		setWelcome = b;
 		setMayor = b;
@@ -56,7 +54,7 @@ public class RankPermissions {
 	public boolean areAll(boolean b) {
 		if(b == true) {
 			if(addResident && removeResident && claim && unclaim && promote && demote &&
-					withdraw && changeRankName && changeCityPlotPerms && setWelcome &&
+					withdraw && settings && changeCityPlotPerms && setWelcome &&
 					setMayor && setWarp && setPlotSale && setTaxes && setPrices &&
 					createPlots && sendChestsToLostAndFound && cityBuild && cityDestroy &&
 					citySwitch)
@@ -66,7 +64,7 @@ public class RankPermissions {
 		}
 		else {
 			if(!addResident && !removeResident && !claim && !unclaim && !promote && !demote 
-					&& !withdraw && !changeRankName && !changeCityPlotPerms && 
+					&& !withdraw && !settings && !changeCityPlotPerms && 
 					!setWelcome && !setMayor && !setWarp && !setPlotSale && !setTaxes && 
 					!setPrices && !createPlots && !sendChestsToLostAndFound && 
 					!cityBuild && !cityDestroy && !citySwitch)
@@ -75,21 +73,17 @@ public class RankPermissions {
 				return false;
 		}
 	}
-
+	
 	public String getRankName() {
 		return rankName;
 	}
-
+	
 	public boolean isAddResident() {
 		return addResident;
 	}
 
 	public boolean isChangeCityPlotPerms() {
 		return changeCityPlotPerms;
-	}
-
-	public boolean isChangeRankName() {
-		return changeRankName;
 	}
 
 	public boolean isCityBuild() {
@@ -148,6 +142,10 @@ public class RankPermissions {
 		return setTaxes;
 	}
 
+	public boolean isSettings() {
+		return settings;
+	}
+
 	public boolean isSetWarp() {
 		return setWarp;
 	}
@@ -170,10 +168,6 @@ public class RankPermissions {
 
 	public void setChangeCityPlotPerms(boolean changeCityPlotPerms) {
 		this.changeCityPlotPerms = changeCityPlotPerms;
-	}
-
-	public void setChangeRankName(boolean changeRankName) {
-		this.changeRankName = changeRankName;
 	}
 
 	public void setCityBuild(boolean cityBuild) {
@@ -234,6 +228,10 @@ public class RankPermissions {
 
 	public void setSetTaxes(boolean setTaxes) {
 		this.setTaxes = setTaxes;
+	}
+
+	public void setSettings(boolean settings) {
+		this.settings = settings;
 	}
 
 	public void setSetWarp(boolean setWarp) {

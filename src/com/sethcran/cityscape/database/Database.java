@@ -162,6 +162,7 @@ public class Database {
 				city.setSpawnY(rs.getInt("spawnY"));
 				city.setSpawnZ(rs.getInt("spawnZ"));
 				city.setUsedClaims(rs.getInt("usedClaims"));
+				city.setSnow(rs.getBoolean("snow"));
 				
 				ArrayList<Plot> plotList = getPlots(city.getName());
 				for(Plot plot : plotList) {
@@ -312,7 +313,15 @@ public class Database {
 		}
 	}
 	
+	public void updateCitySettings(City city) {
+		cscities.updateCitySettings(city);
+	}
+	
 	public void updatePlayerTimeStamp(String playerName) {
 		csplayers.updatePlayerTimeStamp(playerName);
+	}
+	
+	public void updatePlotSettings(Plot plot) {
+		csplots.updatePlotSettings(plot);
 	}
 }

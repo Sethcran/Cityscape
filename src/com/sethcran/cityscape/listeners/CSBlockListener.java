@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.SnowFormEvent;
 
 import com.sethcran.cityscape.City;
 import com.sethcran.cityscape.Cityscape;
@@ -266,5 +267,26 @@ public class CSBlockListener extends BlockListener {
 						"You can't build here.");
 			}
 		}
+	}
+	
+	@Override
+	public void onSnowForm(SnowFormEvent event) {
+		Block block = event.getBlock();
+		
+		City city = plugin.getCityAt(block.getX(), block.getZ(), block.getWorld().getName());
+		
+		if(city == null)
+			return;
+		
+		Plot plot = city.getPlotAt(block.getX(), block.getZ());
+		
+		if(plot != null) {
+			if(!plot.isSnow())
+				event.setCancelled(true);
+			return;
+		}
+		
+		if(!city.isSnow())
+			event.setCancelled(true);
 	}
 }

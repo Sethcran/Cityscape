@@ -31,6 +31,7 @@ public class City {
 	private boolean outsiderBuild = false;
 	private boolean outsiderDestroy = false;
 	private boolean outsiderSwitch = false;
+	private boolean snow = false;
 	
 	private RTree plotTree = null;
 	private TIntObjectHashMap<Plot> plotMap = null;
@@ -42,7 +43,6 @@ public class City {
 		plotTree = new RTree();
 		plotTree.init(null);
 	}
-	
 	public void addPlot(Plot plot) {
 		plotMap.put(plot.getId(), plot);
 		plotTree.add(new Rectangle(plot.getXmin(), plot.getZmin(), 
@@ -57,7 +57,7 @@ public class City {
 		rankMap.remove(rp.getRankName());
 		rankMap.put(rp.getRankName(), rp);
 	}
-
+	
 	public boolean doesRankExist(String rank) {
 		RankPermissions rp = rankMap.get(rank);
 		if(rp == null)
@@ -72,7 +72,7 @@ public class City {
 	public int getBonusClaims() {
 		return bonusClaims;
 	}
-
+	
 	public String getFounded() {
 		return founded;
 	}
@@ -84,11 +84,11 @@ public class City {
 	public String getName() {
 		return name;
 	}
-	
+
 	public int getNumRanks() {
 		return rankMap.size();
 	}
-	
+
 	public Plot getPlotAt(int x, int z) {
 		TreeProcedure tproc = new TreeProcedure();
 		plotTree.intersects(new Rectangle(x, z, x, z), tproc);
@@ -97,7 +97,7 @@ public class City {
 		}
 		return null;
 	}
-
+	
 	public int getRank() {
 		return rank;
 	}
@@ -105,7 +105,7 @@ public class City {
 	public RankPermissions getRank(String rankName) {
 		return rankMap.get(rankName);
 	}
-	
+
 	public ArrayList<String> getRanks() {
 		Set<String> set = rankMap.keySet();
 		ArrayList<String> list = new ArrayList<String>();
@@ -114,11 +114,11 @@ public class City {
 		}
 		return list;
 	}
-
+	
 	public int getSpawnX() {
 		return spawnX;
 	}
-
+	
 	public int getSpawnY() {
 		return spawnY;
 	}
@@ -130,17 +130,17 @@ public class City {
 	public int getUsedClaims() {
 		return usedClaims;
 	}
+
 	public boolean isOutsiderBuild() {
 		return outsiderBuild;
 	}
+
 	public boolean isOutsiderDestroy() {
 		return outsiderDestroy;
 	}
-	
 	public boolean isOutsiderSwitch() {
 		return outsiderSwitch;
 	}
-	
 	public Plot isPlotIntersect(int xmin, int zmin, int xmax, int zmax) {
 		TreeProcedure tproc = new TreeProcedure();
 		plotTree.intersects(new Rectangle(xmin, zmin, xmax, zmax), tproc);
@@ -161,6 +161,10 @@ public class City {
 	
 	public boolean isResidentSwitch() {
 		return residentSwitch;
+	}
+	
+	public boolean isSnow() {
+		return snow;
 	}
 	
 	public void removePlot(Plot plot) {
@@ -219,6 +223,10 @@ public class City {
 	
 	public void setResidentSwitch(boolean residentSwitch) {
 		this.residentSwitch = residentSwitch;
+	}
+	
+	public void setSnow(boolean snow) {
+		this.snow = snow;
 	}
 	
 	public void setSpawnX(int spawnX) {

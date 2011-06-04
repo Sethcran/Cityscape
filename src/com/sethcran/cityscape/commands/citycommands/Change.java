@@ -145,11 +145,11 @@ public class Change extends CSCommand {
 				else
 					rp.setWithdraw(false);
 			}
-			else if(each[0].equalsIgnoreCase("changerankname")) {
+			else if(each[0].equalsIgnoreCase("changesettings")) {
 				if(each[1].equalsIgnoreCase("on"))
-					rp.setChangeRankName(true);
+					rp.setSettings(true);
 				else
-					rp.setChangeRankName(false);
+					rp.setSettings(false);
 			}
 			else if(each[0].equalsIgnoreCase("changecityplotperms")) {
 				if(each[1].equalsIgnoreCase("on"))

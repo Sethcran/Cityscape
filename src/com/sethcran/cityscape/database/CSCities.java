@@ -34,7 +34,7 @@ public class CSCities extends Table {
 	public void createCity(String playerName, String cityName) {
 		String sql = 	"INSERT INTO cscities " +
 						"VALUES( ?, ?, ?, NOW(), ?, ?, ?, null, null, null, " +
-						"?, ?, ?, ?, ?, ?);";
+						"?, ?, ?, ?, ?, ?, ?);";
 		try {
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, cityName);
@@ -49,6 +49,7 @@ public class CSCities extends Table {
 			stmt.setBoolean(10, settings.defaultOutsiderBuild);
 			stmt.setBoolean(11, settings.defaultOutsiderDestroy);
 			stmt.setBoolean(12, settings.defaultOutsiderSwitch);
+			stmt.setBoolean(13, settings.defaultSnow);
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			if(settings.debug)
@@ -114,6 +115,7 @@ public class CSCities extends Table {
 				city.setSpawnY(rs.getInt("spawnY"));
 				city.setSpawnZ(rs.getInt("spawnZ"));
 				city.setUsedClaims(rs.getInt("usedClaims"));
+				city.setSnow(rs.getBoolean("snow"));
 				return city;
 			}
 		} catch(SQLException e) {
@@ -176,5 +178,33 @@ public class CSCities extends Table {
 			if(settings.debug)
 				e.printStackTrace();
 		}
+	}
+	
+	public void updateCitySettings(City city) {
+		String sql = 	"UPDATE cscities SET " +
+						"residentBuild = ?, " +
+						"residentDestroy = ?, " +
+						"residentSwitch = ?, " +
+						"outsiderBuild = ?, " +
+						"outsiderDestroy = ?, " +
+						"outsiderSwitch = ?, " +
+						"snow = ? " +
+						"WHERE name = ?;";
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setBoolean(1, city.isResidentBuild());
+			stmt.setBoolean(2, city.isResidentDestroy());
+			stmt.setBoolean(3, city.isResidentSwitch());
+			stmt.setBoolean(4, city.isOutsiderBuild());
+			stmt.setBoolean(5, city.isOutsiderDestroy());
+			stmt.setBoolean(6, city.isOutsiderSwitch());
+			stmt.setBoolean(7, city.isSnow());
+			stmt.setString(8, city.getName());
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+						
 	}
 }

@@ -23,6 +23,7 @@ public class Settings {
 	public boolean defaultOutsiderBuild = false;
 	public boolean defaultOutsiderDestroy = false;
 	public boolean defaultOutsiderSwitch = false;
+	public boolean defaultSnow = false;
 	public boolean taxes = false;
 	public boolean cityWarps = false;
 	
@@ -56,6 +57,7 @@ public class Settings {
 		defaultOutsiderBuild = config.getBoolean("cityscape.defaultoutsiderbuild", false);
 		defaultOutsiderDestroy = config.getBoolean("cityscape.defaultoutsiderdestroy", false);
 		defaultOutsiderSwitch = config.getBoolean("cityscape.defaultoutsiderswitch", false);
+		defaultSnow = config.getBoolean("cityscape.defaultsnow", false);
 		
 		taxes = config.getBoolean("cityscape.taxes", false);
 		cityWarps = config.getBoolean("cityscape.citywarps", false);
@@ -87,6 +89,7 @@ public class Settings {
 		config.setProperty("cityscape.defaultoutsiderbuild", false);
 		config.setProperty("cityscape.defaultoutsiderdestroy", false);
 		config.setProperty("cityscape.defaultoutsiderswitch", false);
+		config.setProperty("cityscape.defaultsnow", false);
 		
 		config.setProperty("cityscape.taxes", false);
 		config.setProperty("cityscape.citywarps", false);

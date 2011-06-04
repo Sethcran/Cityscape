@@ -218,6 +218,7 @@ public class Cityscape extends JavaPlugin {
 		
 		pm.registerEvent(Type.BLOCK_BREAK, blockListener, Priority.High, this);
 		pm.registerEvent(Type.BLOCK_PLACE, blockListener, Priority.High, this);
+		pm.registerEvent(Type.SNOW_FORM, blockListener, Priority.High, this);
 	}
 	
 	public void removeClaim(Claim claim) {

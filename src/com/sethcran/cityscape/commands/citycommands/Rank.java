@@ -158,8 +158,8 @@ public class Rank extends CSCommand {
 		if(rp.isSendChestsToLostAndFound())
 			sender.sendMessage(Constants.SUCCESS_COLOR + 
 					"Can send chests to the lost and found.");
-		if(rp.isChangeRankName())
-			sender.sendMessage(Constants.SUCCESS_COLOR + "Can change rank names.");
+		if(rp.isSettings())
+			sender.sendMessage(Constants.SUCCESS_COLOR + "Can change city settings.");
 		if(rp.isSetMayor())
 			sender.sendMessage(Constants.ERROR_COLOR + "Can set a new mayor.");
 		if(rp.isSetName())

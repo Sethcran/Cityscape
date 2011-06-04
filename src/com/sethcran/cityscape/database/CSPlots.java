@@ -19,7 +19,7 @@ public class CSPlots extends Table {
 	public void addPlot(Plot plot) {
 		String sql = 	"INSERT INTO csplots VALUES(" +
 						"?, ?, ?, ?, ?, ?, " +
-						"?, ?, ?, ?, ?, ?, ?, null)";
+						"?, ?, ?, ?, ?, ?, ?, ?, null)";
 		try {
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, plot.getCityName());
@@ -35,6 +35,7 @@ public class CSPlots extends Table {
 			stmt.setBoolean(11, plot.isOutsiderDestroy());
 			stmt.setBoolean(12, plot.isOutsiderSwitch());
 			stmt.setBoolean(13, plot.isCityPlot());
+			stmt.setBoolean(14, plot.isSnow());
 			stmt.executeUpdate();			
 		} catch (SQLException e) {
 			if(settings.debug)
@@ -77,6 +78,7 @@ public class CSPlots extends Table {
 				plot.setResidentSwitch(rs.getBoolean("residentSwitch"));
 				plot.setCityPlot(rs.getBoolean("cityPlot"));
 				plot.setId(rs.getInt("id"));
+				plot.setSnow(rs.getBoolean("snow"));
 				
 				sql = 	"SELECT * " +
 						"FROM csplotpermissions " +
@@ -153,6 +155,33 @@ public class CSPlots extends Table {
 				stmt.setBoolean(6, perms.isCanSwitch());
 				stmt.executeUpdate();
 			}
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+	}
+	
+	public void updatePlotSettings(Plot plot) {
+		String sql = 	"UPDATE csplots SET " +
+						"residentBuild = ?, " +
+						"residentDestroy = ?, " +
+						"residentSwitch = ?, " +
+						"outsiderBuild = ?, " +
+						"outsiderDestroy = ?, " +
+						"outsiderSwitch = ?, " +
+						"snow = ? " +
+						"WHERE id = ?;";
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setBoolean(1, plot.isResidentBuild());
+			stmt.setBoolean(2, plot.isResidentDestroy());
+			stmt.setBoolean(3, plot.isResidentSwitch());
+			stmt.setBoolean(4, plot.isOutsiderBuild());
+			stmt.setBoolean(5, plot.isOutsiderDestroy());
+			stmt.setBoolean(6, plot.isOutsiderSwitch());
+			stmt.setBoolean(7, plot.isSnow());
+			stmt.setInt(8, plot.getId());
+			stmt.executeUpdate();
 		} catch (SQLException e) {
 			if(settings.debug)
 				e.printStackTrace();

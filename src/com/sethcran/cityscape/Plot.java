@@ -19,6 +19,7 @@ public class Plot {
 	private boolean outsiderDestroy = false;
 	private boolean outsiderSwitch = false;
 	private boolean cityPlot = false;
+	private boolean snow = false;
 	
 	private String cityName = null;
 	private String ownerName = null;
@@ -35,18 +36,21 @@ public class Plot {
 		playerPermissions = new HashMap<String, Permissions>();
 		cityPermissions = new HashMap<String, Permissions>();
 	}
+	public Set<Entry<String, Permissions>> getCitiesWithPermissions() {
+		return cityPermissions.entrySet();
+	}
+
 	public String getCityName() {
 		return cityName;
 	}
-
 	public Permissions getCityPermissions(String cityName) {
 		return cityPermissions.get(cityName);
 	}
-	
+
 	public int getId() {
 		return id;
 	}
-
+	
 	public String getOwnerName() {
 		return ownerName;
 	}
@@ -54,19 +58,15 @@ public class Plot {
 	public Permissions getPlayerPermissions(String playerName) {
 		return playerPermissions.get(playerName);
 	}
-	
-	public Set<Entry<String, Permissions>> getCitiesWithPermissions() {
-		return cityPermissions.entrySet();
-	}
-	
+
 	public Set<Entry<String, Permissions>> getPlayersWithPermissions() {
 		return playerPermissions.entrySet();
 	}
-
+	
 	public int getXmax() {
 		return xmax;
 	}
-
+	
 	public int getXmin() {
 		return xmin;
 	}
@@ -114,7 +114,11 @@ public class Plot {
 	public boolean isResidentSwitch() {
 		return residentSwitch;
 	}
-	
+
+	public boolean isSnow() {
+		return snow;
+	}
+
 	public void removeFromCityPermissions(String city) {
 		cityPermissions.remove(city);
 	}
@@ -122,7 +126,7 @@ public class Plot {
 	public void removeFromPlayerPermissions(String player) {
 		playerPermissions.remove(player);
 	}
-
+	
 	public void setCityName(String cityName) {
 		this.cityName = cityName;
 	}
@@ -134,7 +138,7 @@ public class Plot {
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
 	public void setOutsiderBuild(boolean outsiderBuild) {
 		this.outsiderBuild = outsiderBuild;
 	}
@@ -146,10 +150,10 @@ public class Plot {
 	public void setOutsiderSwitch(boolean outsiderSwitch) {
 		this.outsiderSwitch = outsiderSwitch;
 	}
+	
 	public void setOwnerName(String ownerName) {
 		this.ownerName = ownerName;
 	}
-	
 	public void setResidentBuild(boolean residentBuild) {
 		this.residentBuild = residentBuild;
 	}
@@ -160,6 +164,10 @@ public class Plot {
 	
 	public void setResidentSwitch(boolean residentSwitch) {
 		this.residentSwitch = residentSwitch;
+	}
+	
+	public void setSnow(boolean snow) {
+		this.snow = snow;
 	}
 	
 	public void setXmax(int xmax) {

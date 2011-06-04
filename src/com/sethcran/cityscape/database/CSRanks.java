@@ -32,7 +32,7 @@ public class CSRanks extends Table {
 			stmt.setBoolean(7, rp.isPromote());
 			stmt.setBoolean(8, rp.isDemote());
 			stmt.setBoolean(9, rp.isWithdraw());
-			stmt.setBoolean(10, rp.isChangeRankName());
+			stmt.setBoolean(10, rp.isSettings());
 			stmt.setBoolean(11, rp.isSetWelcome());
 			stmt.setBoolean(12, rp.isSetMayor());
 			stmt.setBoolean(13, rp.isSetWarp());
@@ -101,7 +101,7 @@ public class CSRanks extends Table {
 			if(rs.next()) {
 				RankPermissions rp = new RankPermissions();
 				rp.setAddResident(rs.getBoolean("addResident"));
-				rp.setChangeRankName(rs.getBoolean("changeRankName"));
+				rp.setSettings(rs.getBoolean("settings"));
 				rp.setClaim(rs.getBoolean("claim"));
 				rp.setCreatePlots(rs.getBoolean("createPlots"));
 				rp.setDemote(rs.getBoolean("demote"));
@@ -143,7 +143,7 @@ public class CSRanks extends Table {
 			while(rs.next()) {
 				RankPermissions rp = new RankPermissions();
 				rp.setAddResident(rs.getBoolean("addResident"));
-				rp.setChangeRankName(rs.getBoolean("changeRankName"));
+				rp.setSettings(rs.getBoolean("settings"));
 				rp.setClaim(rs.getBoolean("claim"));
 				rp.setCreatePlots(rs.getBoolean("createPlots"));
 				rp.setDemote(rs.getBoolean("demote"));
@@ -207,7 +207,7 @@ public class CSRanks extends Table {
 			stmt.setBoolean(5, rp.isPromote());
 			stmt.setBoolean(6, rp.isDemote());
 			stmt.setBoolean(7, rp.isWithdraw());
-			stmt.setBoolean(8, rp.isChangeRankName());
+			stmt.setBoolean(8, rp.isSettings());
 			stmt.setBoolean(9, rp.isSetWelcome());
 			stmt.setBoolean(10, rp.isSetMayor());
 			stmt.setBoolean(11, rp.isSetWarp());

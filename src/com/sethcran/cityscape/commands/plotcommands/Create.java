@@ -105,6 +105,7 @@ public class Create extends CSCommand {
 		plot.setResidentDestroy(settings.defaultResidentDestroy);
 		plot.setResidentSwitch(settings.defaultResidentSwitch);
 		plot.setCityPlot(true);
+		plot.setSnow(settings.defaultSnow);
 		
 		plugin.getDB().addPlot(plot);
 		plot.setId(plugin.getDB().getLastPlotID());
