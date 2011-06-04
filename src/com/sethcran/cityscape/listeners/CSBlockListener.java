@@ -47,7 +47,7 @@ public class CSBlockListener extends BlockListener {
 								"You can't destroy here.");
 						return;
 					}
-					else if(!perms.isCanDestroy()) {
+					else if(!perms.isCanDestroy()) {					
 						event.setCancelled(true);
 						player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
 								"You can't destroy here.");
@@ -82,10 +82,19 @@ public class CSBlockListener extends BlockListener {
 				if(!plot.isOutsiderDestroy()) {
 					Permissions perms = plot.getPlayerPermissions(player.getName());
 					if(perms == null) {
-						event.setCancelled(true);
-						player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-								"You can't destroy here.");
-						return;
+						Permissions cityperms = plot.getCityPermissions(playerCity);
+						if(cityperms == null) {
+							event.setCancelled(true);
+							player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+									"You can't destroy here.");
+							return;
+						}
+						else if(!cityperms.isCanDestroy()) {
+							event.setCancelled(true);
+							player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+									"You can't destroy here.");
+							return;
+						}
 					}
 					else if(!perms.isCanDestroy()) {
 						event.setCancelled(true);
@@ -197,10 +206,19 @@ public class CSBlockListener extends BlockListener {
 				if(!plot.isOutsiderBuild()) {
 					Permissions perms = plot.getPlayerPermissions(player.getName());
 					if(perms == null) {
-						event.setCancelled(true);
-						player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-								"You can't build here.");
-						return;
+						Permissions cityperms = plot.getCityPermissions(playerCity);
+						if(cityperms == null) {
+							event.setCancelled(true);
+							player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+									"You can't destroy here.");
+							return;
+						}
+						else if(!cityperms.isCanDestroy()) {
+							event.setCancelled(true);
+							player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+									"You can't destroy here.");
+							return;
+						}
 					}
 					else if(!perms.isCanBuild()) {
 						event.setCancelled(true);
