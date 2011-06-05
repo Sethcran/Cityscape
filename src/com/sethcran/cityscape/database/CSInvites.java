@@ -101,19 +101,4 @@ public class CSInvites extends Table {
 				e.printStackTrace();
 		}
 	}
-	
-	public void renameCity(String oldName, String newName) {
-		String sql = 	"UPDATE csinvites SET " +
-						"city = ? " +
-						"WHERE city = ?;";
-		try {
-			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setString(1, newName);
-			stmt.setString(2, oldName);
-			stmt.executeUpdate();
-		} catch (SQLException e) {
-			if(settings.debug)
-				e.printStackTrace();
-		}
-	}
 }

@@ -67,8 +67,8 @@ public class Rename extends CSCommand {
 			return;
 		}
 		
-		plugin.renameCity(city.getName(), args[0]);
 		plugin.getDB().renameCity(city.getName(), args[0]);
+		plugin.renameCity(city.getName(), args[0]);
 		
 	}
 

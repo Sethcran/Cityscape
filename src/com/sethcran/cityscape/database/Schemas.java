@@ -48,7 +48,8 @@ public class Schemas {
 						"outsiderDestroy BOOL, " +
 						"outsiderSwitch BOOL, " +
 						"snow BOOL, " +
-						"FOREIGN KEY(mayor) REFERENCES CSPlayers(name) ON DELETE CASCADE) " +
+						"FOREIGN KEY(mayor) REFERENCES CSPlayers(name) " +
+						"ON DELETE CASCADE) " +
 						"ENGINE = InnoDB," +
 						"CHARACTER SET latin1 COLLATE latin1_general_cs;";
 		
@@ -70,7 +71,8 @@ public class Schemas {
 						"zmax INT, " +
 						"id INT AUTO_INCREMENT, " +
 						"PRIMARY KEY(id), " +
-						"FOREIGN KEY(city) REFERENCES cscities(name) ON DELETE CASCADE)" +
+						"FOREIGN KEY(city) REFERENCES cscities(name) " +
+						"ON DELETE CASCADE ON UPDATE CASCADE)" +
 						"ENGINE = InnoDB," +
 						"CHARACTER SET latin1 COLLATE latin1_general_cs;";
 		
@@ -105,8 +107,7 @@ public class Schemas {
 						"city CHAR(" + Constants.TOWN_MAX_NAME_LENGTH + ")," +
 						"startingfrom DATETIME NOT NULL," +
 						"PRIMARY KEY(player, startingfrom)," +
-						"FOREIGN KEY(player) REFERENCES CSPlayers(name) ON DELETE CASCADE," +
-						"FOREIGN KEY(city) REFERENCES CSCities(name) ON DELETE NO ACTION) " +
+						"FOREIGN KEY(player) REFERENCES CSPlayers(name) ON DELETE CASCADE)" +
 						"ENGINE = InnoDB," +
 						"CHARACTER SET latin1 COLLATE latin1_general_cs;";
 		
@@ -125,7 +126,8 @@ public class Schemas {
 						"day DATETIME, " +
 						"PRIMARY KEY(player, city), " +
 						"FOREIGN KEY(player) REFERENCES csplayers(name) ON DELETE CASCADE, " +
-						"FOREIGN KEY(city) REFERENCES cscities(name) ON DELETE CASCADE) " +
+						"FOREIGN KEY(city) REFERENCES cscities(name) ON DELETE CASCADE " +
+						"ON UPDATE CASCADE) " +
 						"ENGINE = InnoDB," +
 						"CHARACTER SET latin1 COLLATE latin1_general_cs;";
 		try {
@@ -191,7 +193,8 @@ public class Schemas {
 						"price INT, " +
 						"id INT AUTO_INCREMENT, " +
 						"PRIMARY KEY(id), " +
-						"FOREIGN KEY(city) REFERENCES cscities(name) ON DELETE CASCADE) " +
+						"FOREIGN KEY(city) REFERENCES cscities(name) " +
+						"ON DELETE CASCADE ON UPDATE CASCADE) " +
 						"ENGINE = InnoDB," +
 						"CHARACTER SET latin1 COLLATE latin1_general_cs;";
 		
@@ -228,7 +231,8 @@ public class Schemas {
 						"citySwitch BOOL, " +
 						"changeCityPlotPerms BOOL, " +
 						"PRIMARY KEY(city, name), " +
-						"FOREIGN KEY(city) REFERENCES cscities(name) ON DELETE CASCADE)" +
+						"FOREIGN KEY(city) REFERENCES cscities(name) " +
+						"ON DELETE CASCADE ON UPDATE CASCADE)" +
 						"ENGINE = InnoDB," +
 						"CHARACTER SET latin1 COLLATE latin1_general_cs;";
 		try {
@@ -245,7 +249,8 @@ public class Schemas {
 						"city CHAR(" + Constants.TOWN_MAX_NAME_LENGTH + "), " +
 						"rank CHAR(" + Constants.RANK_MAX_NAME_LENGTH + "), " +
 						"FOREIGN KEY(player) REFERENCES csplayers(name) ON DELETE CASCADE, " +
-						"FOREIGN KEY(city) REFERENCES cscities(name) ON DELETE NO ACTION) " +
+						"FOREIGN KEY(city) REFERENCES cscities(name) " +
+						"ON DELETE SET NULL ON UPDATE CASCADE) " +
 						"ENGINE = InnoDB," +
 						"CHARACTER SET latin1 COLLATE latin1_general_cs;";
 		try {

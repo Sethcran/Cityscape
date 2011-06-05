@@ -42,7 +42,7 @@ public class CSPlayerListener extends PlayerListener {
 		
 		City city = plugin.getCityAt(block.getX(), block.getZ(), block.getWorld().getName());
 		
-		String playerCity = plugin.getDB().getCurrentCity(player.getName());
+		String playerCity = plugin.getCache(player.getName()).getCity();
 		
 		Plot plot = city.getPlotAt(block.getX(), block.getZ());
 		if(plot != null) {
@@ -162,7 +162,7 @@ public class CSPlayerListener extends PlayerListener {
 		
 		City city = plugin.getCityAt(block.getX(), block.getZ(), block.getWorld().getName());
 		
-		String playerCity = plugin.getDB().getCurrentCity(player.getName());
+		String playerCity = plugin.getCache(player.getName()).getCity();
 		
 		Plot plot = city.getPlotAt(block.getX(), block.getZ());
 		if(plot != null) {

@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.sethcran.cityscape.City;
+import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.Settings;
 
@@ -189,6 +190,7 @@ public class CSCities extends Table {
 			stmt.setString(1, newName);
 			stmt.setString(2, oldName);
 			stmt.executeUpdate();
+			Cityscape.log.info(oldName + " Done updating cities. " + newName);
 		} catch (SQLException e) {
 			if(settings.debug)
 				e.printStackTrace();

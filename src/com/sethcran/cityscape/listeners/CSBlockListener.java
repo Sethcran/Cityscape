@@ -35,7 +35,7 @@ public class CSBlockListener extends BlockListener {
 			return;
 		}
 		
-		String playerCity = plugin.getDB().getCurrentCity(player.getName());
+		String playerCity = plugin.getCache(player.getName()).getCity();
 		
 		Plot plot = city.getPlotAt(block.getX(), block.getZ());
 		if(plot != null) {
@@ -159,7 +159,7 @@ public class CSBlockListener extends BlockListener {
 		if(city == null)
 			return;
 		
-		String playerCity = plugin.getDB().getCurrentCity(player.getName());
+		String playerCity = plugin.getCache(player.getName()).getCity();
 		
 		Plot plot = city.getPlotAt(block.getX(), block.getZ());
 		if(plot != null) {

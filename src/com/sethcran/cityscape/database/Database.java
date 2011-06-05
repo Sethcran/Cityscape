@@ -289,20 +289,8 @@ public class Database {
 	}
 	
 	public void renameCity(String oldName, String newName) {
-		try {
-			con.setAutoCommit(false);
-			cscities.renameCity(oldName, newName);
-			csclaims.renameCity(oldName, newName);
-			csinvites.renameCity(oldName, newName);
-			csplots.renameCity(oldName, newName);
-			csranks.renameCity(oldName, newName);
-			csresidents.renameCity(oldName, newName);
-			con.commit();
-			con.setAutoCommit(true);
-		} catch(SQLException e) {
-			if(settings.debug)
-				e.printStackTrace();
-		}
+		cscities.renameCity(oldName, newName);
+		Cityscape.log.info("Done renaming cities.");
 	}
 	
 	public void setPlotForSale(Plot plot) {

@@ -145,33 +145,6 @@ public class CSPlots extends Table {
 		}
 	}
 	
-	public void renameCity(String oldName, String newName) {
-		String sql = 	"UPDATE csplots SET " +
-						"owner = ?, " +
-						"city = ? " +
-						"WHERE city = ? " +
-						"AND owner = ?;";
-		try {
-			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setString(1, newName);
-			stmt.setString(2, newName);
-			stmt.setString(3, oldName);
-			stmt.setString(4, oldName);
-			stmt.executeUpdate();
-			
-			sql = 	"UPDATE csplots SET " +
-					"city = ? " +
-					"WHERE city = ?;";
-			stmt = con.prepareStatement(sql);
-			stmt.setString(1, newName);
-			stmt.setString(2, oldName);
-			stmt.executeUpdate();
-		} catch (SQLException e) {
-			if(settings.debug)
-				e.printStackTrace();
-		}
-	}
-	
 	public void setPlotForSale(Plot plot) {
 		String sql = 	"UPDATE csplots SET " +
 						"forSale = ?, " +
