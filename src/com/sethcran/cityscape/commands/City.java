@@ -34,7 +34,9 @@ public class City extends CSCommand {
 		addToMap(new Rename(plugin));
 		addToMap(new Residents(plugin));
 		addToMap(new Settings(plugin));
+		addToMap(new Setwarp(plugin));
 		addToMap(new Unclaim(plugin));
+		addToMap(new Warp(plugin));
 		addToMap(new Withdraw(plugin));
 	}
 

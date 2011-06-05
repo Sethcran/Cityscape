@@ -310,6 +310,10 @@ public class Database {
 		csranks.setPermissions(city, rp);
 	}
 	
+	public void setWarp(City city) {
+		cscities.setWarp(city);
+	}
+	
 	public void unclaimChunk(Claim claim) {
 		try {
 			con.setAutoCommit(false);

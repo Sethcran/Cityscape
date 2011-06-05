@@ -34,7 +34,7 @@ public class CSCities extends Table {
 	
 	public void createCity(String playerName, String cityName) {
 		String sql = 	"INSERT INTO cscities " +
-						"VALUES( ?, ?, ?, NOW(), ?, ?, ?, null, null, null, " +
+						"VALUES( ?, ?, ?, NOW(), ?, ?, ?, null, null, null, null, " +
 						"?, ?, ?, ?, ?, ?, ?);";
 		try {
 			PreparedStatement stmt = con.prepareStatement(sql);
@@ -117,6 +117,7 @@ public class CSCities extends Table {
 				city.setSpawnZ(rs.getInt("spawnZ"));
 				city.setUsedClaims(rs.getInt("usedClaims"));
 				city.setSnow(rs.getBoolean("snow"));
+				city.setWorld(rs.getString("world"));
 				return city;
 			}
 		} catch(SQLException e) {
@@ -191,6 +192,27 @@ public class CSCities extends Table {
 			stmt.setString(2, oldName);
 			stmt.executeUpdate();
 			Cityscape.log.info(oldName + " Done updating cities. " + newName);
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+	}
+	
+	public void setWarp(City city) {
+		String sql = 	"UPDATE cscities SET " +
+						"spawnX = ?, " +
+						"spawnY = ?, " +
+						"spawnZ = ?, " +
+						"world = ? " +
+						"WHERE name = ?;";
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setInt(1, city.getSpawnX());
+			stmt.setInt(2, city.getSpawnY());
+			stmt.setInt(3, city.getSpawnZ());
+			stmt.setString(4, city.getWorld());
+			stmt.setString(5, city.getName());
+			stmt.executeUpdate();
 		} catch (SQLException e) {
 			if(settings.debug)
 				e.printStackTrace();

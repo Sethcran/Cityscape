@@ -1,11 +1,11 @@
 package com.sethcran.cityscape;
 
+import gnu.trove.TIntObjectHashMap;
+import gnu.trove.TIntObjectProcedure;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
-
-import gnu.trove.TIntObjectHashMap;
-import gnu.trove.TIntObjectProcedure;
 
 import com.iConomy.iConomy;
 import com.iConomy.system.Account;
@@ -27,6 +27,7 @@ public class City {
 	private int spawnX = 0;
 	private int spawnY = 0;
 	private int spawnZ = 0;
+	String world = null;
 	
 	private boolean residentBuild = false;
 	private boolean residentDestroy = false;
@@ -35,11 +36,10 @@ public class City {
 	private boolean outsiderDestroy = false;
 	private boolean outsiderSwitch = false;
 	private boolean snow = false;
-	
 	private RTree plotTree = null;
 	private TIntObjectHashMap<Plot> plotMap = null;
-	private HashMap<String, RankPermissions> rankMap = null;
 	
+	private HashMap<String, RankPermissions> rankMap = null;
 	public City() {
 		rankMap = new HashMap<String, RankPermissions>();
 		plotMap = new TIntObjectHashMap<Plot>();
@@ -55,7 +55,6 @@ public class City {
 	public void addRank(RankPermissions rp) {
 		rankMap.put(rp.getRankName(), rp);
 	}
-	
 	public void changeRank(RankPermissions rp) {
 		rankMap.remove(rp.getRankName());
 		rankMap.put(rp.getRankName(), rp);
@@ -75,7 +74,7 @@ public class City {
 	public int getBaseClaims() {
 		return baseClaims;
 	}
-
+	
 	public int getBonusClaims() {
 		return bonusClaims;
 	}
@@ -87,7 +86,7 @@ public class City {
 	public String getMayor() {
 		return mayor;
 	}
-
+	
 	public String getName() {
 		return name;
 	}
@@ -104,15 +103,15 @@ public class City {
 		}
 		return null;
 	}
-	
+
 	public int getRank() {
 		return rank;
 	}
-	
+
 	public RankPermissions getRank(String rankName) {
 		return rankMap.get(rankName);
 	}
-
+	
 	public ArrayList<String> getRanks() {
 		Set<String> set = rankMap.keySet();
 		ArrayList<String> list = new ArrayList<String>();
@@ -125,17 +124,21 @@ public class City {
 	public int getSpawnX() {
 		return spawnX;
 	}
-	
+
 	public int getSpawnY() {
 		return spawnY;
 	}
-
+	
 	public int getSpawnZ() {
 		return spawnZ;
 	}
-
+	
 	public int getUsedClaims() {
 		return usedClaims;
+	}
+
+	public String getWorld() {
+		return world;
 	}
 
 	public boolean isOutsiderBuild() {
@@ -145,6 +148,7 @@ public class City {
 	public boolean isOutsiderDestroy() {
 		return outsiderDestroy;
 	}
+
 	public boolean isOutsiderSwitch() {
 		return outsiderSwitch;
 	}
@@ -157,7 +161,6 @@ public class City {
 		}
 		return null;
 	}
-	
 	public boolean isResidentBuild() {
 		return residentBuild;
 	}
@@ -265,5 +268,9 @@ public class City {
 	
 	public void setUsedClaims(int usedClaims) {
 		this.usedClaims = usedClaims;
+	}
+	
+	public void setWorld(String world) {
+		this.world = world;
 	}
 }

@@ -41,6 +41,7 @@ public class Schemas {
 						"spawnX INT," +
 						"spawnY INT," +
 						"spawnZ INT," +
+						"world CHAR(" + Constants.WORLD_MAX_NAME_LENGTH + "), " +
 						"residentBuild BOOL, " +
 						"residentDestroy BOOL, " +
 						"residentSwitch BOOL, " +
