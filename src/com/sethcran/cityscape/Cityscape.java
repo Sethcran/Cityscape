@@ -1,6 +1,7 @@
 package com.sethcran.cityscape;
 
 import gnu.trove.TIntObjectHashMap;
+import gnu.trove.TIntObjectProcedure;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -239,6 +240,27 @@ public class Cityscape extends JavaPlugin {
 	
 	public void removeSelection(String player) {
 		selectionMap.remove(player);
+	}
+	
+	public void renameCity(String oldName, String newName) {
+		final String tempName = newName;
+		claimMap.forEachEntry(new TIntObjectProcedure<Claim>() {
+			
+			public boolean execute(int i, Claim claim) {
+				claim.setCityName(tempName);
+				return true;
+			}
+		});
+		
+		City city = cityCache.get(oldName);
+		cityCache.remove(oldName);
+		city.rename(newName);
+		cityCache.put(newName, city);
+		
+		for(PlayerCache pc : playerCache.values()) {
+			if(oldName.equals(pc.getCity()))
+				pc.setCity(newName);
+		}
 	}
 	
 	public void sendMessageToCity(String message, String city) {

@@ -31,6 +31,7 @@ public class City extends CSCommand {
 		addToMap(new Rank(plugin));
 		addToMap(new Ranks(plugin));
 		addToMap(new Remove(plugin));
+		addToMap(new Rename(plugin));
 		addToMap(new Residents(plugin));
 		addToMap(new Settings(plugin));
 		addToMap(new Unclaim(plugin));

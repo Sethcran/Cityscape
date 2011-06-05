@@ -288,6 +288,23 @@ public class Database {
 		csplots.removePlotPermissions(id, name, isPlayer);
 	}
 	
+	public void renameCity(String oldName, String newName) {
+		try {
+			con.setAutoCommit(false);
+			cscities.renameCity(oldName, newName);
+			csclaims.renameCity(oldName, newName);
+			csinvites.renameCity(oldName, newName);
+			csplots.renameCity(oldName, newName);
+			csranks.renameCity(oldName, newName);
+			csresidents.renameCity(oldName, newName);
+			con.commit();
+			con.setAutoCommit(true);
+		} catch(SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+	}
+	
 	public void setPlotForSale(Plot plot) {
 		csplots.setPlotForSale(plot);
 	}

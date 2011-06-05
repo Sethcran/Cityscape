@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 import gnu.trove.TIntObjectHashMap;
+import gnu.trove.TIntObjectProcedure;
 
 import com.iConomy.iConomy;
 import com.iConomy.system.Account;
@@ -181,6 +182,21 @@ public class City {
 	
 	public void removeRank(String rank) {
 		rankMap.remove(rank);
+	}
+	
+	public void rename(String newName) {
+		name = newName;
+		
+		final String tempName = newName;
+		plotMap.forEachEntry(new TIntObjectProcedure<Plot>() {
+			
+			public boolean execute(int i, Plot plot) {
+				if(plot.getOwnerName().equals(plot.getCityName()))
+					plot.setOwnerName(tempName);
+				plot.setCityName(tempName);
+				return true;
+			}
+		});
 	}
 	
 	public void setBaseClaims(int baseClaims) {
