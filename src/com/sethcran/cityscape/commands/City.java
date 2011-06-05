@@ -21,6 +21,7 @@ public class City extends CSCommand {
 		addToMap(new Decline(plugin));
 		addToMap(new Default(plugin));
 		addToMap(new Demote(plugin));
+		addToMap(new Deposit(plugin));
 		addToMap(new Here(plugin));
 		addToMap(new Invite(plugin));
 		addToMap(new Invites(plugin));
@@ -33,6 +34,7 @@ public class City extends CSCommand {
 		addToMap(new Residents(plugin));
 		addToMap(new Settings(plugin));
 		addToMap(new Unclaim(plugin));
+		addToMap(new Withdraw(plugin));
 	}
 
 	@Override
