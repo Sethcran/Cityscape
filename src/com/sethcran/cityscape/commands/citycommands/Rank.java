@@ -166,8 +166,6 @@ public class Rank extends CSCommand {
 			sender.sendMessage(Constants.SUCCESS_COLOR + "Can change the city name.");
 		if(rp.isSetPlotSale())
 			sender.sendMessage(Constants.SUCCESS_COLOR + "Can set plots for sale.");
-		if(rp.isSetPrices())
-			sender.sendMessage(Constants.SUCCESS_COLOR + "Can change plot prices.");
 		if(plugin.getSettings().taxes) {
 			if(rp.isSetTaxes())
 				sender.sendMessage(Constants.SUCCESS_COLOR + "Can change taxes.");

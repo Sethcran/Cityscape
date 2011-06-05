@@ -6,6 +6,8 @@ import java.util.Set;
 
 import gnu.trove.TIntObjectHashMap;
 
+import com.iConomy.iConomy;
+import com.iConomy.system.Account;
 import com.infomatiq.jsi.Rectangle;
 import com.infomatiq.jsi.rtree.RTree;
 
@@ -63,6 +65,10 @@ public class City {
 		if(rp == null)
 			return false;
 		return true;
+	}
+	
+	public Account getAccount() {
+		return iConomy.getAccount(name + ":city");
 	}
 	
 	public int getBaseClaims() {

@@ -4,6 +4,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.iConomy.iConomy;
+import com.iConomy.system.Holdings;
 import com.sethcran.cityscape.City;
 import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
@@ -48,8 +50,10 @@ public class Default extends CSCommand {
 				city.getBonusClaims() ) + ChatColor.AQUA + " [Bonus: " +
 				city.getBonusClaims() + "]");
 		
+		Holdings balance = city.getAccount().getHoldings();
 		sender.sendMessage(Constants.GROUP_COLOR + "Mayor: " + Constants.MESSAGE_COLOR +
-				city.getMayor());
+				city.getMayor() + "  " + Constants.GROUP_COLOR + "Bank: " + 
+				Constants.MESSAGE_COLOR + iConomy.format(balance.balance()));
 		
 		sender.sendMessage(Constants.GROUP_COLOR + "Permissions:");
 		

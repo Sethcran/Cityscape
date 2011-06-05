@@ -10,8 +10,9 @@ public class Plot {
 	private int xmax = 0;
 	private int zmax = 0;
 	
-	private int id;
-	
+	private int id = 0;
+	private int price = 0;
+
 	private boolean residentBuild = false;
 	private boolean residentDestroy = false;
 	private boolean residentSwitch = false;
@@ -20,13 +21,14 @@ public class Plot {
 	private boolean outsiderSwitch = false;
 	private boolean cityPlot = false;
 	private boolean snow = false;
+	private boolean forSale = false;
 	
 	private String cityName = null;
 	private String ownerName = null;
 
 	private HashMap<String, Permissions> playerPermissions = null;
 	private HashMap<String, Permissions> cityPermissions = null;
-
+	
 	public Plot(int xmin, int zmin, int xmax, int zmax) {
 		this.xmin = xmin;
 		this.zmin = zmin;
@@ -50,7 +52,6 @@ public class Plot {
 	public int getId() {
 		return id;
 	}
-	
 	public String getOwnerName() {
 		return ownerName;
 	}
@@ -58,15 +59,18 @@ public class Plot {
 	public Permissions getPlayerPermissions(String playerName) {
 		return playerPermissions.get(playerName);
 	}
-
 	public Set<Entry<String, Permissions>> getPlayersWithPermissions() {
 		return playerPermissions.entrySet();
+	}
+
+	public int getPrice() {
+		return price;
 	}
 	
 	public int getXmax() {
 		return xmax;
 	}
-	
+
 	public int getXmin() {
 		return xmin;
 	}
@@ -74,11 +78,11 @@ public class Plot {
 	public int getZmax() {
 		return zmax;
 	}
-
+	
 	public int getZmin() {
 		return zmin;
 	}
-
+	
 	public void insertIntoCityPermissions(String cityName, Permissions perms) {
 		cityPermissions.put(cityName, perms);
 	}
@@ -89,6 +93,10 @@ public class Plot {
 
 	public boolean isCityPlot() {
 		return cityPlot;
+	}
+
+	public boolean isForSale() {
+		return forSale;
 	}
 
 	public boolean isOutsiderBuild() {
@@ -122,17 +130,21 @@ public class Plot {
 	public void removeFromCityPermissions(String city) {
 		cityPermissions.remove(city);
 	}
-	
+
 	public void removeFromPlayerPermissions(String player) {
 		playerPermissions.remove(player);
 	}
-	
+
 	public void setCityName(String cityName) {
 		this.cityName = cityName;
 	}
-
+	
 	public void setCityPlot(boolean cityPlot) {
 		this.cityPlot = cityPlot;
+	}
+	
+	public void setForSale(boolean forSale) {
+		this.forSale = forSale;
 	}
 
 	public void setId(int id) {
@@ -142,7 +154,7 @@ public class Plot {
 	public void setOutsiderBuild(boolean outsiderBuild) {
 		this.outsiderBuild = outsiderBuild;
 	}
-	
+
 	public void setOutsiderDestroy(boolean outsiderDestroy) {
 		this.outsiderDestroy = outsiderDestroy;
 	}
@@ -153,6 +165,10 @@ public class Plot {
 	
 	public void setOwnerName(String ownerName) {
 		this.ownerName = ownerName;
+	}
+	
+	public void setPrice(int price) {
+		this.price = price;
 	}
 	public void setResidentBuild(boolean residentBuild) {
 		this.residentBuild = residentBuild;

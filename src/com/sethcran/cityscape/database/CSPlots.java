@@ -19,7 +19,7 @@ public class CSPlots extends Table {
 	public void addPlot(Plot plot) {
 		String sql = 	"INSERT INTO csplots VALUES(" +
 						"?, ?, ?, ?, ?, ?, " +
-						"?, ?, ?, ?, ?, ?, ?, ?, null)";
+						"?, ?, ?, ?, ?, ?, ?, ?, ?, ?, null)";
 		try {
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, plot.getCityName());
@@ -36,6 +36,8 @@ public class CSPlots extends Table {
 			stmt.setBoolean(12, plot.isOutsiderSwitch());
 			stmt.setBoolean(13, plot.isCityPlot());
 			stmt.setBoolean(14, plot.isSnow());
+			stmt.setBoolean(15, plot.isForSale());
+			stmt.setInt(16, plot.getPrice());
 			stmt.executeUpdate();			
 		} catch (SQLException e) {
 			if(settings.debug)
@@ -79,6 +81,8 @@ public class CSPlots extends Table {
 				plot.setCityPlot(rs.getBoolean("cityPlot"));
 				plot.setId(rs.getInt("id"));
 				plot.setSnow(rs.getBoolean("snow"));
+				plot.setForSale(rs.getBoolean("forSale"));
+				plot.setPrice(rs.getInt("price"));
 				
 				sql = 	"SELECT * " +
 						"FROM csplotpermissions " +
@@ -109,6 +113,20 @@ public class CSPlots extends Table {
 		return plotList;
 	}
 	
+	public void removePlayer(String player) {
+		String sql = 	"UPDATE csplots SET " +
+						"owner = city " +
+						"WHERE owner = ?;";
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, player);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+	}
+	
 	public void removePlotPermissions(int id, String name, boolean isPlayer) {
 		String sql = 	"DELETE FROM csplotpermissions " +
 						"WHERE id = ? " +
@@ -119,6 +137,25 @@ public class CSPlots extends Table {
 			stmt.setInt(1, id);
 			stmt.setString(2, name);
 			stmt.setBoolean(3, isPlayer);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+	}
+	
+	public void setPlotForSale(Plot plot) {
+		String sql = 	"UPDATE csplots SET " +
+						"forSale = ?, " +
+						"price = ?, " +
+						"owner = ? " +
+						"WHERE id = ?;";
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setBoolean(1, plot.isForSale());
+			stmt.setInt(2, plot.getPrice());
+			stmt.setString(3, plot.getOwnerName());
+			stmt.setInt(4, plot.getId());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			if(settings.debug)

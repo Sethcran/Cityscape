@@ -267,6 +267,7 @@ public class Database {
 			con.setAutoCommit(false);
 			csresidents.setCurrentCity(playerName, null, null);
 			csplayercitydata.addPlayerCityHistory(playerName, null);
+			csplots.removePlayer(playerName);
 			con.commit();
 			con.setAutoCommit(true);
 		} catch(SQLException e) {
@@ -285,6 +286,10 @@ public class Database {
 	
 	public void removePlotPermissions(int id, String name, boolean isPlayer) {
 		csplots.removePlotPermissions(id, name, isPlayer);
+	}
+	
+	public void setPlotForSale(Plot plot) {
+		csplots.setPlotForSale(plot);
 	}
 	
 	public void setPlotPermissions(int id, String name, Permissions perms, 

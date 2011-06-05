@@ -429,8 +429,11 @@ public class CSPlayerListener extends PlayerListener {
 		else {
 			if(!plot.getOwnerName().equals(cache.getLastPlotLocation())) {
 				if(plot.isCityPlot()) {
-					player.sendMessage(ChatColor.DARK_GREEN + 
-							"You have entered a city plot.");
+					String message = ChatColor.DARK_GREEN + "You have entered a city" +
+					"plot. ";
+					if(plot.isForSale())
+						message += ChatColor.YELLOW + "For sale!";
+					player.sendMessage(message);
 					cache.setLastPlotLocation(plot.getOwnerName());
 					return;
 				}

@@ -48,6 +48,12 @@ public class Settings extends CSCommand {
 			return;
 		}
 		
+		if(!city.getName().equals(plugin.getCache(player.getName()).getCity())) {
+			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+					"You must be in your own city to do that.");
+			return;
+		}
+		
 		Plot plot = city.getPlotAt(location.getBlockX(), location.getBlockZ());
 		if(plot == null) {
 			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +

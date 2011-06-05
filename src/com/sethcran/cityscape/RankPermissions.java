@@ -16,7 +16,6 @@ public class RankPermissions {
 	private boolean setName = false;
 	private boolean setPlotSale = false;
 	private boolean setTaxes = false;
-	private boolean setPrices = false;
 	private boolean createPlots = false;
 	private boolean sendChestsToLostAndFound = false;
 	private boolean cityBuild = false;
@@ -43,7 +42,6 @@ public class RankPermissions {
 		setName = b;
 		setPlotSale = b;
 		setTaxes = b;
-		setPrices = b;
 		createPlots = b;
 		sendChestsToLostAndFound = b;
 		cityBuild = b;
@@ -55,9 +53,8 @@ public class RankPermissions {
 		if(b == true) {
 			if(addResident && removeResident && claim && unclaim && promote && demote &&
 					withdraw && settings && changeCityPlotPerms && setWelcome &&
-					setMayor && setWarp && setPlotSale && setTaxes && setPrices &&
-					createPlots && sendChestsToLostAndFound && cityBuild && cityDestroy &&
-					citySwitch)
+					setMayor && setWarp && setPlotSale && setTaxes && createPlots && 
+					sendChestsToLostAndFound && cityBuild && cityDestroy && citySwitch)
 				return true;
 			else
 				return false;
@@ -66,8 +63,8 @@ public class RankPermissions {
 			if(!addResident && !removeResident && !claim && !unclaim && !promote && !demote 
 					&& !withdraw && !settings && !changeCityPlotPerms && 
 					!setWelcome && !setMayor && !setWarp && !setPlotSale && !setTaxes && 
-					!setPrices && !createPlots && !sendChestsToLostAndFound && 
-					!cityBuild && !cityDestroy && !citySwitch)
+					!createPlots && !sendChestsToLostAndFound && !cityBuild && 
+					!cityDestroy && !citySwitch)
 				return true;
 			else
 				return false;
@@ -132,10 +129,6 @@ public class RankPermissions {
 
 	public boolean isSetPlotSale() {
 		return setPlotSale;
-	}
-
-	public boolean isSetPrices() {
-		return setPrices;
 	}
 
 	public boolean isSetTaxes() {
@@ -220,10 +213,6 @@ public class RankPermissions {
 
 	public void setSetPlotSale(boolean setPlotSale) {
 		this.setPlotSale = setPlotSale;
-	}
-
-	public void setSetPrices(boolean setPrices) {
-		this.setPrices = setPrices;
 	}
 
 	public void setSetTaxes(boolean setTaxes) {

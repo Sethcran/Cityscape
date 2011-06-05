@@ -20,7 +20,7 @@ public class CSRanks extends Table {
 						"VALUES(?, ?, ?, ?, ?, ?, " +
 						"?, ?, ?, ?, ?, ?, " +
 						"?, ?, ?, ?, ?, ?, " +
-						"?, ?, ?, ?, ?);";
+						"?, ?, ?, ?);";
 		try {
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, townName);
@@ -39,13 +39,12 @@ public class CSRanks extends Table {
 			stmt.setBoolean(14, rp.isSetName());
 			stmt.setBoolean(15, rp.isSetPlotSale());
 			stmt.setBoolean(16, rp.isSetTaxes());
-			stmt.setBoolean(17, rp.isSetPrices());
-			stmt.setBoolean(18, rp.isCreatePlots());
-			stmt.setBoolean(19, rp.isSendChestsToLostAndFound());
-			stmt.setBoolean(20, rp.isCityBuild());
-			stmt.setBoolean(21, rp.isCityDestroy());
-			stmt.setBoolean(22, rp.isCitySwitch());
-			stmt.setBoolean(23, rp.isChangeCityPlotPerms());
+			stmt.setBoolean(17, rp.isCreatePlots());
+			stmt.setBoolean(18, rp.isSendChestsToLostAndFound());
+			stmt.setBoolean(19, rp.isCityBuild());
+			stmt.setBoolean(20, rp.isCityDestroy());
+			stmt.setBoolean(21, rp.isCitySwitch());
+			stmt.setBoolean(22, rp.isChangeCityPlotPerms());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			if(settings.debug)
@@ -110,7 +109,6 @@ public class CSRanks extends Table {
 				rp.setSetMayor(rs.getBoolean("setMayor"));
 				rp.setSetName(rs.getBoolean("setName"));
 				rp.setSetPlotSale(rs.getBoolean("setPlotSale"));
-				rp.setSetPrices(rs.getBoolean("setPrices"));
 				rp.setSetTaxes(rs.getBoolean("setTaxes"));
 				rp.setSetWarp(rs.getBoolean("setWarp"));
 				rp.setSetWelcome(rs.getBoolean("setWelcome"));
@@ -152,7 +150,6 @@ public class CSRanks extends Table {
 				rp.setSetMayor(rs.getBoolean("setMayor"));
 				rp.setSetName(rs.getBoolean("setName"));
 				rp.setSetPlotSale(rs.getBoolean("setPlotSale"));
-				rp.setSetPrices(rs.getBoolean("setPrices"));
 				rp.setSetTaxes(rs.getBoolean("setTaxes"));
 				rp.setSetWarp(rs.getBoolean("setWarp"));
 				rp.setSetWelcome(rs.getBoolean("setWelcome"));
@@ -189,7 +186,6 @@ public class CSRanks extends Table {
 						"setName = ?, " +
 						"setPlotSale = ?, " +
 						"setTaxes = ?, " +
-						"setPrices = ?, " +
 						"createPlots = ?, " +
 						"sendChestsToLostAndFound = ?, " +
 						"cityBuild = ?, " +
@@ -214,15 +210,14 @@ public class CSRanks extends Table {
 			stmt.setBoolean(12, rp.isSetName());
 			stmt.setBoolean(13, rp.isSetPlotSale());
 			stmt.setBoolean(14, rp.isSetTaxes());
-			stmt.setBoolean(15, rp.isSetPrices());
-			stmt.setBoolean(16, rp.isCreatePlots());
-			stmt.setBoolean(17, rp.isSendChestsToLostAndFound());
-			stmt.setBoolean(18, rp.isCityBuild());
-			stmt.setBoolean(19, rp.isCityDestroy());
-			stmt.setBoolean(20, rp.isCitySwitch());
-			stmt.setBoolean(21, rp.isChangeCityPlotPerms());
-			stmt.setString(22, city);
-			stmt.setString(23, rp.getRankName());
+			stmt.setBoolean(15, rp.isCreatePlots());
+			stmt.setBoolean(16, rp.isSendChestsToLostAndFound());
+			stmt.setBoolean(17, rp.isCityBuild());
+			stmt.setBoolean(18, rp.isCityDestroy());
+			stmt.setBoolean(19, rp.isCitySwitch());
+			stmt.setBoolean(20, rp.isChangeCityPlotPerms());
+			stmt.setString(21, city);
+			stmt.setString(22, rp.getRankName());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			if(settings.debug)

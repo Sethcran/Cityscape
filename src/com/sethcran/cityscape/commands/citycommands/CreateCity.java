@@ -139,6 +139,8 @@ public class CreateCity extends CSCommand {
 		rp.setRankName("Mayor");
 		city.addRank(rp);
 		
+		city.getAccount();
+		
 		plugin.getDB().removeAllInvites(player.getName());
 		
 		balance.subtract(plugin.getSettings().cityCost);

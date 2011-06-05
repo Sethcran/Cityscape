@@ -193,12 +193,6 @@ public class Change extends CSCommand {
 				else
 					rp.setSetTaxes(false);
 			}
-			else if(each[0].equalsIgnoreCase("setprices")) {
-				if(each[1].equalsIgnoreCase("on"))
-					rp.setSetPrices(true);
-				else
-					rp.setSetPrices(false);
-			}
 			else if(each[0].equalsIgnoreCase("createplots")) {
 				if(each[1].equalsIgnoreCase("on"))
 					rp.setCreatePlots(true);

@@ -187,6 +187,8 @@ public class Schemas {
 						"outsiderSwitch BOOL," +
 						"cityPlot BOOL, " +
 						"snow BOOL, " +
+						"forSale BOOL, " +
+						"price INT, " +
 						"id INT AUTO_INCREMENT, " +
 						"PRIMARY KEY(id), " +
 						"FOREIGN KEY(city) REFERENCES cscities(name) ON DELETE CASCADE) " +
@@ -219,7 +221,6 @@ public class Schemas {
 						"setName BOOL, " +
 						"setPlotSale BOOL, " +
 						"setTaxes BOOL, " +
-						"setPrices BOOL, " +
 						"createPlots BOOL, " +
 						"sendChestsToLostAndFound BOOL, " +
 						"cityBuild BOOL, " +

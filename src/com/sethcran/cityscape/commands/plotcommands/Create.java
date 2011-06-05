@@ -70,7 +70,6 @@ public class Create extends CSCommand {
 		for(int i = selection.getXmin(); i < selection.getXmax(); i += 16) {
 			for(int j = selection.getZmin(); j < selection.getZmax(); j += 16) {
 				city = plugin.getCityAt(i, j, selection.getFirstWorld());
-				player.sendMessage("Checking " + i + ", " + j);
 				if(city == null) {
 					player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
 							"An area of your selection is outside city limits.");
