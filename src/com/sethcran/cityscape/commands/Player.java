@@ -6,7 +6,7 @@ import java.util.HashMap;
 import org.bukkit.command.CommandSender;
 
 import com.sethcran.cityscape.Cityscape;
-import com.sethcran.cityscape.commands.playercommands.Default;
+import com.sethcran.cityscape.commands.playercommands.*;
 
 public class Player extends CSCommand {
 
@@ -16,6 +16,7 @@ public class Player extends CSCommand {
 		super(plugin);
 		
 		addToMap(new Default(plugin));
+		addToMap(new History(plugin));
 	}
 
 	@Override

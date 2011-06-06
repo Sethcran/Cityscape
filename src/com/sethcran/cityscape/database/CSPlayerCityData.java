@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
+import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.Settings;
 
 public class CSPlayerCityData extends Table {
@@ -57,5 +59,28 @@ public class CSPlayerCityData extends Table {
 		}
 		
 		return currentCity;
+	}
+	
+	public ArrayList<String> getHistory(String player) {
+		String sql = 	"SELECT city, startingfrom " +
+						"FROM csplayercitydata " +
+						"WHERE player = ? " +
+						"ORDER BY(startingfrom) ASC;";
+		ArrayList<String> history = new ArrayList<String>();
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, player);
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next()) {
+				history.add(Constants.GROUP_COLOR + "City: " + Constants.MESSAGE_COLOR +
+						(rs.getString("city") == null ? "None" : rs.getString("city")) + 
+						Constants.GROUP_COLOR + "  Since: " + Constants.MESSAGE_COLOR + 
+						rs.getString("startingfrom"));
+			}
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+		return history;
 	}
 }

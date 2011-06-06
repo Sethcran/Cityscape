@@ -6,7 +6,7 @@ import java.util.HashMap;
 import org.bukkit.command.CommandSender;
 
 import com.sethcran.cityscape.Cityscape;
-import com.sethcran.cityscape.commands.csadmincommands.Default;
+import com.sethcran.cityscape.commands.csadmincommands.*;
 
 public class CSAdmin extends CSCommand {
 	

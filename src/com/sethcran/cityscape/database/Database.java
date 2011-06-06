@@ -229,6 +229,10 @@ public class Database {
 		return csresidents.getCurrentCity(playerName);
 	}
 	
+	public ArrayList<String> getHistory(String player) {
+		return csplayercitydata.getHistory(player);
+	}
+	
 	public PlayerCache getInfo(String player) {
 		PlayerCache cache = csresidents.getInfo(player);
 		if(cache != null) {
