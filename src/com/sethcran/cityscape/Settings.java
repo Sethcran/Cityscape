@@ -28,6 +28,7 @@ public class Settings {
 	public boolean cityWarps = false;
 	
 	public double cityCost = 0.0;
+	public double claimCost = 0.0;
 	
 	public Settings() {
 		String directory = "plugins/Cityscape";
@@ -63,6 +64,7 @@ public class Settings {
 		cityWarps = config.getBoolean("cityscape.citywarps", false);
 		
 		cityCost = config.getDouble("iconomy.citycost", 0.0);
+		claimCost = config.getDouble("iconomy.claimcost", 0.0);
 	}
 	
 	public void create(File file) {
@@ -95,6 +97,7 @@ public class Settings {
 		config.setProperty("cityscape.citywarps", false);
 		
 		config.setProperty("iconomy.citycost", 0.0);
+		config.setProperty("iconomy.claimcost", 0.0);
 		config.save();
 	}
 }

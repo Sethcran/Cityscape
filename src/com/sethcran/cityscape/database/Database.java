@@ -327,6 +327,10 @@ public class Database {
 		Cityscape.log.info("Done renaming cities.");
 	}
 	
+	public void setBonusClaims(String city, int bonusClaims) {
+		cscities.setBonusClaims(city, bonusClaims);
+	}
+	
 	public void setPlotForSale(Plot plot) {
 		csplots.setPlotForSale(plot);
 	}

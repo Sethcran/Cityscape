@@ -212,6 +212,21 @@ public class CSCities extends Table {
 		}
 	}
 	
+	public void setBonusClaims(String city, int bonusClaims) {
+		String sql = 	"UPDATE cscities SET " +
+						"bonusClaims = ? " +
+						"WHERE name = ?;";
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setInt(1, bonusClaims);
+			stmt.setString(2, city);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+	}
+	
 	public void setWarp(City city) {
 		String sql = 	"UPDATE cscities SET " +
 						"spawnX = ?, " +

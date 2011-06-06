@@ -84,6 +84,35 @@ public class Claim extends CSCommand {
 			return;
 		}
 		
+		City test1 = plugin.getCityAt(x + 16, z, world);
+		City test2 = plugin.getCityAt(x - 16, z, world);
+		City test3 = plugin.getCityAt(x, z + 16, world);
+		City test4 = plugin.getCityAt(x, z - 16, world);
+		boolean good = false;
+		
+		if(test1 != null) {
+			if(test1.getName().equals(playerCity))
+				good = true;
+		}
+		else if(test2 != null) {
+			if(test2.getName().equals(playerCity))
+				good = true;
+		}
+		else if(test3 != null) {
+			if(test3.getName().equals(playerCity))
+				good = true;
+		}
+		else if(test4 != null) {
+			if(test4.getName().equals(playerCity))
+				good = true;
+		}
+		
+		if(!good) {
+			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+					"That claim is not connected to your land.");
+			return;
+		}
+		
 		plugin.getDB().claimChunk(playerCity, world, xmin, zmin, xmax, zmax);
 		com.sethcran.cityscape.Claim claim = new com.sethcran.cityscape.Claim(
 				playerCity, world, xmin, zmin, xmax, zmax, plugin.getDB().getLastClaimID());
