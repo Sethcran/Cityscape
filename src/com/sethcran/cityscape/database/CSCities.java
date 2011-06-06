@@ -58,6 +58,19 @@ public class CSCities extends Table {
 		}
 	}
 	
+	public void deleteCity(String city) {
+		String sql = 	"DELETE FROM cscities " +
+						"WHERE name = ?;";
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, city);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+	}
+	
 	public boolean doesCityExist(String cityName) {
 		String sql = 	"SELECT * " +
 						"FROM cscities " +

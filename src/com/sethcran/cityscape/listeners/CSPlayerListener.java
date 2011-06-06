@@ -288,12 +288,14 @@ public class CSPlayerListener extends PlayerListener {
 			if(city == null) {
 				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
 						"You must select in your city.");
+				event.setCancelled(true);
 				return;
 			}
 			String playerCity = plugin.getCache(player.getName()).getCity();
 			if(!city.getName().equals(playerCity)) {
 				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
 						"You must select in your city.");
+				event.setCancelled(true);
 				return;
 			}
 			
@@ -310,12 +312,14 @@ public class CSPlayerListener extends PlayerListener {
 			if(city == null) {
 				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
 						"You must select in your city.");
+				event.setCancelled(true);
 				return;
 			}
 			String playerCity = plugin.getCache(player.getName()).getCity();
 			if(!city.getName().equals(playerCity)) {
 				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
 						"You must select in your city.");
+				event.setCancelled(true);
 				return;
 			}
 			

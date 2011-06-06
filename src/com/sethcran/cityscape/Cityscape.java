@@ -58,6 +58,28 @@ public class Cityscape extends JavaPlugin {
 	public void changePlayerCityInCache(String playerName, String cityName) {
 		getCache(playerName).setCity(cityName);
 	}
+	
+	public void deleteCity(String city) {
+		
+		claimMap.forEachEntry(new TIntObjectProcedure<Claim>() {
+			
+			public boolean execute(int i, Claim claim) {
+				claimMap.remove(i);
+				claimTree.delete(new Rectangle(claim.getXmin(), claim.getZmin(),
+						claim.getXmax(), claim.getZmax()), i);
+				return true;
+			}
+		});
+		
+		cityCache.remove(city);
+		
+		for(PlayerCache pc : playerCache.values()) {
+			if(city.equals(pc.getCity())) {
+				pc.setCity(null);
+				pc.setRank(null);
+			}
+		}
+	}
 
 	public PlayerCache getCache(String playerName) {
 		return playerCache.get(playerName);

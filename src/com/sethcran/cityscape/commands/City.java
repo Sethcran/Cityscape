@@ -20,6 +20,7 @@ public class City extends CSCommand {
 		addToMap(new CreateCity(plugin));
 		addToMap(new Decline(plugin));
 		addToMap(new Default(plugin));
+		addToMap(new Delete(plugin));
 		addToMap(new Demote(plugin));
 		addToMap(new Deposit(plugin));
 		addToMap(new Here(plugin));

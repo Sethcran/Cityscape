@@ -126,6 +126,10 @@ public class Database {
 		csranks.createRank(city, rp);
 	}
 	
+	public void deleteCity(String city) {
+		cscities.deleteCity(city);
+	}
+	
 	public void deleteOldInvites() {
 		csinvites.deleteOldInvites();
 	}

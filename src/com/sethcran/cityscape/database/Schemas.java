@@ -163,7 +163,8 @@ public class Schemas {
 						"build BOOL, " +
 						"destroy BOOL, " +
 						"switch BOOL, " +
-						"PRIMARY KEY(id, name, isPlayer)) " +
+						"PRIMARY KEY(id, name, isPlayer), " +
+						"FOREIGN KEY(id) REFERENCES csplots(id) ON DELETE CASCADE)" +
 						"ENGINE = InnoDB," +
 						"CHARACTER SET latin1 COLLATE latin1_general_cs;";
 		try {
