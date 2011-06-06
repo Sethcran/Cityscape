@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
 import com.sethcran.cityscape.City;
@@ -460,6 +461,19 @@ public class CSPlayerListener extends PlayerListener {
 				player.sendMessage(ChatColor.DARK_GREEN + "You have entered a plot owned" +
 						" by " + plot.getOwnerName() + ".");
 				cache.setLastPlotLocation(plot.getOwnerName());
+			}
+		}
+	}
+	
+	@Override
+	public void onPlayerRespawn(PlayerRespawnEvent event) {
+		City city = plugin.getCity(plugin.getCache(event.getPlayer().getName()).getCity());
+		
+		if(city != null) {
+			if(city.getWorld() != null) {
+				event.setRespawnLocation(new Location(plugin.getServer().getWorld(
+						city.getWorld()), city.getSpawnX(), city.getSpawnY(), 
+						city.getSpawnZ(), city.getSpawnYaw(), city.getSpawnPitch()));
 			}
 		}
 	}
