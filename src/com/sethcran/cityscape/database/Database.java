@@ -297,6 +297,10 @@ public class Database {
 		csinvites.removeInvite(player, city);
 	}
 	
+	public void removePlot(int id) {
+		csplots.removePlot(id);
+	}
+	
 	public void removePlotPermissions(int id, String name, boolean isPlayer) {
 		csplots.removePlotPermissions(id, name, isPlayer);
 	}

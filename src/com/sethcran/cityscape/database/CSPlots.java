@@ -128,6 +128,19 @@ public class CSPlots extends Table {
 		}
 	}
 	
+	public void removePlot(int id) {
+		String sql = 	"DELETE FROM csplots " +
+						"WHERE id = ?;";
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setInt(1, id);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+	}
+	
 	public void removePlotPermissions(int id, String name, boolean isPlayer) {
 		String sql = 	"DELETE FROM csplotpermissions " +
 						"WHERE id = ? " +
