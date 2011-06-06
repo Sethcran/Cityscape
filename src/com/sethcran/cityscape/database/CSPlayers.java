@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.sethcran.cityscape.PlayerCache;
 import com.sethcran.cityscape.Settings;
 
 public class CSPlayers extends Table {
@@ -29,6 +30,25 @@ public class CSPlayers extends Table {
 			return false;
 		}
 		return true;
+	}
+	
+	public PlayerCache getTimes(String player, PlayerCache cache) {
+		String sql = 	"SELECT firstLogin, lastLogin " +
+						"FROM csplayers " +
+						"WHERE name = ?;";
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, player);
+			ResultSet rs = stmt.executeQuery();
+			if(rs.next()) {
+				cache.setFirstLogin(rs.getString("firstLogin"));
+				cache.setLastLogin(rs.getString("lastLogin"));
+			}
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+		return cache;
 	}
 	
 	public void insertNewPlayer(String playerName) {

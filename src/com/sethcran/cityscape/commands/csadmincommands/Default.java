@@ -9,6 +9,9 @@ public class Default extends CSCommand {
 
 	public Default(Cityscape plugin) {
 		super(plugin);
+		name = "default";
+		description = "Default administration help.";
+		usage = "/csa";
 	}
 
 	@Override

@@ -4,13 +4,16 @@ import org.bukkit.Location;
 
 public class PlayerCache {
 	
-	private String lastCityLocation;
-	private String lastPlotLocation;
-	private Location lastLocation;
+	private String lastCityLocation = null;
+	private String lastPlotLocation = null;
+	private Location lastLocation = null;
 	
-	private String city;
-	private String rank;
+	private String city = null;
+	private String rank = null;
 	
+	private String firstLogin = null;
+	private String lastLogin = null;
+
 	public PlayerCache(Location lastLocation, String lastPlotLocation, 
 			String lastCityLocation, String city, String rank) {
 		this.lastLocation = lastLocation;
@@ -19,15 +22,22 @@ public class PlayerCache {
 		this.city = city;
 		this.rank = rank;
 	}
-	
+
 	public String getCity() {
 		return city;
 	}
 
+	public String getFirstLogin() {
+		return firstLogin;
+	}
 	public Location getLastLocation() {
 		return lastLocation;
 	}
-
+	
+	public String getLastLogin() {
+		return lastLogin;
+	}
+	
 	public String getLastPlotLocation() {
 		return lastPlotLocation;
 	}
@@ -39,13 +49,21 @@ public class PlayerCache {
 	public String getRank() {
 		return rank;
 	}
-	
+
 	public void setCity(String city) {
 		this.city = city;
+	}
+
+	public void setFirstLogin(String firstLogin) {
+		this.firstLogin = firstLogin;
 	}
 	
 	public void setLastLocation(Location lastLocation) {
 		this.lastLocation = lastLocation;
+	}
+	
+	public void setLastLogin(String lastLogin) {
+		this.lastLogin = lastLogin;
 	}
 	
 	public void setLastPlotLocation(String lastPlotLocation) {

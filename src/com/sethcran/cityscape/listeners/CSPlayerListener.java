@@ -346,11 +346,11 @@ public class CSPlayerListener extends PlayerListener {
 		if(city != null)
 			currentCityLoc = city.getName();
 		
-		String playerCity = db.getPlayerCity(playerName);
-		String rank = db.getRank(playerName);
+		PlayerCache cache = db.getInfo(playerName);
+		cache.setLastTownLocation(currentCityLoc);
+		cache.setLastLocation(curLoc);
 		
-		plugin.insertIntoPlayerCache(playerName, 
-				new PlayerCache(curLoc, null, currentCityLoc, playerCity, rank));
+		plugin.insertIntoPlayerCache(playerName, cache);
 		
 		ArrayList<String> invites = db.getInvites(player.getName());
 		if(invites.size() > 0) {

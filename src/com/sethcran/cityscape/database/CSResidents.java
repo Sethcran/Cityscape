@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.sethcran.cityscape.PlayerCache;
 import com.sethcran.cityscape.Settings;
 
 public class CSResidents extends Table {
@@ -24,6 +25,26 @@ public class CSResidents extends Table {
 			ResultSet rs = stmt.executeQuery();
 			if(rs.next())
 				return rs.getString("city");
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public PlayerCache getInfo(String playerName) {
+		String sql = 	"SELECT city, rank " +
+						"FROM csresidents " +
+						"WHERE player = ?;";
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, playerName);
+			ResultSet rs = stmt.executeQuery();
+			if(rs.next()) {
+				PlayerCache cache = new PlayerCache(null, null, null, rs.getString("city"), 
+						rs.getString("rank"));
+				return cache;
+			}
 		} catch (SQLException e) {
 			if(settings.debug)
 				e.printStackTrace();

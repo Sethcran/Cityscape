@@ -10,6 +10,7 @@ import com.sethcran.cityscape.City;
 import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Claim;
 import com.sethcran.cityscape.Permissions;
+import com.sethcran.cityscape.PlayerCache;
 import com.sethcran.cityscape.Plot;
 import com.sethcran.cityscape.RankPermissions;
 import com.sethcran.cityscape.Settings;
@@ -210,6 +211,14 @@ public class Database {
 	
 	public String getCurrentCity(String playerName) {
 		return csresidents.getCurrentCity(playerName);
+	}
+	
+	public PlayerCache getInfo(String player) {
+		PlayerCache cache = csresidents.getInfo(player);
+		if(cache != null) {
+			csplayers.getTimes(player, cache);
+		}
+		return cache;
 	}
 	
 	public ArrayList<String> getInvites(String player) {
