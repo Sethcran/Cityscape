@@ -234,7 +234,7 @@ public class Cityscape extends JavaPlugin {
 		pm.registerEvent(Type.PLUGIN_ENABLE, serverListener, Priority.Monitor, this);
 		pm.registerEvent(Type.PLUGIN_DISABLE, serverListener, Priority.Monitor, this);
 		
-		pm.registerEvent(Type.PLAYER_JOIN, playerListener, Priority.Normal, this);
+		pm.registerEvent(Type.PLAYER_JOIN, playerListener, Priority.Highest, this);
 		pm.registerEvent(Type.PLAYER_QUIT, playerListener, Priority.Normal, this);
 		pm.registerEvent(Type.PLAYER_MOVE, playerListener, Priority.Normal, this);
 		pm.registerEvent(Type.PLAYER_TELEPORT, playerListener, Priority.High, this);

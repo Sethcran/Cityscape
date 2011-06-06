@@ -357,6 +357,12 @@ public class CSPlayerListener extends PlayerListener {
 		
 		plugin.insertIntoPlayerCache(playerName, cache);
 		
+		City playerCity = plugin.getCity(cache.getCity());
+		if(playerCity != null) {
+			player.sendMessage(Constants.TOWN_COLOR + "[" + playerCity.getName() + "] " +
+					Constants.MESSAGE_COLOR + playerCity.getWelcome());
+		}
+		
 		ArrayList<String> invites = db.getInvites(player.getName());
 		if(invites.size() > 0) {
 			player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +

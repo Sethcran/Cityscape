@@ -157,6 +157,7 @@ public class Database {
 				return cityArray;
 			while(rs.next()) {
 				City city = new City();
+				city.setWelcome(rs.getString("welcome"));
 				city.setBaseClaims(rs.getInt("baseClaims"));
 				city.setBonusClaims(rs.getInt("bonusClaims"));
 				city.setFounded(rs.getString("founded"));
@@ -345,6 +346,10 @@ public class Database {
 	
 	public void setWarp(City city) {
 		cscities.setWarp(city);
+	}
+	
+	public void setWelcome(String city, String welcome) {
+		cscities.setWelcome(city, welcome);
 	}
 	
 	public void unban(String city, String player) {

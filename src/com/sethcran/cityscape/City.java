@@ -15,11 +15,10 @@ import com.infomatiq.jsi.rtree.RTree;
 public class City {
 	private String name = null;
 	private String mayor = null;
-	
 	private String founded = null;
+	private String welcome = null;
 	
 	private int rank = 0;
-	
 	private int usedClaims = 0;
 	private int baseClaims = 0;
 	private int bonusClaims = 0;
@@ -29,17 +28,17 @@ public class City {
 	private double spawnZ = 0;
 	private float spawnPitch = 0;
 	private float spawnYaw = 0;
-	
 	String world = null;
 	private boolean residentBuild = false;
+	
 	private boolean residentDestroy = false;
 	private boolean residentSwitch = false;
 	private boolean outsiderBuild = false;
 	private boolean outsiderDestroy = false;
 	private boolean outsiderSwitch = false;
-	
 	private boolean snow = false;
 	private RTree plotTree = null;
+	
 	private TIntObjectHashMap<Plot> plotMap = null;
 	private HashMap<String, RankPermissions> rankMap = null;
 	private HashMap<String, String> banList = null;
@@ -71,7 +70,6 @@ public class City {
 			return false;
 		return true;
 	}
-	
 	public Account getAccount() {
 		return iConomy.getAccount(name + ":city");
 	}
@@ -82,7 +80,6 @@ public class City {
 	public int getBonusClaims() {
 		return bonusClaims;
 	}
-	
 	public String getFounded() {
 		return founded;
 	}
@@ -115,7 +112,7 @@ public class City {
 	public RankPermissions getRank(String rankName) {
 		return rankMap.get(rankName);
 	}
-
+	
 	public ArrayList<String> getRanks() {
 		Set<String> set = rankMap.keySet();
 		ArrayList<String> list = new ArrayList<String>();
@@ -132,7 +129,7 @@ public class City {
 	public double getSpawnX() {
 		return spawnX;
 	}
-
+	
 	public double getSpawnY() {
 		return spawnY;
 	}
@@ -144,15 +141,19 @@ public class City {
 	public double getSpawnZ() {
 		return spawnZ;
 	}
-	
+
 	public int getUsedClaims() {
 		return usedClaims;
 	}
 
+	public String getWelcome() {
+		return welcome;
+	}
+	
 	public String getWorld() {
 		return world;
 	}
-	
+
 	public boolean isBanned(String player) {
 		String s = banList.get(player);
 		if(s == null)
@@ -164,15 +165,15 @@ public class City {
 	public boolean isOutsiderBuild() {
 		return outsiderBuild;
 	}
-
+	
 	public boolean isOutsiderDestroy() {
 		return outsiderDestroy;
 	}
-	
+
 	public boolean isOutsiderSwitch() {
 		return outsiderSwitch;
 	}
-
+	
 	public Plot isPlotIntersect(int xmin, int zmin, int xmax, int zmax) {
 		TreeProcedure tproc = new TreeProcedure();
 		plotTree.intersects(new Rectangle(xmin, zmin, xmax, zmax), tproc);
@@ -190,13 +191,13 @@ public class City {
 	public boolean isResidentDestroy() {
 		return residentDestroy;
 	}
+
 	public boolean isResidentSwitch() {
 		return residentSwitch;
 	}
 	public boolean isSnow() {
 		return snow;
 	}
-	
 	public void removePlot(Plot plot) {
 		plotMap.remove(plot.getId());
 		plotTree.delete(new Rectangle(plot.getXmin(), plot.getZmin(), 
@@ -296,6 +297,10 @@ public class City {
 	
 	public void setUsedClaims(int usedClaims) {
 		this.usedClaims = usedClaims;
+	}
+	
+	public void setWelcome(String welcome) {
+		this.welcome = welcome;
 	}
 	
 	public void setWorld(String world) {

@@ -34,7 +34,7 @@ public class CSCities extends Table {
 	
 	public void createCity(String playerName, String cityName) {
 		String sql = 	"INSERT INTO cscities " +
-						"VALUES( ?, ?, ?, NOW(), ?, ?, ?, null, null, null, null, " +
+						"VALUES( ?, ?, null, ?, NOW(), ?, ?, ?, null, null, null, null, " +
 						"null, null, ?, ?, ?, ?, ?, ?, ?);";
 		try {
 			PreparedStatement stmt = con.prepareStatement(sql);
@@ -113,6 +113,7 @@ public class CSCities extends Table {
 			ResultSet rs = stmt.executeQuery();
 			if(rs.next()) {
 				City city = new City();
+				city.setWelcome(rs.getString("welcome"));
 				city.setBaseClaims(rs.getInt("baseClaims"));
 				city.setBonusClaims(rs.getInt("bonusClaims"));
 				city.setFounded(rs.getString("founded"));
@@ -229,6 +230,21 @@ public class CSCities extends Table {
 			stmt.setFloat(5, city.getSpawnYaw());
 			stmt.setString(6, city.getWorld());
 			stmt.setString(7, city.getName());
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+	}
+	
+	public void setWelcome(String city, String welcome) {
+		String sql = 	"UPDATE cscities SET " +
+						"welcome = ? " +
+						"WHERE name = ?;";
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, welcome);
+			stmt.setString(2, city);
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			if(settings.debug)

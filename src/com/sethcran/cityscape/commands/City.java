@@ -40,6 +40,7 @@ public class City extends CSCommand {
 		addToMap(new Unban(plugin));
 		addToMap(new Unclaim(plugin));
 		addToMap(new Warp(plugin));
+		addToMap(new Welcome(plugin));
 		addToMap(new Withdraw(plugin));
 	}
 

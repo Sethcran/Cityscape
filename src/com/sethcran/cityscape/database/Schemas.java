@@ -33,6 +33,7 @@ public class Schemas {
 		String sql = 	"CREATE TABLE IF NOT EXISTS cscities(" + 
 						"name CHAR(" + Constants.TOWN_MAX_NAME_LENGTH + ") PRIMARY KEY," +
 						"mayor CHAR(" + Constants.PLAYER_MAX_NAME_LENGTH + ")," +
+						"welcome CHAR(" + Constants.WELCOME_MESSAGE_LENGTH + "), " +
 						"rank INT NOT NULL," +
 						"founded DATETIME NOT NULL," +
 						"usedClaims INT NOT NULL," +
