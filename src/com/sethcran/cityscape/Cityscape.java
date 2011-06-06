@@ -26,6 +26,7 @@ import com.nijikokun.bukkit.Permissions.Permissions;
 import com.sethcran.cityscape.commands.CommandHandler;
 import com.sethcran.cityscape.database.Database;
 import com.sethcran.cityscape.listeners.CSBlockListener;
+import com.sethcran.cityscape.listeners.CSEntityListener;
 import com.sethcran.cityscape.listeners.CSPlayerListener;
 import com.sethcran.cityscape.listeners.CSServerListener;
 
@@ -228,6 +229,7 @@ public class Cityscape extends JavaPlugin {
 		CSServerListener serverListener = new CSServerListener(this);
 		CSPlayerListener playerListener = new CSPlayerListener(this);
 		CSBlockListener blockListener = new CSBlockListener(this);
+		CSEntityListener entityListener = new CSEntityListener(this);
 		
 		pm.registerEvent(Type.PLUGIN_ENABLE, serverListener, Priority.Monitor, this);
 		pm.registerEvent(Type.PLUGIN_DISABLE, serverListener, Priority.Monitor, this);
@@ -235,6 +237,7 @@ public class Cityscape extends JavaPlugin {
 		pm.registerEvent(Type.PLAYER_JOIN, playerListener, Priority.Normal, this);
 		pm.registerEvent(Type.PLAYER_QUIT, playerListener, Priority.Normal, this);
 		pm.registerEvent(Type.PLAYER_MOVE, playerListener, Priority.Normal, this);
+		pm.registerEvent(Type.PLAYER_TELEPORT, playerListener, Priority.High, this);
 		pm.registerEvent(Type.PLAYER_INTERACT, playerListener, Priority.Normal, this);
 		pm.registerEvent(Type.PLAYER_BUCKET_EMPTY, playerListener, Priority.High, this);
 		pm.registerEvent(Type.PLAYER_BUCKET_FILL, playerListener, Priority.High, this);
@@ -242,6 +245,9 @@ public class Cityscape extends JavaPlugin {
 		pm.registerEvent(Type.BLOCK_BREAK, blockListener, Priority.High, this);
 		pm.registerEvent(Type.BLOCK_PLACE, blockListener, Priority.High, this);
 		pm.registerEvent(Type.SNOW_FORM, blockListener, Priority.High, this);
+		
+		pm.registerEvent(Type.CREATURE_SPAWN, entityListener, Priority.High, this);
+		pm.registerEvent(Type.ENTITY_TARGET, entityListener, Priority.High, this);
 	}
 	
 	public void removeClaim(Claim claim) {

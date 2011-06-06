@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 
 import com.sethcran.cityscape.City;
 import com.sethcran.cityscape.Cityscape;
@@ -379,8 +380,17 @@ public class CSPlayerListener extends PlayerListener {
 		City city = plugin.getCityAt(to.getBlockX(), to.getBlockZ(), 
 				to.getWorld().getName());
 		String currentCityLoc = null;
-		if(city != null)
+		
+		if(city != null) {
 			currentCityLoc = city.getName();
+			if(city.isBanned(player.getName())) {
+				event.setCancelled(true);
+				player.teleport(from);
+				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+						"You have been banned from entering " + city.getName() + ".");
+				return;
+			}
+		}
 		
 		if(lastTown == null) {
 			if(currentCityLoc != null) {
@@ -405,10 +415,10 @@ public class CSPlayerListener extends PlayerListener {
 				
 		}
 		
-		cache.setLastLocation(to);
-		
 		if(city == null)
 			return;
+		
+		cache.setLastLocation(to);
 		
 		Plot plot = city.getPlotAt(to.getBlockX(), to.getBlockZ());
 		if(cache.getLastPlotLocation() == null) {
@@ -444,6 +454,23 @@ public class CSPlayerListener extends PlayerListener {
 				player.sendMessage(ChatColor.DARK_GREEN + "You have entered a plot owned" +
 						" by " + plot.getOwnerName() + ".");
 				cache.setLastPlotLocation(plot.getOwnerName());
+			}
+		}
+	}
+	
+	@Override
+	public void onPlayerTeleport(PlayerTeleportEvent event) {
+		Location location = event.getTo();
+		
+		City city = plugin.getCityAt(location.getBlockX(), location.getBlockZ(), 
+				location.getWorld().getName());
+		
+		if(city != null) {
+			if(city.isBanned(event.getPlayer().getName())) {
+				event.setCancelled(true);
+				event.getPlayer().sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+						"You have been banned from entering" + city.getName() + ".");
+				return;
 			}
 		}
 	}

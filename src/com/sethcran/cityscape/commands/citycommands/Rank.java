@@ -177,6 +177,12 @@ public class Rank extends CSCommand {
 		if(rp.isWithdraw())
 			sender.sendMessage(Constants.ERROR_COLOR + 
 					"Can withdraw money from the city bank.");
+		if(rp.isBan()) {
+			sender.sendMessage(Constants.SUCCESS_COLOR + "Can ban players from the city.");
+		}
+		if(rp.isUnban()) {
+			sender.sendMessage(Constants.SUCCESS_COLOR + "Can unban players from the city.");
+		}
 	}
 	
 	public void viewRankInfoCurrentCity(CommandSender sender, String rank) {

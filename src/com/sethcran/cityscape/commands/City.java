@@ -15,6 +15,7 @@ public class City extends CSCommand {
 		super(plugin);
 		
 		addToMap(new Accept(plugin));
+		addToMap(new Ban(plugin));
 		addToMap(new Change(plugin));
 		addToMap(new Claim(plugin));
 		addToMap(new CreateCity(plugin));
@@ -36,6 +37,7 @@ public class City extends CSCommand {
 		addToMap(new Residents(plugin));
 		addToMap(new Settings(plugin));
 		addToMap(new Setwarp(plugin));
+		addToMap(new Unban(plugin));
 		addToMap(new Unclaim(plugin));
 		addToMap(new Warp(plugin));
 		addToMap(new Withdraw(plugin));

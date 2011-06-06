@@ -223,6 +223,18 @@ public class Change extends CSCommand {
 				else
 					rp.setCitySwitch(false);
 			}
+			else if(each[0].equalsIgnoreCase("ban")) {
+				if(each[1].equalsIgnoreCase("on"))
+					rp.setBan(true);
+				else
+					rp.setBan(false);
+			}
+			else if(each[0].equalsIgnoreCase("unban")) {
+				if(each[1].equalsIgnoreCase("on"))
+					rp.setUnban(true);
+				else
+					rp.setUnban(false);
+			}
 			else {
 				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
 						"A permission name was not detected. Aborting.");

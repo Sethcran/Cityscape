@@ -21,6 +21,8 @@ public class RankPermissions {
 	private boolean cityBuild = false;
 	private boolean cityDestroy = false;
 	private boolean citySwitch = false;
+	private boolean ban = false;
+	private boolean unban = false;
 	private String rankName = null;
 	public RankPermissions() {
 		
@@ -47,13 +49,15 @@ public class RankPermissions {
 		cityBuild = b;
 		cityDestroy = b;
 		citySwitch = b;
+		ban = b;
+		unban = b;
 	}
 	
 	public boolean areAll(boolean b) {
 		if(b == true) {
 			if(addResident && removeResident && claim && unclaim && promote && demote &&
-					withdraw && settings && changeCityPlotPerms && setWelcome &&
-					setMayor && setWarp && setPlotSale && setTaxes && createPlots && 
+					withdraw && settings && changeCityPlotPerms && setWelcome && unban &&
+					setMayor && setWarp && setPlotSale && setTaxes && createPlots && ban &&
 					sendChestsToLostAndFound && cityBuild && cityDestroy && citySwitch)
 				return true;
 			else
@@ -61,7 +65,7 @@ public class RankPermissions {
 		}
 		else {
 			if(!addResident && !removeResident && !claim && !unclaim && !promote && !demote 
-					&& !withdraw && !settings && !changeCityPlotPerms && 
+					&& !withdraw && !settings && !changeCityPlotPerms && unban && ban &&
 					!setWelcome && !setMayor && !setWarp && !setPlotSale && !setTaxes && 
 					!createPlots && !sendChestsToLostAndFound && !cityBuild && 
 					!cityDestroy && !citySwitch)
@@ -70,23 +74,27 @@ public class RankPermissions {
 				return false;
 		}
 	}
-	
+
 	public String getRankName() {
 		return rankName;
 	}
-	
+
 	public boolean isAddResident() {
 		return addResident;
+	}
+
+	public boolean isBan() {
+		return ban;
 	}
 
 	public boolean isChangeCityPlotPerms() {
 		return changeCityPlotPerms;
 	}
-
+	
 	public boolean isCityBuild() {
 		return cityBuild;
 	}
-
+	
 	public boolean isCityDestroy() {
 		return cityDestroy;
 	}
@@ -147,6 +155,10 @@ public class RankPermissions {
 		return setWelcome;
 	}
 
+	public boolean isUnban() {
+		return unban;
+	}
+
 	public boolean isUnclaim() {
 		return unclaim;
 	}
@@ -157,6 +169,10 @@ public class RankPermissions {
 
 	public void setAddResident(boolean addResident) {
 		this.addResident = addResident;
+	}
+
+	public void setBan(boolean ban) {
+		this.ban = ban;
 	}
 
 	public void setChangeCityPlotPerms(boolean changeCityPlotPerms) {
@@ -229,6 +245,10 @@ public class RankPermissions {
 
 	public void setSetWelcome(boolean setWelcome) {
 		this.setWelcome = setWelcome;
+	}
+
+	public void setUnban(boolean unban) {
+		this.unban = unban;
 	}
 
 	public void setUnclaim(boolean unclaim) {

@@ -14,7 +14,7 @@ public class Schemas {
 	}
 	
 	public void createChestsTable() {
-		String sql = 	"CREATE TABLE IF NOT EXISTS CSChests(" +
+		String sql = 	"CREATE TABLE IF NOT EXISTS cschests(" +
 						"id INT AUTO_INCREMENT PRIMARY KEY," +
 						"player CHAR(" + Constants.PLAYER_MAX_NAME_LENGTH + ")," +
 						"FOREIGN KEY(player) REFERENCES CSPlayers(name) ON DELETE SET NULL) " +
@@ -30,7 +30,7 @@ public class Schemas {
 	}
 	
 	public void createCitiesTable() {
-		String sql = 	"CREATE TABLE IF NOT EXISTS CSCities(" + 
+		String sql = 	"CREATE TABLE IF NOT EXISTS cscities(" + 
 						"name CHAR(" + Constants.TOWN_MAX_NAME_LENGTH + ") PRIMARY KEY," +
 						"mayor CHAR(" + Constants.PLAYER_MAX_NAME_LENGTH + ")," +
 						"rank INT NOT NULL," +
@@ -62,8 +62,27 @@ public class Schemas {
 		}
 	}
 	
+	public void createCityBanListTable() {
+		String sql = 	"CREATE TABLE IF NOT EXISTS cscitybanlist(" +
+						"city CHAR(" + Constants.TOWN_MAX_NAME_LENGTH + ") NOT NULL, " +
+						"player CHAR(" + Constants.PLAYER_MAX_NAME_LENGTH + ") NOT NULL, " +
+						"PRIMARY KEY(city, player), " +
+						"FOREIGN KEY(city) REFERENCES cscities(name) " +
+						"ON DELETE CASCADE ON UPDATE CASCADE, " +
+						"FOREIGN KEY(player) REFERENCES csplayers(name) " +
+						"ON DELETE CASCADE) " +
+						"ENGINE = InnoDB, " +
+						"CHARACTER SET latin1 COLLATE latin1_general_cs;";
+		try {
+			con.createStatement().executeUpdate(sql);
+		} catch (SQLException e) {
+			Cityscape.log.severe("There was an error creating a database table.");
+			e.printStackTrace();
+		}
+	}
+	
 	public void createClaimsTable() {
-		String sql = 	"CREATE TABLE IF NOT EXISTS CSClaims(" +
+		String sql = 	"CREATE TABLE IF NOT EXISTS csclaims(" +
 						"city CHAR(" + Constants.TOWN_MAX_NAME_LENGTH + ") NOT NULL, " + 
 						"world CHAR(" + Constants.WORLD_MAX_NAME_LENGTH + ") NOT NULL, " +
 						"xmin INT, " +
@@ -100,10 +119,11 @@ public class Schemas {
 		createPlayerCityDataTable();
 		createRanksTable();
 		createResidentsTable();
+		createCityBanListTable();
 	}
 	
 	public void createPlayerCityDataTable() {
-		String sql = 	"CREATE TABLE IF NOT EXISTS CSPlayerCityData(" +
+		String sql = 	"CREATE TABLE IF NOT EXISTS csplayercitydata(" +
 						"player CHAR(" + Constants.PLAYER_MAX_NAME_LENGTH + ")," +
 						"city CHAR(" + Constants.TOWN_MAX_NAME_LENGTH + ")," +
 						"startingfrom DATETIME NOT NULL," +
@@ -121,7 +141,7 @@ public class Schemas {
 	}
 	
 	public void createInvitesTable() {
-		String sql = 	"CREATE TABLE IF NOT EXISTS CSInvites(" +
+		String sql = 	"CREATE TABLE IF NOT EXISTS csinvites(" +
 						"player CHAR(" + Constants.PLAYER_MAX_NAME_LENGTH + "), " +
 						"city CHAR(" + Constants.TOWN_MAX_NAME_LENGTH + "), " +
 						"day DATETIME, " +
@@ -140,7 +160,7 @@ public class Schemas {
 	}
 	
 	public void createPlayersTable() {
-		String sql = 	"CREATE TABLE IF NOT EXISTS CSPlayers(" +
+		String sql = 	"CREATE TABLE IF NOT EXISTS csplayers(" +
 						"name CHAR(" + Constants.PLAYER_MAX_NAME_LENGTH + ") PRIMARY KEY," +
 						"firstLogin DATETIME NOT NULL," +
 						"lastLogin DATETIME NOT NULL) " +
@@ -156,7 +176,7 @@ public class Schemas {
 	}
 	
 	public void createPlotPermissionsTable() {
-		String sql = 	"CREATE TABLE IF NOT EXISTS CSPlotPermissions(" +
+		String sql = 	"CREATE TABLE IF NOT EXISTS csplotpermissions(" +
 						"id INT, " +
 						"name CHAR(" + Constants.PLAYER_MAX_NAME_LENGTH + "), " +
 						"isPlayer BOOL, " +
@@ -176,7 +196,7 @@ public class Schemas {
 	}
 	
 	public void createPlotsTable() {
-		String sql = 	"CREATE TABLE IF NOT EXISTS CSPlots(" +
+		String sql = 	"CREATE TABLE IF NOT EXISTS csplots(" +
 						"city CHAR(" + Constants.TOWN_MAX_NAME_LENGTH + ") NOT NULL," +
 						"owner CHAR(" + Constants.PLAYER_MAX_NAME_LENGTH + ")," +
 						"xmin INT," +
@@ -209,7 +229,7 @@ public class Schemas {
 	}
 	
 	public void createRanksTable() {
-		String sql = 	"CREATE TABLE IF NOT EXISTS CSRanks(" +
+		String sql = 	"CREATE TABLE IF NOT EXISTS csranks(" +
 						"city CHAR(" + Constants.TOWN_MAX_NAME_LENGTH + "), " +
 						"name CHAR(" + Constants.RANK_MAX_NAME_LENGTH + "), " +
 						"addResident BOOL, " +
@@ -232,6 +252,8 @@ public class Schemas {
 						"cityDestroy BOOL, " +
 						"citySwitch BOOL, " +
 						"changeCityPlotPerms BOOL, " +
+						"ban BOOL, " +
+						"unban BOOL, " +
 						"PRIMARY KEY(city, name), " +
 						"FOREIGN KEY(city) REFERENCES cscities(name) " +
 						"ON DELETE CASCADE ON UPDATE CASCADE)" +
@@ -246,7 +268,7 @@ public class Schemas {
 	}
 	
 	public void createResidentsTable() {
-		String sql = 	"CREATE TABLE IF NOT EXISTS CSResidents(" +
+		String sql = 	"CREATE TABLE IF NOT EXISTS csresidents(" +
 						"player CHAR(" + Constants.PLAYER_MAX_NAME_LENGTH + ") PRIMARY KEY," +
 						"city CHAR(" + Constants.TOWN_MAX_NAME_LENGTH + "), " +
 						"rank CHAR(" + Constants.RANK_MAX_NAME_LENGTH + "), " +

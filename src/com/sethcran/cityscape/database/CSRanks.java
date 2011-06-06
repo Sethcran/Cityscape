@@ -20,7 +20,7 @@ public class CSRanks extends Table {
 						"VALUES(?, ?, ?, ?, ?, ?, " +
 						"?, ?, ?, ?, ?, ?, " +
 						"?, ?, ?, ?, ?, ?, " +
-						"?, ?, ?, ?);";
+						"?, ?, ?, ?, ?, ?);";
 		try {
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, townName);
@@ -45,6 +45,8 @@ public class CSRanks extends Table {
 			stmt.setBoolean(20, rp.isCityDestroy());
 			stmt.setBoolean(21, rp.isCitySwitch());
 			stmt.setBoolean(22, rp.isChangeCityPlotPerms());
+			stmt.setBoolean(23, rp.isBan());
+			stmt.setBoolean(24, rp.isUnban());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			if(settings.debug)
@@ -120,6 +122,8 @@ public class CSRanks extends Table {
 				rp.setCitySwitch(rs.getBoolean("citySwitch"));
 				rp.setChangeCityPlotPerms(rs.getBoolean("changeCityPlotPerms"));
 				rp.setRankName(rank);
+				rp.setBan(rs.getBoolean("ban"));
+				rp.setUnban(rs.getBoolean("unban"));
 				return rp;
 			}
 		} catch (SQLException e) {
@@ -161,6 +165,8 @@ public class CSRanks extends Table {
 				rp.setCitySwitch(rs.getBoolean("citySwitch"));
 				rp.setChangeCityPlotPerms(rs.getBoolean("changeCityPlotPerms"));
 				rp.setRankName(rs.getString("name"));
+				rp.setBan(rs.getBoolean("ban"));
+				rp.setUnban(rs.getBoolean("unban"));
 				rankList.add(rp);
 			}
 		} catch (SQLException e) {
@@ -191,7 +197,9 @@ public class CSRanks extends Table {
 						"cityBuild = ?, " +
 						"cityDestroy = ?, " +
 						"citySwitch = ?, " +
-						"changeCityPlotPerms = ? " +
+						"changeCityPlotPerms = ?, " +
+						"ban = ?, " +
+						"unban = ? " +
 						"WHERE city = ?" +
 						"AND name = ?;";
 		try {
@@ -216,8 +224,10 @@ public class CSRanks extends Table {
 			stmt.setBoolean(18, rp.isCityDestroy());
 			stmt.setBoolean(19, rp.isCitySwitch());
 			stmt.setBoolean(20, rp.isChangeCityPlotPerms());
-			stmt.setString(21, city);
-			stmt.setString(22, rp.getRankName());
+			stmt.setBoolean(21, rp.isBan());
+			stmt.setBoolean(22, rp.isUnban());
+			stmt.setString(23, city);
+			stmt.setString(24, rp.getRankName());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			if(settings.debug)

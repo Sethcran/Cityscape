@@ -21,6 +21,7 @@ public class Database {
 	private Settings settings = null;
 	
 	private CSCities cscities = null;
+	private CSCityBanList cscitybanlist = null;
 	private CSClaims csclaims = null;
 	private CSInvites csinvites = null;
 	private CSPlayers csplayers = null;
@@ -57,6 +58,7 @@ public class Database {
 		}
 		
 		cscities = new CSCities(con, plugin.getSettings());
+		cscitybanlist = new CSCityBanList(con, plugin.getSettings());
 		csclaims = new CSClaims(con, plugin.getSettings());
 		csinvites = new CSInvites(con, plugin.getSettings());
 		csplayers = new CSPlayers(con, plugin.getSettings());
@@ -85,6 +87,10 @@ public class Database {
 	
 	public void addPlot(Plot plot) {
 		csplots.addPlot(plot);
+	}
+	
+	public void ban(String city, String player) {
+		cscitybanlist.ban(city, player);
 	}
 	
 	public void claimChunk(String cityName, String worldName,
@@ -168,6 +174,11 @@ public class Database {
 				city.setSpawnZ(rs.getInt("spawnZ"));
 				city.setUsedClaims(rs.getInt("usedClaims"));
 				city.setSnow(rs.getBoolean("snow"));
+				
+				ArrayList<String> banList = cscitybanlist.getBans(city.getName());
+				for(String s : banList) {
+					city.ban(s);
+				}
 				
 				ArrayList<Plot> plotList = getPlots(city.getName());
 				for(Plot plot : plotList) {
@@ -329,6 +340,10 @@ public class Database {
 	
 	public void setWarp(City city) {
 		cscities.setWarp(city);
+	}
+	
+	public void unban(String city, String player) {
+		cscitybanlist.unban(city, player);
 	}
 	
 	public void unclaimChunk(Claim claim) {

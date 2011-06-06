@@ -63,6 +63,9 @@ public class Invite extends CSCommand {
 					Player invited = plugin.getServer().getPlayer(resident);
 					invited.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
 							"You have been invited to join the city of " + cityName + ".");
+					invited.sendMessage(Constants.SUCCESS_COLOR + "Type /c invites to" +
+							" view a list of your invites.");
+					return;
 				}
 			}
 			else {

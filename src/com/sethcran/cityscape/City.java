@@ -38,10 +38,12 @@ public class City {
 	private boolean snow = false;
 	private RTree plotTree = null;
 	private TIntObjectHashMap<Plot> plotMap = null;
-	
 	private HashMap<String, RankPermissions> rankMap = null;
+	private HashMap<String, String> banList = null;
+	
 	public City() {
 		rankMap = new HashMap<String, RankPermissions>();
+		banList = new HashMap<String, String>();
 		plotMap = new TIntObjectHashMap<Plot>();
 		plotTree = new RTree();
 		plotTree.init(null);
@@ -55,6 +57,11 @@ public class City {
 	public void addRank(RankPermissions rp) {
 		rankMap.put(rp.getRankName(), rp);
 	}
+	
+	public void ban(String player) {
+		banList.put(player, player);
+	}
+	
 	public void changeRank(RankPermissions rp) {
 		rankMap.remove(rp.getRankName());
 		rankMap.put(rp.getRankName(), rp);
@@ -139,6 +146,14 @@ public class City {
 
 	public String getWorld() {
 		return world;
+	}
+	
+	public boolean isBanned(String player) {
+		String s = banList.get(player);
+		if(s == null)
+			return false;
+		else
+			return true;
 	}
 
 	public boolean isOutsiderBuild() {
@@ -272,5 +287,9 @@ public class City {
 	
 	public void setWorld(String world) {
 		this.world = world;
+	}
+	
+	public void unban(String player) {
+		banList.remove(player);
 	}
 }
