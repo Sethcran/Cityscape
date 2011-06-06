@@ -80,6 +80,7 @@ public class Promote extends CSCommand {
 			}
 			plugin.getDB().setRank(args[0], args[1]);
 			plugin.getDB().setRank(player.getName(), null);
+			plugin.getDB().updateMayor(playerCity, args[0]);
 			plugin.getCity(playerCity).setMayor(args[0]);
 			PlayerCache cache = plugin.getCache(player.getName());
 			cache.setRank(null);

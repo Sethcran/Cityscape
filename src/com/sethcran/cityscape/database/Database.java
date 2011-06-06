@@ -377,6 +377,10 @@ public class Database {
 		cscities.updateCitySettings(city);
 	}
 	
+	public void updateMayor(String city, String player) {
+		cscities.updateMayor(city, player);
+	}
+	
 	public void updatePlayerTimeStamp(String playerName) {
 		csplayers.updatePlayerTimeStamp(playerName);
 	}

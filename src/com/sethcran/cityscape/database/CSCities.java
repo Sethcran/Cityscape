@@ -294,4 +294,19 @@ public class CSCities extends Table {
 		}
 						
 	}
+	
+	public void updateMayor(String city, String player) {
+		String sql = 	"UPDATE cscities SET " + 
+						"mayor = ? " +
+						"WHERE name = ?;";
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, player);
+			stmt.setString(2, city);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+	}
 }
