@@ -24,23 +24,25 @@ public class City {
 	private int baseClaims = 0;
 	private int bonusClaims = 0;
 	
-	private int spawnX = 0;
-	private int spawnY = 0;
-	private int spawnZ = 0;
-	String world = null;
+	private double spawnX = 0;
+	private double spawnY = 0;
+	private double spawnZ = 0;
+	private float spawnPitch = 0;
+	private float spawnYaw = 0;
 	
+	String world = null;
 	private boolean residentBuild = false;
 	private boolean residentDestroy = false;
 	private boolean residentSwitch = false;
 	private boolean outsiderBuild = false;
 	private boolean outsiderDestroy = false;
 	private boolean outsiderSwitch = false;
+	
 	private boolean snow = false;
 	private RTree plotTree = null;
 	private TIntObjectHashMap<Plot> plotMap = null;
 	private HashMap<String, RankPermissions> rankMap = null;
 	private HashMap<String, String> banList = null;
-	
 	public City() {
 		rankMap = new HashMap<String, RankPermissions>();
 		banList = new HashMap<String, String>();
@@ -53,20 +55,16 @@ public class City {
 		plotTree.add(new Rectangle(plot.getXmin(), plot.getZmin(), 
 				plot.getXmax(), plot.getZmax()), plot.getId());
 	}
-	
 	public void addRank(RankPermissions rp) {
 		rankMap.put(rp.getRankName(), rp);
 	}
-	
 	public void ban(String player) {
 		banList.put(player, player);
 	}
-	
 	public void changeRank(RankPermissions rp) {
 		rankMap.remove(rp.getRankName());
 		rankMap.put(rp.getRankName(), rp);
 	}
-	
 	public boolean doesRankExist(String rank) {
 		RankPermissions rp = rankMap.get(rank);
 		if(rp == null)
@@ -77,7 +75,6 @@ public class City {
 	public Account getAccount() {
 		return iConomy.getAccount(name + ":city");
 	}
-	
 	public int getBaseClaims() {
 		return baseClaims;
 	}
@@ -89,7 +86,7 @@ public class City {
 	public String getFounded() {
 		return founded;
 	}
-
+	
 	public String getMayor() {
 		return mayor;
 	}
@@ -97,11 +94,11 @@ public class City {
 	public String getName() {
 		return name;
 	}
-
+	
 	public int getNumRanks() {
 		return rankMap.size();
 	}
-
+	
 	public Plot getPlotAt(int x, int z) {
 		TreeProcedure tproc = new TreeProcedure();
 		plotTree.intersects(new Rectangle(x, z, x, z), tproc);
@@ -110,15 +107,15 @@ public class City {
 		}
 		return null;
 	}
-
+	
 	public int getRank() {
 		return rank;
 	}
-
+	
 	public RankPermissions getRank(String rankName) {
 		return rankMap.get(rankName);
 	}
-	
+
 	public ArrayList<String> getRanks() {
 		Set<String> set = rankMap.keySet();
 		ArrayList<String> list = new ArrayList<String>();
@@ -128,15 +125,23 @@ public class City {
 		return list;
 	}
 	
-	public int getSpawnX() {
+	public float getSpawnPitch() {
+		return spawnPitch;
+	}
+
+	public double getSpawnX() {
 		return spawnX;
 	}
 
-	public int getSpawnY() {
+	public double getSpawnY() {
 		return spawnY;
 	}
-	
-	public int getSpawnZ() {
+
+	public float getSpawnYaw() {
+		return spawnYaw;
+	}
+
+	public double getSpawnZ() {
 		return spawnZ;
 	}
 	
@@ -155,7 +160,7 @@ public class City {
 		else
 			return true;
 	}
-
+	
 	public boolean isOutsiderBuild() {
 		return outsiderBuild;
 	}
@@ -163,10 +168,11 @@ public class City {
 	public boolean isOutsiderDestroy() {
 		return outsiderDestroy;
 	}
-
+	
 	public boolean isOutsiderSwitch() {
 		return outsiderSwitch;
 	}
+
 	public Plot isPlotIntersect(int xmin, int zmin, int xmax, int zmax) {
 		TreeProcedure tproc = new TreeProcedure();
 		plotTree.intersects(new Rectangle(xmin, zmin, xmax, zmax), tproc);
@@ -176,18 +182,17 @@ public class City {
 		}
 		return null;
 	}
+
 	public boolean isResidentBuild() {
 		return residentBuild;
 	}
-	
+
 	public boolean isResidentDestroy() {
 		return residentDestroy;
 	}
-	
 	public boolean isResidentSwitch() {
 		return residentSwitch;
 	}
-	
 	public boolean isSnow() {
 		return snow;
 	}
@@ -269,15 +274,23 @@ public class City {
 		this.snow = snow;
 	}
 	
-	public void setSpawnX(int spawnX) {
+	public void setSpawnPitch(float spawnPitch) {
+		this.spawnPitch = spawnPitch;
+	}
+	
+	public void setSpawnX(double spawnX) {
 		this.spawnX = spawnX;
 	}
 	
-	public void setSpawnY(int spawnY) {
+	public void setSpawnY(double spawnY) {
 		this.spawnY = spawnY;
 	}
 	
-	public void setSpawnZ(int spawnZ) {
+	public void setSpawnYaw(float spawnYaw) {
+		this.spawnYaw = spawnYaw;
+	}
+	
+	public void setSpawnZ(double spawnZ) {
 		this.spawnZ = spawnZ;
 	}
 	

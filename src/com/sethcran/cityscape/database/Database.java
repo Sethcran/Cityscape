@@ -169,9 +169,10 @@ public class Database {
 				city.setResidentBuild(rs.getBoolean("residentBuild"));
 				city.setResidentDestroy(rs.getBoolean("residentDestroy"));
 				city.setResidentSwitch(rs.getBoolean("residentSwitch"));
-				city.setSpawnX(rs.getInt("spawnX"));
-				city.setSpawnY(rs.getInt("spawnY"));
-				city.setSpawnZ(rs.getInt("spawnZ"));
+				city.setSpawnX(rs.getDouble("spawnX"));
+				city.setSpawnY(rs.getDouble("spawnY"));
+				city.setSpawnZ(rs.getDouble("spawnZ"));
+				city.setSpawnPitch(rs.getFloat("spawnPitch"));
 				city.setUsedClaims(rs.getInt("usedClaims"));
 				city.setSnow(rs.getBoolean("snow"));
 				

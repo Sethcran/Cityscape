@@ -35,7 +35,7 @@ public class CSCities extends Table {
 	public void createCity(String playerName, String cityName) {
 		String sql = 	"INSERT INTO cscities " +
 						"VALUES( ?, ?, ?, NOW(), ?, ?, ?, null, null, null, null, " +
-						"?, ?, ?, ?, ?, ?, ?);";
+						"null, null, ?, ?, ?, ?, ?, ?, ?);";
 		try {
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, cityName);
@@ -216,15 +216,19 @@ public class CSCities extends Table {
 						"spawnX = ?, " +
 						"spawnY = ?, " +
 						"spawnZ = ?, " +
+						"spawnPitch = ?, " +
+						"spawnYaw = ?, " +
 						"world = ? " +
 						"WHERE name = ?;";
 		try {
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setInt(1, city.getSpawnX());
-			stmt.setInt(2, city.getSpawnY());
-			stmt.setInt(3, city.getSpawnZ());
-			stmt.setString(4, city.getWorld());
-			stmt.setString(5, city.getName());
+			stmt.setDouble(1, city.getSpawnX());
+			stmt.setDouble(2, city.getSpawnY());
+			stmt.setDouble(3, city.getSpawnZ());
+			stmt.setFloat(4, city.getSpawnPitch());
+			stmt.setFloat(5, city.getSpawnYaw());
+			stmt.setString(6, city.getWorld());
+			stmt.setString(7, city.getName());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			if(settings.debug)

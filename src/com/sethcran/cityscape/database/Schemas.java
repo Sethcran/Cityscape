@@ -38,9 +38,11 @@ public class Schemas {
 						"usedClaims INT NOT NULL," +
 						"baseClaims INT NOT NULL," +
 						"bonusClaims INT NOT NULL," + 
-						"spawnX INT," +
-						"spawnY INT," +
-						"spawnZ INT," +
+						"spawnX DOUBLE," +
+						"spawnY DOUBLE," +
+						"spawnZ DOUBLE," +
+						"spawnPitch FLOAT, " +
+						"spawnYaw FLOAT, " +
 						"world CHAR(" + Constants.WORLD_MAX_NAME_LENGTH + "), " +
 						"residentBuild BOOL, " +
 						"residentDestroy BOOL, " +

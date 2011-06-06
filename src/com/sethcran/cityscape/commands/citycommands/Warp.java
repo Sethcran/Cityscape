@@ -60,8 +60,15 @@ public class Warp extends CSCommand {
 			return;
 		}
 		
+		if(city.isBanned(player.getName())) {
+			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+					"You are banned from entering " + city.getName() + ".");
+			return;
+		}
+		
 		Location location = new Location(plugin.getServer().getWorld(city.getWorld()), 
-				city.getSpawnX(), city.getSpawnY(), city.getSpawnZ());
+				city.getSpawnX(), city.getSpawnY(), city.getSpawnZ(), 
+				city.getSpawnYaw(), city.getSpawnPitch());
 		
 		player.teleport(location);
 		player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +

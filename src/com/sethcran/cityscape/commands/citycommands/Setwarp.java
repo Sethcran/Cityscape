@@ -69,9 +69,11 @@ public class Setwarp extends CSCommand {
 			return;
 		}
 		
-		localCity.setSpawnX(location.getBlockX());
-		localCity.setSpawnY(location.getBlockY());
-		localCity.setSpawnZ(location.getBlockZ());
+		localCity.setSpawnX(location.getX());
+		localCity.setSpawnY(location.getY());
+		localCity.setSpawnZ(location.getZ());
+		localCity.setSpawnPitch(location.getPitch());
+		localCity.setSpawnYaw(location.getYaw());
 		localCity.setWorld(location.getWorld().getName());
 		plugin.getDB().setWarp(localCity);
 		
