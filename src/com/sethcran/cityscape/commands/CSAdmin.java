@@ -16,6 +16,7 @@ public class CSAdmin extends CSCommand {
 		super(plugin);
 		
 		addToMap(new Ban(plugin));
+		addToMap(new Claim(plugin));
 		addToMap(new Default(plugin));
 		addToMap(new DeleteCity(plugin));
 		addToMap(new SetMayor(plugin));
