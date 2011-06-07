@@ -27,6 +27,9 @@ public class Settings {
 	public boolean taxes = false;
 	public boolean cityWarps = false;
 	
+	public boolean cityPvp = false;
+	public boolean cityGod = true;
+	
 	public double cityCost = 0.0;
 	public double claimCost = 0.0;
 	
@@ -63,6 +66,9 @@ public class Settings {
 		taxes = config.getBoolean("cityscape.taxes", false);
 		cityWarps = config.getBoolean("cityscape.citywarps", false);
 		
+		cityPvp = config.getBoolean("cityscape.citypvp", false);
+		cityGod = config.getBoolean("cityscape.citygod", true);
+		
 		cityCost = config.getDouble("iconomy.citycost", 0.0);
 		claimCost = config.getDouble("iconomy.claimcost", 0.0);
 	}
@@ -95,6 +101,9 @@ public class Settings {
 		
 		config.setProperty("cityscape.taxes", false);
 		config.setProperty("cityscape.citywarps", false);
+		
+		config.setProperty("cityscape.citypvp", false);
+		config.setProperty("cityscape.citygod", true);
 		
 		config.setProperty("iconomy.citycost", 0.0);
 		config.setProperty("iconomy.claimcost", 0.0);

@@ -241,6 +241,7 @@ public class Cityscape extends JavaPlugin {
 		pm.registerEvent(Type.SNOW_FORM, blockListener, Priority.High, this);
 		
 		pm.registerEvent(Type.CREATURE_SPAWN, entityListener, Priority.High, this);
+		pm.registerEvent(Type.ENTITY_DAMAGE, entityListener, Priority.High, this);
 		pm.registerEvent(Type.ENTITY_TARGET, entityListener, Priority.High, this);
 	}
 	
