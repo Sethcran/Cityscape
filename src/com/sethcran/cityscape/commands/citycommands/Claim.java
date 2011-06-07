@@ -1,7 +1,6 @@
 package com.sethcran.cityscape.commands.citycommands;
 
 import org.bukkit.Chunk;
-import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -60,15 +59,8 @@ public class Claim extends CSCommand {
 		Chunk chunk = player.getLocation().getBlock().getChunk();
 		String world = chunk.getWorld().getName();
 		
-		Block minBlock = chunk.getBlock(0, 0, 0);
-		Block maxBlock = chunk.getBlock(15, 0, 15);
-		int xmin = minBlock.getX();
-		int zmin = minBlock.getZ();
-		int xmax = maxBlock.getX();
-		int zmax = maxBlock.getZ();
-		
-		int x = player.getLocation().getBlockX();
-		int z = player.getLocation().getBlockZ();
+		int x = chunk.getX();
+		int z = chunk.getZ();
 		
 		City city = plugin.getCityAt(x, z, world);
 		
@@ -79,15 +71,15 @@ public class Claim extends CSCommand {
 			}
 			else {
 				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-						"Another town already owns this claim!");
+						"Another city already owns this claim!");
 			}
 			return;
 		}
 		
-		City test1 = plugin.getCityAt(x + 16, z, world);
-		City test2 = plugin.getCityAt(x - 16, z, world);
-		City test3 = plugin.getCityAt(x, z + 16, world);
-		City test4 = plugin.getCityAt(x, z - 16, world);
+		City test1 = plugin.getCityAt(x + 1, z, world);
+		City test2 = plugin.getCityAt(x - 1, z, world);
+		City test3 = plugin.getCityAt(x, z + 1, world);
+		City test4 = plugin.getCityAt(x, z - 1, world);
 		boolean good = false;
 		
 		if(test1 != null) {
@@ -113,14 +105,16 @@ public class Claim extends CSCommand {
 			return;
 		}
 		
-		plugin.getDB().claimChunk(playerCity, world, xmin, zmin, xmax, zmax);
+		plugin.getDB().claimChunk(playerCity, world, x, z);
 		com.sethcran.cityscape.Claim claim = new com.sethcran.cityscape.Claim(
-				playerCity, world, xmin, zmin, xmax, zmax, plugin.getDB().getLastClaimID());
+				playerCity, world, x, z, plugin.getDB().getLastClaimID());
 		plugin.addClaim(claim);
 		plugin.addUsedClaim(claim.getCityName());
 		
+		city = plugin.getCity(playerCity);
+		
 		player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
-				"Your city has annexed the claim at " + chunk.getX() + 
-				", " + chunk.getZ() + ".");
+				"Your city has annexed the claim at " + x + 
+				", " + z + ".");
 	}
 }

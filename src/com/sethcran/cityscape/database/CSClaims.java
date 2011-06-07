@@ -15,18 +15,15 @@ public class CSClaims extends Table {
 		super(con, settings);
 	}
 	
-	public void claimChunk(String cityName, String worldName, 
-			int xmin, int zmin, int xmax, int zmax) {
+	public void claimChunk(String cityName, String worldName, int x, int z) {
 		String sql = 	"INSERT INTO csclaims " +
-						"VALUES(?, ?, ?, ?, ?, ?, null);";
+						"VALUES(?, ?, ?, ?, null);";
 		try {
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, cityName);
 			stmt.setString(2, worldName);
-			stmt.setInt(3, xmin);
-			stmt.setInt(4, zmin);
-			stmt.setInt(5, xmax);
-			stmt.setInt(6, zmax);
+			stmt.setInt(3, x);
+			stmt.setInt(4, z);
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			if(settings.debug)
@@ -34,26 +31,21 @@ public class CSClaims extends Table {
 		}
 	}
 	
-	public Claim getClaimAt(String world, int xmin, int zmin, int xmax, int zmax) {
+	public Claim getClaimAt(String world, int x, int z) {
 		String sql = 	"SELECT * " +
 						"FROM csclaims " +
-						"WHERE xmin = ? AND zmin = ? " +
-						"AND xmax = ? AND zmax = ?;";
+						"WHERE x = ? AND z = ?;";
 		try {
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setInt(1, xmin);
-			stmt.setInt(2, zmin);
-			stmt.setInt(3, xmax);
-			stmt.setInt(4, zmax);
+			stmt.setInt(1, x);
+			stmt.setInt(2, z);
 			ResultSet rs = stmt.executeQuery();
 			if(rs.next()) {
 				Claim claim = new Claim();
 				claim.setCityName(rs.getString("city"));
 				claim.setWorld(rs.getString("world"));
-				claim.setXmin(rs.getInt("xmin"));
-				claim.setZmin(rs.getInt("zmin"));
-				claim.setXmax(rs.getInt("xmax"));
-				claim.setZmax(rs.getInt("zmax"));
+				claim.setX(rs.getInt("xmin"));
+				claim.setZ(rs.getInt("zmin"));
 				claim.setId(rs.getInt("id"));
 				return claim;
 			}
@@ -73,10 +65,8 @@ public class CSClaims extends Table {
 			while(rs.next()) {
 				Claim claim = new Claim(rs.getString("city"), 
 						rs.getString("world"),
-						rs.getInt("xmin"), 
-						rs.getInt("zmin"), 
-						rs.getInt("xmax"), 
-						rs.getInt("zmax"), 
+						rs.getInt("x"), 
+						rs.getInt("z"),
 						rs.getInt("id"));
 				claimList.add(claim);
 			}

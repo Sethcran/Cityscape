@@ -93,11 +93,10 @@ public class Database {
 		cscitybanlist.ban(city, player);
 	}
 	
-	public void claimChunk(String cityName, String worldName,
-			int xmin, int zmin, int xmax, int zmax) {
+	public void claimChunk(String cityName, String worldName, int x, int z) {
 		try {
 			con.setAutoCommit(false);
-			csclaims.claimChunk(cityName, worldName, xmin, zmin, xmax, zmax);
+			csclaims.claimChunk(cityName, worldName, x, z);
 			cscities.addUsedClaims(cityName, 1);
 			con.commit();
 			con.setAutoCommit(true);
@@ -108,11 +107,11 @@ public class Database {
 	}
 
 	public void createCity(String playerName, String cityName, String worldName,
-			int xmin, int zmin, int xmax, int zmax ) {
+			int x, int z) {
 		try {
 			con.setAutoCommit(false);
 			cscities.createCity(playerName, cityName);
-			csclaims.claimChunk(cityName, worldName, xmin, zmin, xmax, zmax);
+			csclaims.claimChunk(cityName, worldName, x, z);
 			csplayercitydata.addPlayerCityHistory(playerName, cityName);
 			RankPermissions rp = new RankPermissions(true);
 			rp.setRankName("Mayor");
@@ -214,8 +213,8 @@ public class Database {
 		return cscities.getCityNames();
 	}
 	
-	public Claim getClaimAt(String world, int xmin, int zmin, int xmax, int zmax) {
-		return csclaims.getClaimAt(world, xmin, zmin, xmax, zmax);
+	public Claim getClaimAt(String world, int x, int z) {
+		return csclaims.getClaimAt(world, x, z);
 	}
 	
 	public ArrayList<Claim> getClaims() {

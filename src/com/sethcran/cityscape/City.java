@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.SimpleGraph;
+
 import com.iConomy.iConomy;
 import com.iConomy.system.Account;
 import com.infomatiq.jsi.Rectangle;
@@ -29,8 +32,8 @@ public class City {
 	private float spawnPitch = 0;
 	private float spawnYaw = 0;
 	String world = null;
-	private boolean residentBuild = false;
 	
+	private boolean residentBuild = false;
 	private boolean residentDestroy = false;
 	private boolean residentSwitch = false;
 	private boolean outsiderBuild = false;
@@ -38,41 +41,158 @@ public class City {
 	private boolean outsiderSwitch = false;
 	private boolean snow = false;
 	private RTree plotTree = null;
+	private SimpleGraph<Claim, DefaultEdge> claimGraph = null;
 	
 	private TIntObjectHashMap<Plot> plotMap = null;
 	private HashMap<String, RankPermissions> rankMap = null;
 	private HashMap<String, String> banList = null;
+	
 	public City() {
+		claimGraph = new SimpleGraph<Claim, DefaultEdge>(DefaultEdge.class);
 		rankMap = new HashMap<String, RankPermissions>();
 		banList = new HashMap<String, String>();
 		plotMap = new TIntObjectHashMap<Plot>();
 		plotTree = new RTree();
 		plotTree.init(null);
 	}
+	
+	public void addClaim(Claim claim, Claim north, Claim east, Claim south, Claim west) {
+		claimGraph.addVertex(claim);
+		if(north != null) {
+			claimGraph.addEdge(claim, north);
+		}
+		if(east != null) {
+			claimGraph.addEdge(claim, east);
+		}
+		if(south != null) {
+			claimGraph.addEdge(claim, south);
+		}
+		if(west != null) {
+			claimGraph.addEdge(claim, west);
+		}
+	}
+	
 	public void addPlot(Plot plot) {
 		plotMap.put(plot.getId(), plot);
 		plotTree.add(new Rectangle(plot.getXmin(), plot.getZmin(), 
 				plot.getXmax(), plot.getZmax()), plot.getId());
 	}
+	
 	public void addRank(RankPermissions rp) {
 		rankMap.put(rp.getRankName(), rp);
 	}
+	
 	public void ban(String player) {
 		banList.put(player, player);
 	}
+	
+	public boolean canUnclaim(Claim claim, Claim north, Claim east, Claim south, 
+			Claim west) {
+		claimGraph.removeVertex(claim);
+		boolean n = false;
+		boolean e = false;
+		boolean s = false;
+		boolean w = false;
+		
+		int count = 0;
+		
+		GraphIterator northi = null;
+		GraphIterator easti = null;
+		GraphIterator southi = null;
+		GraphIterator westi = null;
+		if(north != null) {
+			northi = new GraphIterator(claimGraph, north);
+			n = true;
+			count++;
+		}
+		if(east != null) {
+			easti = new GraphIterator(claimGraph, east);
+			e = true;
+			count++;
+		}
+		if(south != null) {
+			southi = new GraphIterator(claimGraph, south);
+			s = true;
+			count++;
+		}
+		if(west != null) {
+			westi = new GraphIterator(claimGraph, west);
+			w = true;
+			count++;
+		}
+		
+		if(count == 1) {
+			addClaim(claim, north, east, south, west);
+			return true;
+		}
+		
+		while(n || e || s || w) {
+			if(n) {
+				if(northi.hasNext()) {
+					Claim c = northi.next();
+					if(c.isVisited())
+						n = false;
+				}
+			}
+			if(e) {
+				if(easti.hasNext()) {
+					Claim c = easti.next();
+					if(c.isVisited())
+						e = false;
+				}
+			}
+			if(s) {
+				if(southi.hasNext()) {
+					Claim c = southi.next();
+					if(c.isVisited())
+						s = false;
+				}
+			}
+			if(w) {
+				if(westi.hasNext()) {
+					Claim c = westi.next();
+					if(c.isVisited())
+						w = false;
+				}
+			}
+			
+			if(!(n || e || s || w)) {
+				addClaim(claim, north, east, south, west);
+				resetClaimsVisited();
+				return true;
+			}
+			
+			if((!n || !northi.hasNext())
+					&& (!e || !easti.hasNext())
+					&& (!s || !southi.hasNext())
+					&& (!w || !westi.hasNext())) {
+				addClaim(claim, north, east, south, west);
+				resetClaimsVisited();
+				return false;
+			}
+		}
+		
+		addClaim(claim, north, east, south, west);
+		resetClaimsVisited();
+		return true;
+	}
+	
 	public void changeRank(RankPermissions rp) {
 		rankMap.remove(rp.getRankName());
 		rankMap.put(rp.getRankName(), rp);
 	}
+	
 	public boolean doesRankExist(String rank) {
 		RankPermissions rp = rankMap.get(rank);
 		if(rp == null)
 			return false;
 		return true;
 	}
+	
 	public Account getAccount() {
 		return iConomy.getAccount(name + ":city");
 	}
+	
 	public int getBaseClaims() {
 		return baseClaims;
 	}
@@ -80,6 +200,7 @@ public class City {
 	public int getBonusClaims() {
 		return bonusClaims;
 	}
+	
 	public String getFounded() {
 		return founded;
 	}
@@ -195,9 +316,15 @@ public class City {
 	public boolean isResidentSwitch() {
 		return residentSwitch;
 	}
+	
 	public boolean isSnow() {
 		return snow;
 	}
+	
+	public void removeClaim(Claim claim) {
+		claimGraph.removeVertex(claim);
+	}
+	
 	public void removePlot(Plot plot) {
 		plotMap.remove(plot.getId());
 		plotTree.delete(new Rectangle(plot.getXmin(), plot.getZmin(), 
@@ -221,6 +348,13 @@ public class City {
 				return true;
 			}
 		});
+	}
+	
+	public void resetClaimsVisited() {
+		for(Claim claim : claimGraph.vertexSet()) {
+			if(claim.isVisited())
+				claim.setVisited(false);
+		}
 	}
 	
 	public void setBaseClaims(int baseClaims) {

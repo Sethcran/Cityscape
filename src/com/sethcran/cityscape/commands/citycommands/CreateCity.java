@@ -2,7 +2,6 @@ package com.sethcran.cityscape.commands.citycommands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
-import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -106,22 +105,18 @@ public class CreateCity extends CSCommand {
 		
 		// Get the coordinates and world where player is standing
 		Chunk chunk = player.getLocation().getBlock().getChunk();
-		Block minBlock = chunk.getBlock(0, 0, 0);
-		Block maxBlock = chunk.getBlock(15, 0, 15);
-		int xmin = minBlock.getX();
-		int zmin = minBlock.getZ();
-		int xmax = maxBlock.getX();
-		int zmax = maxBlock.getZ();
+		int x = chunk.getX();
+		int z = chunk.getZ();
 		String worldName = chunk.getWorld().getName();
 		
 		// Check that the current chunk is unclaimed
-		if(plugin.isChunkClaimed(xmin, zmin, xmax, zmax, worldName)) {
+		if(plugin.isChunkClaimed(worldName, x, z)) {
 			player.sendMessage(Constants.CITYSCAPE + ChatColor.RED +
 					"A city already owns that spot!");
 			return;
 		}
 		
-		db.createCity(player.getName(), args[0], worldName, xmin, zmin, xmax, zmax);
+		db.createCity(player.getName(), args[0], worldName, x, z);
 		
 		plugin.getServer().broadcastMessage(Constants.CITYSCAPE + 
 				ChatColor.GREEN + "The city of " + args[0] + " was founded!");
@@ -129,7 +124,7 @@ public class CreateCity extends CSCommand {
 		City city = plugin.getDB().getCity(args[0]);
 		plugin.insertIntoCityCache(args[0], city);
 		com.sethcran.cityscape.Claim claim = new com.sethcran.cityscape.Claim(
-				args[0], worldName, xmin, zmin, xmax, zmax, db.getLastClaimID());
+				args[0], worldName, x, z, db.getLastClaimID());
 		plugin.addClaim(claim);
 		
 		PlayerCache cache = plugin.getCache(player.getName());

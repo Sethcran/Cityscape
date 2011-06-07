@@ -1,5 +1,6 @@
 package com.sethcran.cityscape.listeners;
 
+import org.bukkit.Chunk;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -28,8 +29,9 @@ public class CSBlockListener extends BlockListener {
 		
 		Player player = event.getPlayer();
 		Block block = event.getBlock();
+		Chunk chunk = block.getChunk();
 		
-		City city = plugin.getCityAt(block.getX(), block.getZ(), block.getWorld().getName());
+		City city = plugin.getCityAt(chunk.getX(), chunk.getZ(), chunk.getWorld().getName());
 		
 		if(city == null) {
 			return;
@@ -153,8 +155,9 @@ public class CSBlockListener extends BlockListener {
 		
 		Player player = event.getPlayer();
 		Block block = event.getBlock();
+		Chunk chunk = block.getChunk();
 		
-		City city = plugin.getCityAt(block.getX(), block.getZ(), block.getWorld().getName());
+		City city = plugin.getCityAt(chunk.getX(), chunk.getZ(), chunk.getWorld().getName());
 		
 		if(city == null)
 			return;
@@ -272,8 +275,9 @@ public class CSBlockListener extends BlockListener {
 	@Override
 	public void onSnowForm(SnowFormEvent event) {
 		Block block = event.getBlock();
+		Chunk chunk = block.getChunk();
 		
-		City city = plugin.getCityAt(block.getX(), block.getZ(), block.getWorld().getName());
+		City city = plugin.getCityAt(chunk.getX(), chunk.getZ(), chunk.getWorld().getName());
 		
 		if(city == null)
 			return;

@@ -4,32 +4,56 @@ public class Claim {
 	private String cityName = null;
 	private String world = null;
 	
-	private int xmin = 0;
-	private int zmin = 0;
-	private int xmax = 0;
-	private int zmax = 0;
+	private int x = 0;
+	private int z = 0;
 	
 	private int id = 0;
+	
+	private boolean visited = false;
 	
 	public Claim() {
 		
 	}
 
-	public Claim(String cityName, String world, int xmin, int zmin, 
-			int xmax, int zmax, int id) {
+	public Claim(String world, int x, int z) {
+		this.world = world;
+		this.x = x;
+		this.z = z;
+	}
+
+	public Claim(String cityName, String world, int x, int z, int id) {
 		this.cityName = cityName;
-		this.xmin = xmin;
-		this.zmin = zmin;
-		this.xmax = xmax;
-		this.zmax = zmax;
+		this.x = x;
+		this.z = z;
 		this.id = id;
 		this.world = world;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Claim other = (Claim) obj;
+		if (world == null) {
+			if (other.world != null)
+				return false;
+		} else if (!world.equals(other.world))
+			return false;
+		if (x != other.x)
+			return false;
+		if (z != other.z)
+			return false;
+		return true;
 	}
 
 	public String getCityName() {
 		return cityName;
 	}
-
+	
 	public int getId() {
 		return id;
 	}
@@ -37,48 +61,55 @@ public class Claim {
 	public String getWorld() {
 		return world;
 	}
-	
-	public int getXmax() {
-		return xmax;
+
+	public int getX() {
+		return x;
 	}
 	
-	public int getXmin() {
-		return xmin;
+	public int getZ() {
+		return z;
 	}
-	
-	public int getZmax() {
-		return zmax;
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((world == null) ? 0 : world.hashCode());
+		result = prime * result + x;
+		result = prime * result + z;
+		return result;
 	}
-	
-	public int getZmin() {
-		return zmin;
+
+	public boolean isVisited() {
+		return visited;
 	}
-	
+
 	public void setCityName(String cityName) {
 		this.cityName = cityName;
 	}
-	
+
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
+	public void setVisited(boolean visited) {
+		this.visited = visited;
+	}
+
 	public void setWorld(String world) {
 		this.world = world;
 	}
 	
-	public void setXmax(int xmax) {
-		this.xmax = xmax;
+	public void setX(int x) {
+		this.x = x;
 	}
 	
-	public void setXmin(int xmin) {
-		this.xmin = xmin;
+	public void setZ(int z) {
+		this.z = z;
 	}
 	
-	public void setZmax(int zmax) {
-		this.zmax = zmax;
-	}
-	
-	public void setZmin(int zmin) {
-		this.zmin = zmin;
+	@Override
+	public String toString() {
+		return world + x + z;
 	}
 }

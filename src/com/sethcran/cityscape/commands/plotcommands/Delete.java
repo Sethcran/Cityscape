@@ -1,5 +1,6 @@
 package com.sethcran.cityscape.commands.plotcommands;
 
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -39,8 +40,9 @@ public class Delete extends CSCommand {
 		}
 		
 		Location location = player.getLocation();
-		City city = plugin.getCityAt(location.getBlockX(), location.getBlockZ(), 
-				location.getWorld().getName());
+		Chunk chunk = location.getBlock().getChunk();
+		City city = plugin.getCityAt(chunk.getX(), chunk.getZ(), 
+				chunk.getWorld().getName());
 		if(city == null) {
 			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
 					"You  must be standing inside a plot to do that.");

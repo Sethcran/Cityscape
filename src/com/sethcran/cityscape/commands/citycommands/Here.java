@@ -1,6 +1,6 @@
 package com.sethcran.cityscape.commands.citycommands;
 
-import org.bukkit.block.Block;
+import org.bukkit.Chunk;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -29,8 +29,8 @@ public class Here extends CSCommand {
 			return;
 		}
 		
-		Block block = player.getLocation().getBlock();
-		City city = plugin.getCityAt(block.getX(), block.getZ(), block.getWorld().getName());
+		Chunk chunk = player.getLocation().getBlock().getChunk();
+		City city = plugin.getCityAt(chunk.getX(), chunk.getZ(), chunk.getWorld().getName());
 		
 		if(city == null) {
 			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR + 

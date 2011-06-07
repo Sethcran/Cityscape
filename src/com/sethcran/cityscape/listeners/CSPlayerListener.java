@@ -3,6 +3,7 @@ package com.sethcran.cityscape.listeners;
 import java.util.ArrayList;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -41,8 +42,9 @@ public class CSPlayerListener extends PlayerListener {
 		
 		Player player = event.getPlayer();
 		Block block = event.getBlockClicked();
+		Chunk chunk = block.getChunk();
 		
-		City city = plugin.getCityAt(block.getX(), block.getZ(), block.getWorld().getName());
+		City city = plugin.getCityAt(chunk.getX(), chunk.getZ(), chunk.getWorld().getName());
 		
 		String playerCity = plugin.getCache(player.getName()).getCity();
 		
@@ -161,8 +163,9 @@ public class CSPlayerListener extends PlayerListener {
 		
 		Player player = event.getPlayer();
 		Block block = event.getBlockClicked();
+		Chunk chunk = block.getChunk();
 		
-		City city = plugin.getCityAt(block.getX(), block.getZ(), block.getWorld().getName());
+		City city = plugin.getCityAt(chunk.getX(), chunk.getZ(), chunk.getWorld().getName());
 		
 		String playerCity = plugin.getCache(player.getName()).getCity();
 		
@@ -284,8 +287,9 @@ public class CSPlayerListener extends PlayerListener {
 		
 		if(event.getAction() == Action.LEFT_CLICK_BLOCK) {
 			Block block = event.getClickedBlock();
-			City city = plugin.getCityAt(block.getX(), block.getZ(), 
-					block.getWorld().getName());
+			Chunk chunk = block.getChunk();
+			City city = plugin.getCityAt(chunk.getX(), chunk.getZ(), 
+					chunk.getWorld().getName());
 			
 			if(city == null) {
 				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
@@ -308,8 +312,9 @@ public class CSPlayerListener extends PlayerListener {
 		}
 		else if(event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 			Block block = event.getClickedBlock();
-			City city = plugin.getCityAt(block.getX(), block.getZ(), 
-					block.getWorld().getName());
+			Chunk chunk = block.getChunk();
+			City city = plugin.getCityAt(chunk.getX(), chunk.getZ(), 
+					chunk.getWorld().getName());
 			
 			if(city == null) {
 				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
@@ -346,7 +351,9 @@ public class CSPlayerListener extends PlayerListener {
 			db.insertNewPlayer(playerName);
 		}
 		
-		City city = plugin.getCityAt(curLoc.getBlockX(), curLoc.getBlockZ(), 
+		Chunk chunk = curLoc.getBlock().getChunk();
+		
+		City city = plugin.getCityAt(chunk.getX(), chunk.getZ(), 
 				curLoc.getWorld().getName());
 		String currentCityLoc = null;
 		if(city != null)
@@ -360,8 +367,13 @@ public class CSPlayerListener extends PlayerListener {
 		
 		City playerCity = plugin.getCity(cache.getCity());
 		if(playerCity != null) {
-			player.sendMessage(Constants.TOWN_COLOR + "[" + playerCity.getName() + "] " +
-					Constants.MESSAGE_COLOR + playerCity.getWelcome());
+			String message = Constants.TOWN_COLOR + "[" + playerCity.getName() + "] " +
+			Constants.MESSAGE_COLOR;
+			if(playerCity.getWelcome() == null)
+				message += "Welcome";
+			else
+				message += playerCity.getWelcome();
+			player.sendMessage(message);
 		}
 		
 		ArrayList<String> invites = db.getInvites(player.getName());
@@ -380,12 +392,14 @@ public class CSPlayerListener extends PlayerListener {
 		if(from.getBlockX() == to.getBlockX() && from.getBlockZ() == to.getBlockZ())
 			return;
 		
+		Chunk chunk = to.getBlock().getChunk();
+		
 		Player player = event.getPlayer();
 		
 		PlayerCache cache = plugin.getCache(player.getName());
 		String lastTown = cache.getLastTownLocation();	
-		City city = plugin.getCityAt(to.getBlockX(), to.getBlockZ(), 
-				to.getWorld().getName());
+		City city = plugin.getCityAt(chunk.getX(), chunk.getZ(), to.getWorld().getName());
+		
 		String currentCityLoc = null;
 		
 		if(city != null) {
@@ -481,8 +495,9 @@ public class CSPlayerListener extends PlayerListener {
 	@Override
 	public void onPlayerTeleport(PlayerTeleportEvent event) {
 		Location location = event.getTo();
+		Chunk chunk = location.getBlock().getChunk();
 		
-		City city = plugin.getCityAt(location.getBlockX(), location.getBlockZ(), 
+		City city = plugin.getCityAt(chunk.getX(), chunk.getZ(), 
 				location.getWorld().getName());
 		
 		if(city != null) {

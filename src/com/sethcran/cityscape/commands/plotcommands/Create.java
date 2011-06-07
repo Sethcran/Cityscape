@@ -1,5 +1,7 @@
 package com.sethcran.cityscape.commands.plotcommands;
 
+import org.bukkit.Chunk;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -67,8 +69,18 @@ public class Create extends CSCommand {
 		String playerCity = plugin.getCache(player.getName()).getCity();
 		City city = null;
 		
-		for(int i = selection.getXmin(); i < selection.getXmax(); i += 16) {
-			for(int j = selection.getZmin(); j < selection.getZmax(); j += 16) {
+		World world = plugin.getServer().getWorld(selection.getFirstWorld());
+		Chunk minChunk = world.getBlockAt(selection.getXmin(), 0, 
+				selection.getZmin()).getChunk();
+		Chunk maxChunk = world.getBlockAt(selection.getXmax(), 0, 
+				selection.getZmax()).getChunk();
+		int xmin = minChunk.getX();
+		int zmin = minChunk.getZ();
+		int xmax = maxChunk.getX();
+		int zmax = maxChunk.getZ();
+		
+		for(int i = xmin; i <= xmax; i++) {
+			for(int j = zmin; j <= zmax; j++) {
 				city = plugin.getCityAt(i, j, selection.getFirstWorld());
 				if(city == null) {
 					player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +

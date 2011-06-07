@@ -1,5 +1,6 @@
 package com.sethcran.cityscape.commands.citycommands;
 
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -54,8 +55,9 @@ public class Setwarp extends CSCommand {
 		}
 		
 		Location location = player.getLocation();
-		City localCity = plugin.getCityAt(location.getBlockX(), location.getBlockZ(), 
-				location.getWorld().getName());
+		Chunk chunk = location.getBlock().getChunk();
+		City localCity = plugin.getCityAt(chunk.getX(), chunk.getZ(), 
+				chunk.getWorld().getName());
 		
 		if(localCity == null) {
 			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +

@@ -1,6 +1,6 @@
 package com.sethcran.cityscape.listeners;
 
-import org.bukkit.Location;
+import org.bukkit.Chunk;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -29,9 +29,9 @@ public class CSEntityListener extends EntityListener {
 				creature == CreatureType.GHAST || creature == CreatureType.SLIME ||
 				creature == CreatureType.GIANT) {
 			
-			Location location = event.getLocation();
-			City city = plugin.getCityAt(location.getBlockX(), location.getBlockZ(), 
-					location.getWorld().getName());
+			Chunk chunk = event.getLocation().getBlock().getChunk();
+			City city = plugin.getCityAt(chunk.getX(), chunk.getZ(), 
+					chunk.getWorld().getName());
 			
 			if(city != null) {
 				event.getEntity().remove();
@@ -46,10 +46,10 @@ public class CSEntityListener extends EntityListener {
 		if(entity instanceof Player)
 			return;
 		
-		Location location = entity.getLocation();
+		Chunk chunk = entity.getLocation().getBlock().getChunk();
 		
-		City city = plugin.getCityAt(location.getBlockX(), location.getBlockZ(), 
-				location.getWorld().getName());
+		City city = plugin.getCityAt(chunk.getX(), chunk.getZ(), 
+				chunk.getWorld().getName());
 		
 		if(city != null) {
 			entity.remove();

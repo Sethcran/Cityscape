@@ -1,6 +1,6 @@
 package com.sethcran.cityscape.commands.csadmincommands;
 
-import org.bukkit.Location;
+import org.bukkit.Chunk;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -39,9 +39,10 @@ public class Unclaim extends CSCommand {
 			return;
 		}
 		
-		Location location = player.getLocation();
-		Claim claim = plugin.getClaimAt(location.getBlockX(), location.getBlockZ(), 
-				location.getWorld().getName());
+		Chunk chunk = player.getLocation().getBlock().getChunk();
+		int x = chunk.getX();
+		int z = chunk.getZ();
+		Claim claim = plugin.getClaimAt(x, z, chunk.getWorld().getName());
 		
 		if(claim == null) {
 			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
@@ -53,7 +54,7 @@ public class Unclaim extends CSCommand {
 		plugin.getDB().unclaimChunk(claim);
 		
 		player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
-				"You have unclaimed the claim at your location.");
+				"You have unclaimed the claim at " + x + ", " + z + ".");
 	}
 
 }

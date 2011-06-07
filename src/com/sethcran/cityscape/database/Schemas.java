@@ -88,10 +88,8 @@ public class Schemas {
 		String sql = 	"CREATE TABLE IF NOT EXISTS csclaims(" +
 						"city CHAR(" + Constants.TOWN_MAX_NAME_LENGTH + ") NOT NULL, " + 
 						"world CHAR(" + Constants.WORLD_MAX_NAME_LENGTH + ") NOT NULL, " +
-						"xmin INT, " +
-						"zmin INT, " +
-						"xmax INT, " +
-						"zmax INT, " +
+						"x INT, " +
+						"z INT, " +
 						"id INT AUTO_INCREMENT, " +
 						"PRIMARY KEY(id), " +
 						"FOREIGN KEY(city) REFERENCES cscities(name) " +

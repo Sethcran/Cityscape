@@ -1,7 +1,6 @@
 package com.sethcran.cityscape;
 
-import gnu.trove.TIntObjectHashMap;
-import gnu.trove.TIntObjectProcedure;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,8 +18,6 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.iConomy.iConomy;
-import com.infomatiq.jsi.Rectangle;
-import com.infomatiq.jsi.rtree.RTree;
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
 import com.sethcran.cityscape.commands.CommandHandler;
@@ -29,7 +26,6 @@ import com.sethcran.cityscape.listeners.CSBlockListener;
 import com.sethcran.cityscape.listeners.CSEntityListener;
 import com.sethcran.cityscape.listeners.CSPlayerListener;
 import com.sethcran.cityscape.listeners.CSServerListener;
-
 
 public class Cityscape extends JavaPlugin {
 	public static Logger log = null;
@@ -42,13 +38,36 @@ public class Cityscape extends JavaPlugin {
 	private HashMap<String, Selection> selectionMap = null;
 	private HashMap<String, PlayerCache> playerCache = null;
 	private HashMap<String, City> cityCache = null;
-	private TIntObjectHashMap<Claim> claimMap = null;
-	private RTree claimTree = null;
+	private HashMap<String, Claim> claimMap = null;
 
 	public void addClaim(Claim claim) {
-		claimMap.put(claim.getId(), claim);
-		claimTree.add(new Rectangle(claim.getXmin(), claim.getZmin(), claim.getXmax(),
-				claim.getZmax()), claim.getId());
+		claimMap.put(claim.toString(), claim);
+		com.sethcran.cityscape.Claim north = getClaimAt(
+				claim.getX(), claim.getZ() + 1, claim.getWorld());
+		com.sethcran.cityscape.Claim east = getClaimAt(
+				claim.getX() + 1, claim.getZ(), claim.getWorld());
+		com.sethcran.cityscape.Claim south = getClaimAt(
+				claim.getX(), claim.getZ() - 1, claim.getWorld());
+		com.sethcran.cityscape.Claim west = getClaimAt(
+				claim.getX() - 1, claim.getZ(), claim.getWorld());
+		
+		if(north != null) {
+			if(!north.getCityName().equals(claim.getCityName()))
+				north = null;
+		}
+		if(east != null) {
+			if(!east.getCityName().equals(claim.getCityName()))
+				east = null;
+		}
+		if(south != null) {
+			if(!south.getCityName().equals(claim.getCityName()))
+				south = null;
+		}
+		if(west != null) {
+			if(!west.getCityName().equals(claim.getCityName()))
+				west = null;
+		}
+		getCity(claim.getCityName()).addClaim(claim, north, east, south, west);
 	}
 	
 	public void addUsedClaim(String cityName) {
@@ -62,15 +81,10 @@ public class Cityscape extends JavaPlugin {
 	
 	public void deleteCity(String city) {
 		
-		claimMap.forEachEntry(new TIntObjectProcedure<Claim>() {
-			
-			public boolean execute(int i, Claim claim) {
-				claimMap.remove(i);
-				claimTree.delete(new Rectangle(claim.getXmin(), claim.getZmin(),
-						claim.getXmax(), claim.getZmax()), i);
-				return true;
-			}
-		});
+		for(Claim claim : claimMap.values()) {
+			if(city.equals(claim.getCityName()))
+				claim.setCityName(null);
+		}
 		
 		cityCache.remove(city);
 		
@@ -91,25 +105,14 @@ public class Cityscape extends JavaPlugin {
 	}
 	
 	public City getCityAt(int x, int z, String world) {
-		TreeProcedure tproc = new TreeProcedure();
-		claimTree.intersects(new Rectangle(x, z, x, z), tproc);
-		for(int i : tproc.getId()) {
-			Claim claim = claimMap.get(i);
-			if(claim.getWorld().equals(world))
-				return getCity(claim.getCityName());
-		}
-		return null;
+		Claim claim = claimMap.get(new Claim(world, x, z).toString());
+		if(claim == null)
+			return null;
+		return cityCache.get(claim.getCityName());
 	}
 	
 	public Claim getClaimAt(int x, int z, String world) {
-		TreeProcedure tproc = new TreeProcedure();
-		claimTree.intersects(new Rectangle(x, z, x, z), tproc);
-		for(int i : tproc.getId()) {
-			Claim claim = claimMap.get(i);
-			if(claim.getWorld().equals(world))
-				return claim;
-		}
-		return null;
+		return claimMap.get(new Claim(world, x, z).toString());
 	}
 	
 	public CommandHandler getCommandHandler() {
@@ -153,19 +156,12 @@ public class Cityscape extends JavaPlugin {
 		selectionMap.put(player, selection);
 	}
 	
-	public boolean isChunkClaimed(int xmin, int zmin, int xmax, int zmax, String world) {
-		TreeProcedure tproc = new TreeProcedure();
-		claimTree.intersects(new Rectangle(xmin, zmin, xmax, zmax), tproc);
-		if(tproc.getId().size() == 0)
-			return false;
-		else {
-			for(int i : tproc.getId()) {
-				Claim claim = claimMap.get(i);
-				if(claim.getWorld().equals(world))
-					return true;
-			}
-		}
-		return false;	
+	public boolean isChunkClaimed(String world, int x, int z) {
+			Claim claim = claimMap.get(new Claim(world, x, z).toString());
+			if(claim == null)
+				return false;
+			else
+				return true;
 	}
 	
 	@Override
@@ -191,10 +187,7 @@ public class Cityscape extends JavaPlugin {
 		selectionMap = new HashMap<String, Selection>();
 		playerCache = new HashMap<String, PlayerCache>();
 		cityCache = new HashMap<String, City>();
-		claimMap = new TIntObjectHashMap<Claim>();
-		claimTree = new RTree();
-		
-		claimTree.init(null);
+		claimMap = new HashMap<String, Claim>();
 		
 		populateCityCache();
 		populateClaimsCache();
@@ -252,11 +245,10 @@ public class Cityscape extends JavaPlugin {
 	}
 	
 	public void removeClaim(Claim claim) {
-		claimMap.remove(claim.getId());
-		claimTree.delete(new Rectangle(claim.getXmin(), claim.getZmin(), claim.getXmax(),
-				claim.getZmax()), claim.getId());
+		claimMap.remove(claim.toString());
 		City city = getCity(claim.getCityName());
 		city.setUsedClaims(city.getUsedClaims() - 1);
+		city.removeClaim(claim);
 	}
 	
 	public void removeFromCityCache(String cityName) {
@@ -272,14 +264,10 @@ public class Cityscape extends JavaPlugin {
 	}
 	
 	public void renameCity(String oldName, String newName) {
-		final String tempName = newName;
-		claimMap.forEachEntry(new TIntObjectProcedure<Claim>() {
-			
-			public boolean execute(int i, Claim claim) {
-				claim.setCityName(tempName);
-				return true;
-			}
-		});
+		for(Claim claim : claimMap.values()) {
+			if(oldName.equals(claim.getCityName()))
+					claim.setCityName(newName);
+		}
 		
 		City city = cityCache.get(oldName);
 		cityCache.remove(oldName);

@@ -50,9 +50,10 @@ public class Unclaim extends CSCommand {
 			return;
 		}
 		
-		int x = player.getLocation().getBlockX();
-		int z = player.getLocation().getBlockZ();
-		String world = player.getWorld().getName();
+		Chunk chunk = player.getLocation().getBlock().getChunk();
+		int x = chunk.getX();
+		int z = chunk.getZ();
+		String world = chunk.getWorld().getName();
 		City city = plugin.getCityAt(x, z, world);
 		
 		if(city == null) {
@@ -73,15 +74,41 @@ public class Unclaim extends CSCommand {
 			return;
 		}
 		
-		Chunk chunk = player.getLocation().getBlock().getChunk();
-		
 		com.sethcran.cityscape.Claim claim = plugin.getClaimAt(x, z, world);
-		plugin.getDB().unclaimChunk(claim);
+		com.sethcran.cityscape.Claim north = plugin.getClaimAt(x, z + 1, world);
+		com.sethcran.cityscape.Claim east = plugin.getClaimAt(x + 1, z, world);
+		com.sethcran.cityscape.Claim south = plugin.getClaimAt(x, z - 1, world);
+		com.sethcran.cityscape.Claim west = plugin.getClaimAt(x - 1, z, world);
+		
+		if(north != null) {
+			if(!north.getCityName().equals(claim.getCityName()))
+				north = null;
+		}
+		if(east != null) {
+			if(!east.getCityName().equals(claim.getCityName()))
+				east = null;
+		}
+		if(south != null) {
+			if(!south.getCityName().equals(claim.getCityName()))
+				south = null;
+		}
+		if(west != null) {
+			if(!west.getCityName().equals(claim.getCityName()))
+				west = null;
+		}
+		
+		if(!city.canUnclaim(claim, north, east, south, west)) {
+			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+					"That would create seperate areas in your claims.");
+			return;
+		}
+		
 		plugin.removeClaim(claim);
+		plugin.getDB().unclaimChunk(claim);
 		
 		player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
-				"Your town has unclaimed the area at " + chunk.getX() + ", " +
-				chunk.getZ() + ".");
+				"Your town has unclaimed the area at " + x + ", " +
+				z + ".");
 	}
 
 }
