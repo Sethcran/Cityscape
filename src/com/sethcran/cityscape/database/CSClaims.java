@@ -90,6 +90,20 @@ public class CSClaims extends Table {
 		return 0;
 	}
 	
+	public void unclaimAll(String city, Claim claim) {
+		String sql = 	"DELETE FROM csclaims " +
+						"WHERE city = ?;";
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, city);
+			stmt.executeUpdate();
+			claimChunk(city, claim.getWorld(), claim.getX(), claim.getZ());
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+	}
+	
 	public void unclaimChunk(Claim claim) {
 		String sql = 	"DELETE FROM csclaims " +
 						"WHERE id = ?;";

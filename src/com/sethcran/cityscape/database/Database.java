@@ -359,6 +359,19 @@ public class Database {
 		cscitybanlist.unban(city, player);
 	}
 	
+	public void unclaimAll(String city, Claim claim) {
+		try {
+			con.setAutoCommit(false);
+			csclaims.unclaimAll(city, claim);
+			cscities.setUsedClaims(city, 1);
+			con.commit();
+			con.setAutoCommit(true);
+		} catch(SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+	}
+	
 	public void unclaimChunk(Claim claim) {
 		try {
 			con.setAutoCommit(false);

@@ -274,6 +274,13 @@ public class City {
 	public String getWorld() {
 		return world;
 	}
+	
+	public boolean hasClaims(int num) {
+		if(usedClaims + num <= baseClaims + bonusClaims)
+			return true;
+		else
+			return false;
+	}
 
 	public boolean isBanned(String player) {
 		String s = banList.get(player);

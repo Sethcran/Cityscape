@@ -185,7 +185,7 @@ public class CSRanks extends Table {
 						"promote = ?, " +
 						"demote = ?, " +
 						"withdraw = ?, " +
-						"changeRankName = ?, " +
+						"settings = ?, " +
 						"setWelcome = ?, " +
 						"setMayor = ?, " +
 						"setWarp = ?, " +

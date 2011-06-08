@@ -75,6 +75,18 @@ public class Unclaim extends CSCommand {
 		}
 		
 		com.sethcran.cityscape.Claim claim = plugin.getClaimAt(x, z, world);
+		
+		if(args != null && args.length == 1 && args[0].equalsIgnoreCase("all")) {
+			plugin.unclaimAll(city.getName(), claim);
+			plugin.getDB().unclaimAll(city.getName(), claim);
+			
+			player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
+					"You have unclaimed all chunks except the on you are standing on.");
+			
+			return;
+		}
+		
+		
 		com.sethcran.cityscape.Claim north = plugin.getClaimAt(x, z + 1, world);
 		com.sethcran.cityscape.Claim east = plugin.getClaimAt(x + 1, z, world);
 		com.sethcran.cityscape.Claim south = plugin.getClaimAt(x, z - 1, world);

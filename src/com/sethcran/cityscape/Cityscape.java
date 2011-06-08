@@ -3,7 +3,9 @@ package com.sethcran.cityscape;
 
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -81,9 +83,12 @@ public class Cityscape extends JavaPlugin {
 	
 	public void deleteCity(String city) {
 		
-		for(Claim claim : claimMap.values()) {
+		Collection<Claim> cc = claimMap.values();
+		Iterator<Claim> iter = cc.iterator();
+		while(iter.hasNext()) {
+			Claim claim = iter.next();
 			if(city.equals(claim.getCityName()))
-				claim.setCityName(null);
+				iter.remove();
 		}
 		
 		cityCache.remove(city);
@@ -303,5 +308,23 @@ public class Cityscape extends JavaPlugin {
 				log.info("Permission system not detected, defaulting to OP");
 			}
 		}
+	}
+	
+	public void unclaimAll(String cityName, Claim claim) {
+		City city = cityCache.get(cityName);
+		
+		Collection<Claim> cc = claimMap.values();
+		Iterator<Claim> iter = cc.iterator();
+		while(iter.hasNext()){
+			Claim c = iter.next();
+			if(c.getCityName().equals(cityName)) {
+				iter.remove();
+				city.removeClaim(c);
+			}
+		}
+		claimMap.put(claim.toString(), claim);
+		city.addClaim(claim, null, null, null, null);
+		
+		city.setUsedClaims(1);
 	}
 }

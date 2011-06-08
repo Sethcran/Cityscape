@@ -1,5 +1,8 @@
 package com.sethcran.cityscape.commands.citycommands;
 
+import java.awt.Point;
+import java.util.ArrayList;
+
 import org.bukkit.Chunk;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -16,7 +19,7 @@ public class Claim extends CSCommand {
 		super(plugin);
 		name = "claim";
 		description = "Claims the chunk you are standing on for your town.";
-		usage = "/city claim";
+		usage = "/city claim (rect) (radius)";
 	}
 
 	@Override
@@ -50,7 +53,9 @@ public class Claim extends CSCommand {
 			return;
 		}
 		
-		if(!plugin.getDB().hasClaims(playerCity, 1)) {
+		City pcity = plugin.getCity(playerCity);
+		
+		if(!pcity.hasClaims(1)) {
 			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
 					"Your city does not have enough claims available!");
 			return;
@@ -105,13 +110,54 @@ public class Claim extends CSCommand {
 			return;
 		}
 		
+		if(args != null && args.length == 2) {
+			if(args[0].equalsIgnoreCase("rect")) {
+				int radius = 0;
+				try {
+					radius = Integer.parseInt(args[1]);
+				} catch(NumberFormatException e) {
+					player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+							"You must provide an integer for the radius.");
+					return;
+				}
+				
+				ArrayList<Point> pointList = new ArrayList<Point>();
+				
+				for(int i = x - radius; i <= x + radius; i++) {
+					for(int j = z - radius; j <= z + radius; j++) {
+						City localCity = plugin.getCityAt(i, j, world);
+						if(localCity == null) {
+							pointList.add(new Point(i, j));
+						}
+					}
+				}
+				
+				if(!pcity.hasClaims(pointList.size())) {
+					player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+							"You do not have the " + pointList.size() + " claims needed.");
+					return;
+				}
+				
+				for(Point p : pointList) {
+					plugin.getDB().claimChunk(playerCity, world, p.x, p.y);
+					com.sethcran.cityscape.Claim claim = new com.sethcran.cityscape.Claim(
+							playerCity, world, p.x, p.y, 
+							plugin.getDB().getLastClaimID());
+					plugin.addClaim(claim);
+					plugin.addUsedClaim(claim.getCityName());
+				}
+				
+				player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
+						"You have claimed " + pointList.size() + " claims.");
+				return;
+			}
+		}
+		
 		plugin.getDB().claimChunk(playerCity, world, x, z);
 		com.sethcran.cityscape.Claim claim = new com.sethcran.cityscape.Claim(
 				playerCity, world, x, z, plugin.getDB().getLastClaimID());
 		plugin.addClaim(claim);
 		plugin.addUsedClaim(claim.getCityName());
-		
-		city = plugin.getCity(playerCity);
 		
 		player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
 				"Your city has annexed the claim at " + x + 
