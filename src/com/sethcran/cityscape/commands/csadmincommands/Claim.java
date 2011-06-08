@@ -63,8 +63,7 @@ public class Claim extends CSCommand {
 		plugin.getDB().claimChunk(city.getName(), chunk.getWorld().getName(), 
 				chunk.getX(), chunk.getZ());
 		claim = new com.sethcran.cityscape.Claim(
-				city.getName(), chunk.getWorld().getName(), chunk.getX(), chunk.getZ(), 
-				plugin.getDB().getLastClaimID());
+				city.getName(), chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
 		plugin.addClaim(claim);
 		plugin.addUsedClaim(claim.getCityName());
 		

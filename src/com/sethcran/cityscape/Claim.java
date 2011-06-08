@@ -7,8 +7,6 @@ public class Claim {
 	private int x = 0;
 	private int z = 0;
 	
-	private int id = 0;
-	
 	private boolean visited = false;
 	
 	public Claim() {
@@ -21,12 +19,11 @@ public class Claim {
 		this.z = z;
 	}
 
-	public Claim(String cityName, String world, int x, int z, int id) {
+	public Claim(String cityName, String world, int x, int z) {
 		this.cityName = cityName;
+		this.world = world;
 		this.x = x;
 		this.z = z;
-		this.id = id;
-		this.world = world;
 	}
 
 	@Override
@@ -52,10 +49,6 @@ public class Claim {
 
 	public String getCityName() {
 		return cityName;
-	}
-	
-	public int getId() {
-		return id;
 	}
 
 	public String getWorld() {
@@ -86,10 +79,6 @@ public class Claim {
 
 	public void setCityName(String cityName) {
 		this.cityName = cityName;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public void setVisited(boolean visited) {

@@ -105,6 +105,19 @@ public class Database {
 				e.printStackTrace();
 		}
 	}
+	
+	public void claimMany(ArrayList<Claim> claimList) {
+		try {
+			con.setAutoCommit(false);
+			csclaims.claimMany(claimList);
+			cscities.addUsedClaims(claimList.get(0).getCityName(), claimList.size());
+			con.commit();
+			con.setAutoCommit(true);
+		} catch(SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+	}
 
 	public void createCity(String playerName, String cityName, String worldName,
 			int x, int z) {
@@ -243,10 +256,6 @@ public class Database {
 	
 	public ArrayList<String> getInvites(String player) {
 		return csinvites.getInvites(player);
-	}
-	
-	public int getLastClaimID() {
-		return csclaims.getLastID();
 	}
 	
 	public int getLastPlotID() {

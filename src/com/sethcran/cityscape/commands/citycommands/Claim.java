@@ -1,6 +1,5 @@
 package com.sethcran.cityscape.commands.citycommands;
 
-import java.awt.Point;
 import java.util.ArrayList;
 
 import org.bukkit.Chunk;
@@ -121,41 +120,47 @@ public class Claim extends CSCommand {
 					return;
 				}
 				
-				ArrayList<Point> pointList = new ArrayList<Point>();
+				ArrayList<com.sethcran.cityscape.Claim> claimList = 
+					new ArrayList<com.sethcran.cityscape.Claim>();
 				
 				for(int i = x - radius; i <= x + radius; i++) {
 					for(int j = z - radius; j <= z + radius; j++) {
 						City localCity = plugin.getCityAt(i, j, world);
 						if(localCity == null) {
-							pointList.add(new Point(i, j));
+							claimList.add(new com.sethcran.cityscape.Claim(
+									pcity.getName(), world, i, j));
 						}
 					}
 				}
 				
-				if(!pcity.hasClaims(pointList.size())) {
+				if(claimList.isEmpty()) {
 					player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-							"You do not have the " + pointList.size() + " claims needed.");
+							"There are no claims in that radius available.");
 					return;
 				}
 				
-				for(Point p : pointList) {
-					plugin.getDB().claimChunk(playerCity, world, p.x, p.y);
-					com.sethcran.cityscape.Claim claim = new com.sethcran.cityscape.Claim(
-							playerCity, world, p.x, p.y, 
-							plugin.getDB().getLastClaimID());
-					plugin.addClaim(claim);
-					plugin.addUsedClaim(claim.getCityName());
+				if(!pcity.hasClaims(claimList.size())) {
+					player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+							"You do not have the " + claimList.size() + " claims needed.");
+					return;
 				}
 				
+				for(com.sethcran.cityscape.Claim c : claimList) {
+					plugin.addClaim(c);
+					plugin.addUsedClaim(c.getCityName());
+				}
+				
+				plugin.getDB().claimMany(claimList);
+				
 				player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
-						"You have claimed " + pointList.size() + " claims.");
+						"You have claimed " + claimList.size() + " claims.");
 				return;
 			}
 		}
 		
 		plugin.getDB().claimChunk(playerCity, world, x, z);
 		com.sethcran.cityscape.Claim claim = new com.sethcran.cityscape.Claim(
-				playerCity, world, x, z, plugin.getDB().getLastClaimID());
+				playerCity, world, x, z);
 		plugin.addClaim(claim);
 		plugin.addUsedClaim(claim.getCityName());
 		

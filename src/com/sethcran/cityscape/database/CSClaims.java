@@ -17,13 +17,43 @@ public class CSClaims extends Table {
 	
 	public void claimChunk(String cityName, String worldName, int x, int z) {
 		String sql = 	"INSERT INTO csclaims " +
-						"VALUES(?, ?, ?, ?, null);";
+						"VALUES(?, ?, ?, ?);";
 		try {
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, cityName);
 			stmt.setString(2, worldName);
 			stmt.setInt(3, x);
 			stmt.setInt(4, z);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+	}
+	
+	public void claimMany(ArrayList<Claim> claims) {
+		String sql = 	"INSERT INTO csclaims " +
+						"VALUES(";
+		int count = 1;
+		boolean first = true;
+		for(int i = 0; i < claims.size(); i++) {
+			if(first) {
+				sql += "?, ?, ?, ?)";
+				first = false;
+			}
+			else
+				sql += ",(?, ?, ?, ?)";
+		}
+		sql += ";";
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			for(Claim c : claims) {
+				stmt.setString(count, c.getCityName());
+				stmt.setString(count + 1, c.getWorld());
+				stmt.setInt(count + 2, c.getX());
+				stmt.setInt(count + 3, c.getZ());
+				count += 4;
+			}
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			if(settings.debug)
@@ -46,7 +76,6 @@ public class CSClaims extends Table {
 				claim.setWorld(rs.getString("world"));
 				claim.setX(rs.getInt("xmin"));
 				claim.setZ(rs.getInt("zmin"));
-				claim.setId(rs.getInt("id"));
 				return claim;
 			}
 		} catch (SQLException e) {
@@ -66,8 +95,7 @@ public class CSClaims extends Table {
 				Claim claim = new Claim(rs.getString("city"), 
 						rs.getString("world"),
 						rs.getInt("x"), 
-						rs.getInt("z"),
-						rs.getInt("id"));
+						rs.getInt("z"));
 				claimList.add(claim);
 			}
 		} catch (SQLException e) {
@@ -75,19 +103,6 @@ public class CSClaims extends Table {
 				e.printStackTrace();
 		}
 		return claimList;
-	}
-	
-	public int getLastID() {
-		String sql = 	"SELECT LAST_INSERT_ID();";
-		try {
-			ResultSet rs = con.createStatement().executeQuery(sql);
-			if(rs.next())
-				return rs.getInt(1);
-		} catch (SQLException e) {
-			if(settings.debug)
-				e.printStackTrace();
-		}
-		return 0;
 	}
 	
 	public void unclaimAll(String city, Claim claim) {
@@ -106,10 +121,12 @@ public class CSClaims extends Table {
 	
 	public void unclaimChunk(Claim claim) {
 		String sql = 	"DELETE FROM csclaims " +
-						"WHERE id = ?;";
+						"WHERE x = ? " +
+						"AND z = ?;";
 		try {
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setInt(1, claim.getId());
+			stmt.setInt(1, claim.getX());
+			stmt.setInt(2, claim.getZ());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			if(settings.debug)

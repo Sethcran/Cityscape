@@ -90,8 +90,7 @@ public class Schemas {
 						"world CHAR(" + Constants.WORLD_MAX_NAME_LENGTH + ") NOT NULL, " +
 						"x INT, " +
 						"z INT, " +
-						"id INT AUTO_INCREMENT, " +
-						"PRIMARY KEY(id), " +
+						"PRIMARY KEY(x, z), " +
 						"FOREIGN KEY(city) REFERENCES cscities(name) " +
 						"ON DELETE CASCADE ON UPDATE CASCADE)" +
 						"ENGINE = InnoDB," +

@@ -124,7 +124,7 @@ public class CreateCity extends CSCommand {
 		City city = plugin.getDB().getCity(args[0]);
 		plugin.insertIntoCityCache(args[0], city);
 		com.sethcran.cityscape.Claim claim = new com.sethcran.cityscape.Claim(
-				args[0], worldName, x, z, db.getLastClaimID());
+				args[0], worldName, x, z);
 		plugin.addClaim(claim);
 		
 		PlayerCache cache = plugin.getCache(player.getName());
