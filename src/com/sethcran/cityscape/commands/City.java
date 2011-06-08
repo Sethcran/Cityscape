@@ -30,6 +30,7 @@ public class City extends CSCommand {
 		addToMap(new Invites(plugin));
 		addToMap(new Leave(plugin));
 		addToMap(new List(plugin));
+		addToMap(new Map(plugin));
 		addToMap(new Promote(plugin));
 		addToMap(new Rank(plugin));
 		addToMap(new Ranks(plugin));
