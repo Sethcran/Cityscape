@@ -9,6 +9,7 @@ public class Constants {
 	public static int WORLD_MAX_NAME_LENGTH = 16;
 	public static int CHAT_LINE_LENGTH = 45;
 	public static int WELCOME_MESSAGE_LENGTH = 100;
+	public static int MAX_PASSWORD_LENGTH = 16;
 	
 	public static int DEFAULT_TOWN_RANK = 1;
 	

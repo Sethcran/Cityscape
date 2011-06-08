@@ -16,10 +16,9 @@ public class Schemas {
 	public void createChestsTable() {
 		String sql = 	"CREATE TABLE IF NOT EXISTS cschests(" +
 						"id INT AUTO_INCREMENT PRIMARY KEY, " +
-						"player CHAR(" + Constants.PLAYER_MAX_NAME_LENGTH + ")," +
-						"x INT, " +
-						"y INT, " +
-						"z INT, " +
+						"player CHAR(" + Constants.PLAYER_MAX_NAME_LENGTH + "), " +
+						"type INT, " +
+						"password CHAR(" + Constants.MAX_PASSWORD_LENGTH + "), " +
 						"FOREIGN KEY(player) REFERENCES csplayers(name) ON DELETE SET NULL) " +
 						"ENGINE = InnoDB," +
 						"CHARACTER SET latin1 COLLATE latin1_general_cs;";
@@ -39,6 +38,23 @@ public class Schemas {
 						"amount INT, " +
 						"FOREIGN KEY(id) REFERENCES cschestlostandfound(id) " +
 						"ON DELETE CASCADE) " +
+						"ENGINE = InnoDB, " +
+						"CHARACTER SET latin1 COLLATE latin1_general_cs;";
+		try {
+			con.createStatement().executeUpdate(sql);
+		} catch (SQLException e) {
+			Cityscape.log.severe("There was an error creating a database table.");
+			e.printStackTrace();
+		}
+	}
+	
+	public void createChestLocations() {
+		String sql = 	"CREATE TABLE IF NOT EXISTS cschestlocations(" +
+						"id INT, " +
+						"x INT, " +
+						"y INT, " +
+						"z INT, " +
+						"FOREIGN KEY(id) REFERENCES cschests(id) ON DELETE CASCADE)" +
 						"ENGINE = InnoDB, " +
 						"CHARACTER SET latin1 COLLATE latin1_general_cs;";
 		try {
