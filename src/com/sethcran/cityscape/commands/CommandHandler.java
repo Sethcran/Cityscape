@@ -16,10 +16,16 @@ public class CommandHandler {
 	
 	public CommandHandler(Cityscape plugin) {
 		this.plugin = plugin;
+		addChestCommands();
 		addCityCommands();
 		addPlayerCommands();
 		addPlotCommands();
 		addCSAdminCommands();
+	}
+	
+	public void addChestCommands() {
+		Chest chest = new Chest(plugin);
+		commandMap.put("chest", chest);
 	}
 
 	public void addCityCommands() {

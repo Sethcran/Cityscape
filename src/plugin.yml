@@ -24,3 +24,6 @@ commands:
     plot:
         description: plotcommands
         usage: /plot
+    chest:
+        description: chestcommands
+        usage: /chest

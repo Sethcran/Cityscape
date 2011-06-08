@@ -60,6 +60,10 @@ public class Claim extends CSCommand {
 			return;
 		}
 		
+		boolean rect = false;
+		if(args != null && args.length == 2)
+			rect = true;
+		
 		Chunk chunk = player.getLocation().getBlock().getChunk();
 		String world = chunk.getWorld().getName();
 		
@@ -68,7 +72,7 @@ public class Claim extends CSCommand {
 		
 		City city = plugin.getCityAt(x, z, world);
 		
-		if(city != null) {
+		if(city != null && !rect) {
 			if(city.getName().equals(playerCity)) {
 				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
 						"Your city already owns that claim!");
@@ -102,6 +106,10 @@ public class Claim extends CSCommand {
 			if(test4.getName().equals(playerCity))
 				good = true;
 		}
+		else if(city != null) {
+			if(city.getName().equals(playerCity))
+				good = true;
+		}
 		
 		if(!good) {
 			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
@@ -117,6 +125,18 @@ public class Claim extends CSCommand {
 				} catch(NumberFormatException e) {
 					player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
 							"You must provide an integer for the radius.");
+					return;
+				}
+				
+				if(radius < 1) {
+					player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+							"The radius must be a positive number bigger than 1");
+					return;
+				}
+				
+				if(radius >= 50) {
+					player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+							"Pick a realistic radius. =p");
 					return;
 				}
 				

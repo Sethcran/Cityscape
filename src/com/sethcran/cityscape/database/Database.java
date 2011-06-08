@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.bukkit.block.Chest;
+import org.bukkit.inventory.ItemStack;
+
 import com.sethcran.cityscape.City;
 import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Claim;
@@ -20,6 +23,7 @@ public class Database {
 	
 	private Settings settings = null;
 	
+	private CSChests cschests = null;
 	private CSCities cscities = null;
 	private CSCityBanList cscitybanlist = null;
 	private CSClaims csclaims = null;
@@ -57,6 +61,7 @@ public class Database {
 				e.printStackTrace();
 		}
 		
+		cschests = new CSChests(con, plugin.getSettings());
 		cscities = new CSCities(con, plugin.getSettings());
 		cscitybanlist = new CSCityBanList(con, plugin.getSettings());
 		csclaims = new CSClaims(con, plugin.getSettings());
@@ -66,6 +71,10 @@ public class Database {
 		csplots = new CSPlots(con, plugin.getSettings());
 		csranks = new CSRanks(con, plugin.getSettings());
 		csresidents = new CSResidents(con, plugin.getSettings());
+	}
+	
+	public void addChest(Chest chest, String player) {
+		cschests.addChest(chest, player);
 	}
 	
 	public void addInvite(String player, String city) {
@@ -158,6 +167,10 @@ public class Database {
 	
 	public boolean doesPlayerExist(String playerName) {
 		return csplayers.doesPlayerExist(playerName);
+	}
+	
+	public ArrayList<ItemStack> getChestFromLostAndFound(String player) {
+		return cschests.getChestFromLostAndFound(player);
 	}
 	
 	public ArrayList<City> getCities() {

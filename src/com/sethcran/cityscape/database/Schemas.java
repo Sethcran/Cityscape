@@ -15,12 +15,47 @@ public class Schemas {
 	
 	public void createChestsTable() {
 		String sql = 	"CREATE TABLE IF NOT EXISTS cschests(" +
-						"id INT AUTO_INCREMENT PRIMARY KEY," +
+						"id INT AUTO_INCREMENT PRIMARY KEY, " +
 						"player CHAR(" + Constants.PLAYER_MAX_NAME_LENGTH + ")," +
-						"FOREIGN KEY(player) REFERENCES CSPlayers(name) ON DELETE SET NULL) " +
+						"x INT, " +
+						"y INT, " +
+						"z INT, " +
+						"FOREIGN KEY(player) REFERENCES csplayers(name) ON DELETE SET NULL) " +
 						"ENGINE = InnoDB," +
 						"CHARACTER SET latin1 COLLATE latin1_general_cs;";
 		
+		try {
+			con.createStatement().executeUpdate(sql);
+		} catch (SQLException e) {
+			Cityscape.log.severe("There was an error creating a database table.");
+			e.printStackTrace();
+		}
+	}
+	
+	public void createChestDataTable() {
+		String sql = 	"CREATE TABLE IF NOT EXISTS cschestdata(" +
+						"id INT, " +
+						"type INT, " +
+						"amount INT, " +
+						"FOREIGN KEY(id) REFERENCES cschestlostandfound(id) " +
+						"ON DELETE CASCADE) " +
+						"ENGINE = InnoDB, " +
+						"CHARACTER SET latin1 COLLATE latin1_general_cs;";
+		try {
+			con.createStatement().executeUpdate(sql);
+		} catch (SQLException e) {
+			Cityscape.log.severe("There was an error creating a database table.");
+			e.printStackTrace();
+		}
+	}
+	
+	public void createChestLostAndFound() {
+		String sql = 	"CREATE TABLE IF NOT EXISTS cschestlostandfound(" +
+						"id INT AUTO_INCREMENT PRIMARY KEY, " +
+						"player CHAR(" + Constants.PLAYER_MAX_NAME_LENGTH + "), " +
+						"FOREIGN KEY(player) REFERENCES csplayers(name) ON DELETE CASCADE)" +
+						"ENGINE = InnoDB, " +
+						"CHARACTER SET latin1 COLLATE latin1_general_cs;";
 		try {
 			con.createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
@@ -110,6 +145,8 @@ public class Schemas {
 		createCitiesTable();
 		
 		createChestsTable();
+		createChestLostAndFound();
+		createChestDataTable();
 		createClaimsTable();
 		
 		createInvitesTable();

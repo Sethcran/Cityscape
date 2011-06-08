@@ -38,6 +38,7 @@ public class Cityscape extends JavaPlugin {
 	private Database database = null;
 	private CommandHandler commandHandler = null;
 	private HashMap<String, Selection> selectionMap = null;
+	private HashMap<String, String> sendingChests = null;
 	private HashMap<String, PlayerCache> playerCache = null;
 	private HashMap<String, City> cityCache = null;
 	private HashMap<String, Claim> claimMap = null;
@@ -70,6 +71,10 @@ public class Cityscape extends JavaPlugin {
 				west = null;
 		}
 		getCity(claim.getCityName()).addClaim(claim, north, east, south, west);
+	}
+	
+	public void addSendingChests(String player) {
+		sendingChests.put(player, player);
 	}
 	
 	public void addUsedClaim(String cityName) {
@@ -169,6 +174,13 @@ public class Cityscape extends JavaPlugin {
 				return true;
 	}
 	
+	public boolean isSendingChests(String player) {
+		if(sendingChests.containsKey(player))
+			return true;
+		else
+			return false;
+	}
+	
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, 
 			String commandLabel, String[] args) {
@@ -190,6 +202,7 @@ public class Cityscape extends JavaPlugin {
 		database = new Database(this);
 		commandHandler = new CommandHandler(this);
 		selectionMap = new HashMap<String, Selection>();
+		sendingChests = new HashMap<String, String>();
 		playerCache = new HashMap<String, PlayerCache>();
 		cityCache = new HashMap<String, City>();
 		claimMap = new HashMap<String, Claim>();
@@ -241,6 +254,7 @@ public class Cityscape extends JavaPlugin {
 		pm.registerEvent(Type.PLAYER_BUCKET_FILL, playerListener, Priority.High, this);
 		pm.registerEvent(Type.PLAYER_RESPAWN, playerListener, Priority.High, this);
 		
+		pm.registerEvent(Type.BLOCK_DAMAGE, blockListener, Priority.High, this);
 		pm.registerEvent(Type.BLOCK_BREAK, blockListener, Priority.High, this);
 		pm.registerEvent(Type.BLOCK_PLACE, blockListener, Priority.High, this);
 		pm.registerEvent(Type.SNOW_FORM, blockListener, Priority.High, this);
