@@ -1,13 +1,9 @@
 package com.sethcran.cityscape.listeners;
 
 import org.bukkit.Chunk;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SnowFormEvent;
@@ -149,22 +145,6 @@ public class CSBlockListener extends BlockListener {
 				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
 						"You can't destroy here.");
 			}
-		}
-	}
-	
-	@Override
-	public void onBlockDamage(BlockDamageEvent event) {
-		Player player = event.getPlayer();
-		if(!plugin.isSendingChests(player.getName()))
-			return;
-		
-		BlockState state = event.getBlock().getState();
-		Chest chest = null;
-		if(state instanceof Chest) {
-			chest = (Chest)state;
-			plugin.getDB().addChest(chest, player.getName());
-			chest.getInventory().clear();
-			chest.getBlock().setType(Material.AIR);
 		}
 	}
 	
