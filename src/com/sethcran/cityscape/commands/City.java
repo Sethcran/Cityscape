@@ -53,7 +53,7 @@ public class City extends CSCommand {
 		boolean wasNull = false;
 		
 		if(args.length > 0)
-			cscommand = cityMap.get(args[0]);
+			cscommand = cityMap.get(args[0].toLowerCase());
 		
 		if(cscommand == null) {
 			wasNull = true;

@@ -31,7 +31,7 @@ public class CSAdmin extends CSCommand {
 		boolean wasNull = false;
 		
 		if(args.length > 0)
-			cscommand = csAdminMap.get(args[0]);
+			cscommand = csAdminMap.get(args[0].toLowerCase());
 		
 		if(cscommand == null) {
 			wasNull = true;
