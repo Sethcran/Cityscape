@@ -113,6 +113,19 @@ public class CSPlots extends Table {
 		return plotList;
 	}
 	
+	public void removeAllPlotPerms(int id) {
+		String sql = 	"DELETE FROM csplotpermissions " +
+						"WHERE id = ?;";
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setInt(1, id);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+	}
+	
 	public void removePlayer(String player) {
 		String sql = 	"UPDATE csplots SET " +
 						"owner = city, " +

@@ -22,6 +22,7 @@ public class Plot extends CSCommand {
 		addToMap(new Help(plugin, this));
 		addToMap(new Perms(plugin));
 		addToMap(new Reclaim(plugin));
+		addToMap(new RemoveAll(plugin));
 		addToMap(new Select(plugin));
 		addToMap(new Sell(plugin));
 		addToMap(new Settings(plugin));

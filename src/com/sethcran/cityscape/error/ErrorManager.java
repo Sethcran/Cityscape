@@ -26,6 +26,7 @@ public class ErrorManager {
 		NOT_ENOUGH_MONEY,
 		NOT_INVITED,
 		NOT_IN_CITY,
+		NOT_PLOT_OWNER,
 		NO_CLAIMS_AVAILABLE,
 		NO_INVITES,
 		NO_PERMISSION,
@@ -39,7 +40,7 @@ public class ErrorManager {
 		RANK_DOES_NOT_EXIST_NS,
 		SET_MAYOR_FIRST,
 		TOO_MANY_ARGUMENTS,
-		WILDERNESS,
+		WILDERNESS
 	}
 	
 	public static void sendError(CommandSender sender, CSError type, String args) {
@@ -87,6 +88,8 @@ public class ErrorManager {
 				"You have not been invited to join " + args + "."); break;
 		case NOT_IN_CITY: sender.sendMessage(message +
 				"You must be in a city to do that."); break;
+		case NOT_PLOT_OWNER: sender.sendMessage(message +
+				"You are not the plot owner."); break;
 		case NO_CLAIMS_AVAILABLE: sender.sendMessage(message +
 				"There were no claims available in that area."); break;
 		case NO_INVITES: sender.sendMessage(message +

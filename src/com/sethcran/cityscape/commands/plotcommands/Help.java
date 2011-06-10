@@ -12,7 +12,8 @@ public class Help extends CSCommand {
 	
 	private Plot plotCommands = null;
 	private String[] commands = { "build", "buy", "create", "default", "delete", "destroy",
-			"help", "perms", "reclaim", "select", "sell", "settings", "switch", "unselect" };
+			"help", "perms", "reclaim", "removeall", "select", "sell", "settings", 
+			"switch", "unselect" };
 
 	public Help(Cityscape plugin, Plot plotCommands) {
 		super(plugin);

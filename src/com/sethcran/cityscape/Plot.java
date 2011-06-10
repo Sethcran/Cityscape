@@ -126,6 +126,11 @@ public class Plot {
 	public boolean isSnow() {
 		return snow;
 	}
+	
+	public void removeAllPerms() {
+		playerPermissions.clear();
+		cityPermissions.clear();
+	}
 
 	public void removeFromCityPermissions(String city) {
 		cityPermissions.remove(city);

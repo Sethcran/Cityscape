@@ -320,6 +320,10 @@ public class Database {
 		csinvites.removeAllInvites(player);
 	}
 	
+	public void removeAllPlotPerms(int id) {
+		csplots.removeAllPlotPerms(id);
+	}
+	
 	public void removeInvite(String player, String city) {
 		csinvites.removeInvite(player, city);
 	}
