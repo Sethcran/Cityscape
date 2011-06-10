@@ -11,6 +11,8 @@ import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.PlayerCache;
 import com.sethcran.cityscape.RankPermissions;
 import com.sethcran.cityscape.commands.CSCommand;
+import com.sethcran.cityscape.error.ErrorManager;
+import com.sethcran.cityscape.error.ErrorManager.CSError;
 
 public class Setwarp extends CSCommand {
 
@@ -27,30 +29,26 @@ public class Setwarp extends CSCommand {
 		if(sender instanceof Player)
 			player = (Player)sender;
 		else {
-			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You must be in game to do that.");
+			ErrorManager.sendError(sender, CSError.IN_GAME_ONLY, null);
 			return;
 		}
 		
 		PlayerCache cache = plugin.getCache(player.getName());
 		City playerCity = plugin.getCity(cache.getCity());
 		if(playerCity == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You must be in a city to do that.");
+			ErrorManager.sendError(sender, CSError.NOT_IN_CITY, null);
 			return;
 		}
 		
 		RankPermissions rp = playerCity.getRank(cache.getRank());
 		
 		if(rp == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You do not have permission to do that.");
+			ErrorManager.sendError(sender, CSError.NO_RANK_PERMISSION, null);
 			return;
 		}
 		
 		if(!rp.isSetWarp()) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-			"You do not have permission to do that.");
+			ErrorManager.sendError(sender, CSError.NO_RANK_PERMISSION, null);
 			return;
 		}
 		
@@ -60,14 +58,12 @@ public class Setwarp extends CSCommand {
 				chunk.getWorld().getName());
 		
 		if(localCity == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You must be standing in your city to do that.");
+			ErrorManager.sendError(sender, CSError.MUST_BE_STANDING_IN_CITY, null);
 			return;
 		}
 		
 		if(!localCity.getName().equals(playerCity.getName())) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You must be standing in your city to do that.");
+			ErrorManager.sendError(sender, CSError.MUST_BE_STANDING_IN_CITY, null);
 			return;
 		}
 		

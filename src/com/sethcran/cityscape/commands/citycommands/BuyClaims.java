@@ -10,6 +10,8 @@ import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.PlayerCache;
 import com.sethcran.cityscape.commands.CSCommand;
+import com.sethcran.cityscape.error.ErrorManager;
+import com.sethcran.cityscape.error.ErrorManager.CSError;
 
 public class BuyClaims extends CSCommand {
 
@@ -17,7 +19,7 @@ public class BuyClaims extends CSCommand {
 		super(plugin);
 		name = "buyclaims";
 		description = "Buys the selected number of claims for your city.";
-		usage = "/c buyclaims amount";
+		usage = "/c buyclaims amount OR /c buyclaims 'price'";
 	}
 
 	@Override
@@ -26,8 +28,7 @@ public class BuyClaims extends CSCommand {
 		if(sender instanceof Player)
 			player = (Player)sender;
 		else {
-			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"Only a player in game can do that.");
+			ErrorManager.sendError(sender, CSError.IN_GAME_ONLY, null);
 			return;
 		}
 		
@@ -35,20 +36,19 @@ public class BuyClaims extends CSCommand {
 		City city = plugin.getCity(cache.getCity());
 		
 		if(city == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You must be in a city to do that.");
+			ErrorManager.sendError(sender, CSError.NOT_IN_CITY, null);
 			return;
 		}
 		
 		if(args == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You must provide a number of claims to buy.");
+			ErrorManager.sendError(sender, CSError.NOT_ENOUGH_ARGUMENTS, null);
+			player.sendMessage(Constants.ERROR_COLOR + usage);
 			return;
 		}
 		
 		if(args.length != 1) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"That command only takes 1 argument.");
+			ErrorManager.sendError(sender, CSError.TOO_MANY_ARGUMENTS, null);
+			player.sendMessage(Constants.ERROR_COLOR + usage);
 			return;
 		}
 		
@@ -63,8 +63,8 @@ public class BuyClaims extends CSCommand {
 		try {
 			claims = Integer.parseInt(args[0]);
 		} catch(NumberFormatException e) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"The number must be an integer.");
+			ErrorManager.sendError(sender, CSError.INCORRECT_NUMBER_FORMAT, null);
+			player.sendMessage(Constants.ERROR_COLOR + usage);
 			return;
 		}
 		total = claims * plugin.getSettings().claimCost;
@@ -72,8 +72,7 @@ public class BuyClaims extends CSCommand {
 		Holdings balance = iConomy.getAccount(player.getName()).getHoldings();
 		
 		if(!balance.hasEnough(total)) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You do not have enough. That takes " + iConomy.format(total) + ".");
+			ErrorManager.sendError(sender, CSError.NOT_ENOUGH_MONEY, iConomy.format(total));
 			return;
 		}
 		

@@ -10,6 +10,8 @@ import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.RankPermissions;
 import com.sethcran.cityscape.commands.CSCommand;
+import com.sethcran.cityscape.error.ErrorManager;
+import com.sethcran.cityscape.error.ErrorManager.CSError;
 
 public class Change extends CSCommand {
 
@@ -26,21 +28,18 @@ public class Change extends CSCommand {
 		if(sender instanceof Player)
 			player = (Player)sender;
 		else {
-			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"Only a player in game can do that.");
+			ErrorManager.sendError(sender, CSError.IN_GAME_ONLY, null);
 			return;
 		}
 		
 		if(args == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"That command requires arguments.");
+			ErrorManager.sendError(sender, CSError.NOT_ENOUGH_ARGUMENTS, null);
 			player.sendMessage(Constants.ERROR_COLOR + usage);
 			return;
 		}
 		
 		if(args.length < 2) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"That command requires more arguments.");
+			ErrorManager.sendError(sender, CSError.TOO_MANY_ARGUMENTS, null);
 			player.sendMessage(Constants.ERROR_COLOR + usage);
 			return;
 		}
@@ -48,30 +47,26 @@ public class Change extends CSCommand {
 		String cityName = plugin.getCache(player.getName()).getCity();
 		
 		if(cityName == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You are not in a city.");
+			ErrorManager.sendError(sender, CSError.NOT_IN_CITY, null);
 			return;
 		}
 		
 		City city = plugin.getCity(cityName);
 		
 		if(!city.getMayor().equals(player.getName())) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"Only the city mayor can do that!");
+			ErrorManager.sendError(sender, CSError.MAYOR_ONLY, null);
 			return;
 		}
 		
 		RankPermissions rp = city.getRank(args[0]);
 		
 		if(rp == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"That rank does not exist!");
+			ErrorManager.sendError(sender, CSError.RANK_DOES_NOT_EXIST, args[0]);
 			return;
 		}
 		
 		if(rp.getRankName().equals("Mayor")) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR + 
-					"You can't change the Mayor permissions.");
+			ErrorManager.sendError(sender, CSError.IMPOSSIBLE, null);
 			return;
 		}
 		

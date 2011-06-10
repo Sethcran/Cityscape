@@ -8,6 +8,8 @@ import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.RankPermissions;
 import com.sethcran.cityscape.commands.CSCommand;
+import com.sethcran.cityscape.error.ErrorManager;
+import com.sethcran.cityscape.error.ErrorManager.CSError;
 
 public class Settings extends CSCommand {
 
@@ -24,14 +26,12 @@ public class Settings extends CSCommand {
 		if(sender instanceof Player)
 			player = (Player)sender;
 		else {
-			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR + 
-					"Only players in game can do that.");
+			ErrorManager.sendError(sender, CSError.IN_GAME_ONLY, null);
 			return;
 		}
 		
 		if(args == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"That command takes arguments.");
+			ErrorManager.sendError(sender, CSError.NOT_ENOUGH_ARGUMENTS, null);
 			player.sendMessage(Constants.ERROR_COLOR + usage);
 			return;
 		}
@@ -39,22 +39,19 @@ public class Settings extends CSCommand {
 		City city = plugin.getCity(plugin.getCache(player.getName()).getCity());
 		
 		if(city == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You are not in a city.");
+			ErrorManager.sendError(sender, CSError.NOT_IN_CITY , null);
 			return;
 		}
 		
 		RankPermissions rp = city.getRank(plugin.getCache(player.getName()).getRank());
 		
 		if(rp == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR + 
-					"You do not have permission to do that.");
+			ErrorManager.sendError(sender, CSError.NO_RANK_PERMISSION, null);
 			return;
 		}
 		
 		if(!rp.isSettings()) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR + 
-					"You do not have permission to do that.");
+			ErrorManager.sendError(sender, CSError.NO_RANK_PERMISSION, null);
 			return;
 		}
 		
@@ -152,8 +149,7 @@ public class Settings extends CSCommand {
 	}
 	
 	public void formatError(Player player) {
-		player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-				"There was an error with your format.");
+		ErrorManager.sendError(player, CSError.INCORRECT_FORMAT, null);
 		player.sendMessage(Constants.ERROR_COLOR + usage);
 	}
 

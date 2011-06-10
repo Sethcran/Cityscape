@@ -13,6 +13,8 @@ import com.sethcran.cityscape.RankPermissions;
 import com.sethcran.cityscape.Selection;
 import com.sethcran.cityscape.Settings;
 import com.sethcran.cityscape.commands.CSCommand;
+import com.sethcran.cityscape.error.ErrorManager;
+import com.sethcran.cityscape.error.ErrorManager.CSError;
 
 public class Create extends CSCommand {
 
@@ -29,20 +31,17 @@ public class Create extends CSCommand {
 		if(sender instanceof Player)
 			player = (Player)sender;
 		else {
-			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"Only a player in game can do that.");
+			ErrorManager.sendError(sender, CSError.IN_GAME_ONLY, null);
 			return;
 		}
 		
 		RankPermissions rp = plugin.getPermissions(player.getName());
 		if(rp == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You do not have permission to do that.");
+			ErrorManager.sendError(sender, CSError.NO_RANK_PERMISSION, null);
 			return;
 		}
 		if(!rp.isCreatePlots()) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You do not have permission to do that.");
+			ErrorManager.sendError(sender, CSError.NO_RANK_PERMISSION, null);
 			return;
 		}
 		

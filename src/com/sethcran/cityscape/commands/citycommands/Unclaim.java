@@ -9,6 +9,8 @@ import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.RankPermissions;
 import com.sethcran.cityscape.commands.CSCommand;
+import com.sethcran.cityscape.error.ErrorManager;
+import com.sethcran.cityscape.error.ErrorManager.CSError;
 
 public class Unclaim extends CSCommand {
 
@@ -25,28 +27,24 @@ public class Unclaim extends CSCommand {
 		if(sender instanceof Player)
 			player = (Player)sender;
 		else {
-			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"Only in game players can do this.");
+			ErrorManager.sendError(sender, CSError.IN_GAME_ONLY, null);
 			return;
 		}
 		
 		String playerCity = plugin.getCache(player.getName()).getCity();
 		if(playerCity == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You must be in a city to perform this command.");
+			ErrorManager.sendError(sender, CSError.NOT_IN_CITY, null);
 			return;
 		}
 		
 		RankPermissions rp = plugin.getPermissions(player.getName());
 		if(rp == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR + 
-					"You do not have permission to do that.");
+			ErrorManager.sendError(sender, CSError.NO_RANK_PERMISSION, null);
 			return;
 		}
 		
 		if(!rp.isUnclaim()) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You do not have permission to do that.");
+			ErrorManager.sendError(sender, CSError.NO_RANK_PERMISSION, null);
 			return;
 		}
 		
@@ -57,8 +55,7 @@ public class Unclaim extends CSCommand {
 		City city = plugin.getCityAt(x, z, world);
 		
 		if(city == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR + 
-					"You are in the wilderness.");
+			ErrorManager.sendError(sender, CSError.WILDERNESS, null);
 			return;
 		}
 		

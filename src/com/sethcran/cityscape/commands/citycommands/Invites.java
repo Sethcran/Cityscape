@@ -8,6 +8,8 @@ import org.bukkit.entity.Player;
 import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.commands.CSCommand;
+import com.sethcran.cityscape.error.ErrorManager;
+import com.sethcran.cityscape.error.ErrorManager.CSError;
 
 public class Invites extends CSCommand {
 
@@ -24,22 +26,20 @@ public class Invites extends CSCommand {
 		if(sender instanceof Player)
 			player = (Player)sender;
 		else {
-			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"Only players in game can use this command.");
+			ErrorManager.sendError(sender, CSError.IN_GAME_ONLY, null);
 			return;
 		}
 		
 		if(args != null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"That command does not take arguments.");
+			ErrorManager.sendError(sender, CSError.TOO_MANY_ARGUMENTS, null);
+			player.sendMessage(Constants.ERROR_COLOR + usage);
 			return;
 		}
 		
 		ArrayList<String> cities = plugin.getDB().getInvites(player.getName());
 		
 		if(cities.size() == 0) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You have not been invited to join any cities.");
+			ErrorManager.sendError(sender, CSError.NO_INVITES, null);
 			return;
 		}
 		

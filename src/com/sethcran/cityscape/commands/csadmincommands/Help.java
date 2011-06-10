@@ -2,6 +2,7 @@ package com.sethcran.cityscape.commands.csadmincommands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
@@ -25,6 +26,14 @@ public class Help extends CSCommand {
 
 	@Override
 	public void execute(CommandSender sender, String[] args) {
+		
+		if(sender instanceof Player) {
+			Player player = (Player)sender;
+			if(!plugin.permissionHandler.has(player, "cs.admin")) {
+				return;
+			}
+		}
+		
 		if(args == null) {
 			sender.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
 					"CSAdmin Commands List:");

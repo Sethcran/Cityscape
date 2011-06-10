@@ -8,6 +8,8 @@ import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.PlayerCache;
 import com.sethcran.cityscape.RankPermissions;
 import com.sethcran.cityscape.commands.CSCommand;
+import com.sethcran.cityscape.error.ErrorManager;
+import com.sethcran.cityscape.error.ErrorManager.CSError;
 
 public class Remove extends CSCommand {
 
@@ -24,27 +26,24 @@ public class Remove extends CSCommand {
 		if(sender instanceof Player)
 			player = (Player)sender;
 		else {
-			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"Only players in game can use that command.");
+			ErrorManager.sendError(sender, CSError.IN_GAME_ONLY, null);
 			return;
 		}
 		
 		if(args == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You must specify the player's name to remove.");
+			ErrorManager.sendError(sender, CSError.NOT_ENOUGH_ARGUMENTS, null);
+			sender.sendMessage(Constants.ERROR_COLOR + usage);
 			return;
 		}
 		
 		RankPermissions rp = plugin.getPermissions(player.getName());
 		if(rp == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You can not do that.");
+			ErrorManager.sendError(sender, CSError.NO_RANK_PERMISSION, null);
 			return;
 		}
 		
 		if(!rp.isRemoveResident()) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You do not have permission to do that.");
+			ErrorManager.sendError(sender, CSError.NO_RANK_PERMISSION, null);
 			return;
 		}
 		
@@ -53,16 +52,13 @@ public class Remove extends CSCommand {
 				String cityName = plugin.getCache(player.getName()).getCity();
 				String city = plugin.getDB().getCurrentCity(resident);
 				if(city == null) {
-					player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-							"The user " + resident + " is not in your city!");
+					ErrorManager.sendError(sender, CSError.OTHER_NOT_IN_YOUR_CITY, resident);
 				} 
 				else if(!city.equals(cityName)) {
-					player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-							"The user " + resident + " is not in your city!");
+					ErrorManager.sendError(sender, CSError.OTHER_NOT_IN_YOUR_CITY, resident);
 				}
 				else if(player.getName().equals(resident)) {
-					player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-							"You can't remove yourself from the city. Use /leave.");
+					ErrorManager.sendError(sender, CSError.IMPOSSIBLE, null);
 				}
 				else {
 					plugin.getDB().leaveCity(resident);
@@ -80,8 +76,7 @@ public class Remove extends CSCommand {
 				}
 			}
 			else {
-				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-						"That user does not exist.");
+				ErrorManager.sendError(sender, CSError.PLAYER_DOES_NOT_EXIST, resident);
 			}
 		}
 	}

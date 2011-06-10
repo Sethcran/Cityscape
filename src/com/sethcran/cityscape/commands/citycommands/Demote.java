@@ -9,6 +9,8 @@ import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.PlayerCache;
 import com.sethcran.cityscape.RankPermissions;
 import com.sethcran.cityscape.commands.CSCommand;
+import com.sethcran.cityscape.error.ErrorManager;
+import com.sethcran.cityscape.error.ErrorManager.CSError;
 
 public class Demote extends CSCommand {
 
@@ -26,57 +28,49 @@ public class Demote extends CSCommand {
 			player = (Player)sender;
 		}
 		else {
-			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You must be in game to do this.");
+			ErrorManager.sendError(sender, CSError.IN_GAME_ONLY, null);
 			return;
 		}
 		
 		if(args == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You are not using that command correctly.");
+			ErrorManager.sendError(sender, CSError.NOT_ENOUGH_ARGUMENTS, null);
 			player.sendMessage(Constants.ERROR_COLOR + usage);
 			return;
 		}
 		
 		if(args.length != 1) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You are not using that command correctly.");
+			ErrorManager.sendError(sender, CSError.TOO_MANY_ARGUMENTS, null);
 			player.sendMessage(Constants.ERROR_COLOR + usage);
 			return;
 		}
 		
 		String playerCity = plugin.getCache(player.getName()).getCity();
 		if(playerCity == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You are not in a city!");
+			ErrorManager.sendError(sender, CSError.NOT_IN_CITY, null);
 			return;
 		}
 		
 		if(!plugin.getDB().doesPlayerExist(args[0])) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"That player does not exist.");
+			ErrorManager.sendError(sender, CSError.PLAYER_DOES_NOT_EXIST, args[0]);
 			return;
 		}
 		
 		String otherCity = plugin.getDB().getCurrentCity(args[0]);
 		if(!playerCity.equals(otherCity)) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"That player is not in your city.");
+			ErrorManager.sendError(sender, CSError.PLAYER_NOT_IN_YOUR_CITY, args[0]);
 			return;
 		}
 		
 		RankPermissions rp = plugin.getPermissions(player.getName());
 		if(!rp.isDemote()) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You do not have permission to do that.");
+			ErrorManager.sendError(sender, CSError.NO_RANK_PERMISSION, null);
 			return;
 		}
 		
 		City city = plugin.getCity(playerCity);
 		
 		if(args[0].equals(city.getMayor())) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR + 
-					"You can't demote the mayor. You must promote a new mayor.");
+			ErrorManager.sendError(sender, CSError.IMPOSSIBLE, null);
 			return;
 		}
 		

@@ -8,6 +8,8 @@ import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.PlayerCache;
 import com.sethcran.cityscape.commands.CSCommand;
+import com.sethcran.cityscape.error.ErrorManager;
+import com.sethcran.cityscape.error.ErrorManager.CSError;
 
 public class SetMayor extends CSCommand {
 
@@ -24,8 +26,7 @@ public class SetMayor extends CSCommand {
 		if(sender instanceof Player)
 			player = (Player)sender;
 		else {
-			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You must be in game to do that.");
+			ErrorManager.sendError(sender, CSError.IN_GAME_ONLY, null);
 			return;
 		}
 		
@@ -34,15 +35,13 @@ public class SetMayor extends CSCommand {
 		}
 		
 		if(args == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"That command requires more arguments.");
+			ErrorManager.sendError(sender, CSError.NOT_ENOUGH_ARGUMENTS, null);
 			player.sendMessage(Constants.ERROR_COLOR + usage);
 			return;
 		}
 		
 		if(args.length != 2) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"That command requires 2 arguments.");
+			ErrorManager.sendError(sender, CSError.TOO_MANY_ARGUMENTS, null);
 			player.sendMessage(Constants.ERROR_COLOR + usage);
 			return;
 		}
@@ -50,14 +49,12 @@ public class SetMayor extends CSCommand {
 		City city = plugin.getCity(args[0]);
 		
 		if(city == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"The city " + args[0] + " does not exist.");
+			ErrorManager.sendError(sender, CSError.CITY_DOES_NOT_EXIST, args[0]);
 			return;
 		}
 		
 		if(!plugin.getDB().doesPlayerExist(args[1])) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"The player " + args[1] + " does not exist.");
+			ErrorManager.sendError(sender, CSError.PLAYER_DOES_NOT_EXIST, args[1]);
 			return;
 		}
 		

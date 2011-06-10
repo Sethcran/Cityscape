@@ -11,6 +11,8 @@ import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.RankPermissions;
 import com.sethcran.cityscape.commands.CSCommand;
+import com.sethcran.cityscape.error.ErrorManager;
+import com.sethcran.cityscape.error.ErrorManager.CSError;
 
 public class Claim extends CSCommand {
 
@@ -27,36 +29,31 @@ public class Claim extends CSCommand {
 		if(sender instanceof Player)
 			player = (Player)sender;
 		else {
-			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"Only in game players can do this.");
+			ErrorManager.sendError(sender, CSError.IN_GAME_ONLY, null);
 			return;
 		}
 		
 		String playerCity = plugin.getCache(player.getName()).getCity();
 		if(playerCity == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You must be in a city to perform this command.");
+			ErrorManager.sendError(sender, CSError.NOT_IN_CITY, null);
 			return;
 		}
 		
 		RankPermissions rp = plugin.getPermissions(player.getName());
 		if(rp == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR + 
-					"You do not have permission to do that.");
+			ErrorManager.sendError(sender, CSError.NO_RANK_PERMISSION, null);
 			return;
 		}
 		
 		if(!rp.isClaim()) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You do not have permission to do that.");
+			ErrorManager.sendError(sender, CSError.NO_RANK_PERMISSION, null);
 			return;
 		}
 		
 		City pcity = plugin.getCity(playerCity);
 		
 		if(!pcity.hasClaims(1)) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"Your city does not have enough claims available!");
+			ErrorManager.sendError(sender, CSError.NOT_ENOUGH_CLAIMS, "1");
 			return;
 		}
 		
@@ -73,14 +70,7 @@ public class Claim extends CSCommand {
 		City city = plugin.getCityAt(x, z, world);
 		
 		if(city != null && !rect) {
-			if(city.getName().equals(playerCity)) {
-				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-						"Your city already owns that claim!");
-			}
-			else {
-				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-						"Another city already owns this claim!");
-			}
+			ErrorManager.sendError(sender, CSError.CITY_ALREADY_OWNS, city.getName());
 			return;
 		}
 		
@@ -112,8 +102,7 @@ public class Claim extends CSCommand {
 		}
 		
 		if(!good) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"That claim is not connected to your land.");
+			ErrorManager.sendError(sender, CSError.CLAIM_NOT_CONNECTED, null);
 			return;
 		}
 		
@@ -123,20 +112,20 @@ public class Claim extends CSCommand {
 				try {
 					radius = Integer.parseInt(args[1]);
 				} catch(NumberFormatException e) {
-					player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-							"You must provide an integer for the radius.");
+					ErrorManager.sendError(sender, CSError.INCORRECT_NUMBER_FORMAT, null);
+					player.sendMessage(Constants.ERROR_COLOR + usage);
 					return;
 				}
 				
 				if(radius < 1) {
-					player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-							"The radius must be a positive number bigger than 1");
+					ErrorManager.sendError(sender, CSError.INCORRECT_NUMBER_FORMAT, null);
+					player.sendMessage(Constants.ERROR_COLOR + usage);;
 					return;
 				}
 				
 				if(radius >= 50) {
-					player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-							"Pick a realistic radius. =p");
+					ErrorManager.sendError(sender, CSError.INCORRECT_NUMBER_FORMAT, null);
+					player.sendMessage(Constants.ERROR_COLOR + usage);
 					return;
 				}
 				
@@ -154,14 +143,13 @@ public class Claim extends CSCommand {
 				}
 				
 				if(claimList.isEmpty()) {
-					player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-							"There are no claims in that radius available.");
+					ErrorManager.sendError(sender, CSError.NO_CLAIMS_AVAILABLE, null);
 					return;
 				}
 				
 				if(!pcity.hasClaims(claimList.size())) {
-					player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-							"You do not have the " + claimList.size() + " claims needed.");
+					ErrorManager.sendError(sender, CSError.NOT_ENOUGH_CLAIMS, 
+							"" + claimList.size());
 					return;
 				}
 				

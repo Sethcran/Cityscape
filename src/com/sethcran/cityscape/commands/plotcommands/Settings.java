@@ -11,6 +11,8 @@ import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.Plot;
 import com.sethcran.cityscape.RankPermissions;
 import com.sethcran.cityscape.commands.CSCommand;
+import com.sethcran.cityscape.error.ErrorManager;
+import com.sethcran.cityscape.error.ErrorManager.CSError;
 
 public class Settings extends CSCommand {
 
@@ -27,14 +29,12 @@ public class Settings extends CSCommand {
 		if(sender instanceof Player)
 			player = (Player)sender;
 		else {
-			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR + 
-					"Only players in game can do that.");
+			ErrorManager.sendError(sender, CSError.IN_GAME_ONLY, null);
 			return;
 		}
 		
 		if(args == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"That command takes arguments.");
+			ErrorManager.sendError(sender, CSError.NOT_ENOUGH_ARGUMENTS, null);
 			player.sendMessage(Constants.ERROR_COLOR + usage);
 			return;
 		}
@@ -45,21 +45,18 @@ public class Settings extends CSCommand {
 				chunk.getWorld().getName());
 		
 		if(city == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You must be standing on one of your plots to do that.");
+			ErrorManager.sendError(sender, CSError.MUST_BE_STANDING_IN_CITY, null);
 			return;
 		}
 		
 		if(!city.getName().equals(plugin.getCache(player.getName()).getCity())) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You must be in your own city to do that.");
+			ErrorManager.sendError(sender, CSError.MUST_BE_STANDING_IN_CITY, null);
 			return;
 		}
 		
 		Plot plot = city.getPlotAt(location.getBlockX(), location.getBlockZ());
 		if(plot == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You must be standing on one of your plots to do that.");
+			ErrorManager.sendError(sender, CSError.MUST_BE_STANDING_IN_PLOT, null);
 			return;
 		}
 		
@@ -68,13 +65,11 @@ public class Settings extends CSCommand {
 				RankPermissions rp = city.getRank(plugin.getCache(
 						player.getName()).getRank());
 				if(rp == null) {
-					player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-							"You do not have permission to do that.");
+					ErrorManager.sendError(sender, CSError.NO_RANK_PERMISSION, null);
 					return;
 				}
 				if(!rp.isChangeCityPlotPerms()) {
-					player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-							"You do not have permission to do that.");
+					ErrorManager.sendError(sender, CSError.NO_RANK_PERMISSION, null);
 					return;
 				}
 			}
@@ -179,8 +174,7 @@ public class Settings extends CSCommand {
 	}
 	
 	public void formatError(Player player) {
-		player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-				"There was an error with your format.");
+		ErrorManager.sendError(player, CSError.INCORRECT_FORMAT, null);
 		player.sendMessage(Constants.ERROR_COLOR + usage);
 	}
 

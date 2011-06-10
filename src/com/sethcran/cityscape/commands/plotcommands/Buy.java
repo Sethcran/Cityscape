@@ -12,6 +12,8 @@ import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.Plot;
 import com.sethcran.cityscape.commands.CSCommand;
+import com.sethcran.cityscape.error.ErrorManager;
+import com.sethcran.cityscape.error.ErrorManager.CSError;
 
 public class Buy extends CSCommand {
 
@@ -28,14 +30,13 @@ public class Buy extends CSCommand {
 		if(sender instanceof Player)
 			player = (Player)sender;
 		else {
-			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR + 
-					"You must be in game to do that.");
+			ErrorManager.sendError(sender, CSError.IN_GAME_ONLY, null);
 			return;
 		}
 		
 		if(args != null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"That command does not take arguments.");
+			ErrorManager.sendError(sender, CSError.TOO_MANY_ARGUMENTS, null);
+			sender.sendMessage(Constants.ERROR_COLOR + usage);
 			return;
 		}
 		
@@ -45,21 +46,18 @@ public class Buy extends CSCommand {
 				chunk.getWorld().getName());
 		
 		if(city == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You must be in city limits to do that.");
+			ErrorManager.sendError(sender, CSError.MUST_BE_STANDING_IN_CITY, null);
 			return;
 		}
 		
 		if(!city.getName().equals(plugin.getCache(player.getName()).getCity())) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You must be in your own city to do that.");
+			ErrorManager.sendError(sender, CSError.MUST_BE_STANDING_IN_CITY, null);
 			return;
 		}
 		
 		Plot plot = city.getPlotAt(location.getBlockX(), location.getBlockZ());
 		if(plot == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You must be standing on one of your plots to do that.");
+			ErrorManager.sendError(sender, CSError.MUST_BE_STANDING_IN_PLOT, null);
 			return;
 		}
 		
@@ -72,9 +70,8 @@ public class Buy extends CSCommand {
 		Holdings balance = iConomy.getAccount(player.getName()).getHoldings();
 		
 		if(!balance.hasEnough(plot.getPrice())) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You do not have enough money. That costs " +
-					iConomy.format(plot.getPrice()) + ".");
+			ErrorManager.sendError(sender, CSError.NOT_ENOUGH_MONEY, 
+					iConomy.format(plot.getPrice()));
 			return;
 		}
 		

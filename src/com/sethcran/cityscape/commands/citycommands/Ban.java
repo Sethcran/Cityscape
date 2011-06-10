@@ -9,6 +9,8 @@ import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.PlayerCache;
 import com.sethcran.cityscape.RankPermissions;
 import com.sethcran.cityscape.commands.CSCommand;
+import com.sethcran.cityscape.error.ErrorManager;
+import com.sethcran.cityscape.error.ErrorManager.CSError;
 
 public class Ban extends CSCommand {
 
@@ -25,8 +27,7 @@ public class Ban extends CSCommand {
 		if(sender instanceof Player)
 			player = (Player)sender;
 		else {
-			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You must be in game to do that.");
+			ErrorManager.sendError(sender, CSError.IN_GAME_ONLY, null);
 			return;
 		}
 		
@@ -34,28 +35,25 @@ public class Ban extends CSCommand {
 		City city = plugin.getCity(cache.getCity());
 		
 		if(city == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You must be in a city to do that.");
+			ErrorManager.sendError(sender, CSError.NOT_IN_CITY, null);
 			return;
 		}
 		
 		RankPermissions rp = city.getRank(cache.getRank());
 		if(!rp.isBan()) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You do not have permission to do that.");
+			ErrorManager.sendError(sender, CSError.NO_RANK_PERMISSION, null);
 			return;
 		}
 		
 		if(args == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You must type names to ban from your city.");
+			ErrorManager.sendError(sender, CSError.NOT_ENOUGH_ARGUMENTS, null);
+			player.sendMessage(Constants.ERROR_COLOR + usage);
 			return;
 		}
 		
 		for(String s : args) {
 			if(s.equals(player.getName())) {
-				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-						"You can't ban yourself.");
+				ErrorManager.sendError(sender, CSError.NOT_APPLICABLE_TO_SELF, null);
 			}
 			else if(plugin.getDB().doesPlayerExist(s)) {
 				city.ban(s);
@@ -64,8 +62,7 @@ public class Ban extends CSCommand {
 						"You have banned " + s + ".");
 			}
 			else {
-				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR + 
-						s + " couldn't be banned. The player does not exist.");
+				ErrorManager.sendError(sender, CSError.PLAYER_DOES_NOT_EXIST, s);
 			}
 		}			
 	}

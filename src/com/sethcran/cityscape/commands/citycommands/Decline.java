@@ -6,6 +6,8 @@ import org.bukkit.entity.Player;
 import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.commands.CSCommand;
+import com.sethcran.cityscape.error.ErrorManager;
+import com.sethcran.cityscape.error.ErrorManager.CSError;
 
 public class Decline extends CSCommand {
 
@@ -22,37 +24,34 @@ public class Decline extends CSCommand {
 		if(sender instanceof Player)
 			player = (Player)sender;
 		else {
-			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"Only players in game can use this command.");
+			ErrorManager.sendError(sender, CSError.IN_GAME_ONLY, null);
 			return;
 		}
 		
 		if(args == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You must provide a city name to decline.");
+			ErrorManager.sendError(sender, CSError.NOT_ENOUGH_ARGUMENTS, null);
+			player.sendMessage(Constants.ERROR_COLOR + usage);
 			return;
 		}
 		
 		if(args.length > 1) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"Please provide only a single city name to decline.");
+			ErrorManager.sendError(sender, CSError.TOO_MANY_ARGUMENTS, null);
+			player.sendMessage(Constants.ERROR_COLOR + usage);
 			return;
 		}
 		
 		if(!plugin.getDB().doesCityExist(args[0])) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"That city does not exist.");
+			ErrorManager.sendError(sender, CSError.CITY_DOES_NOT_EXIST, args[0]);
 			return;
 		}
 		
 		if(!plugin.getDB().isInvited(player.getName(), args[0])) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You have not been invited to join " + args[0] + ".");
+			ErrorManager.sendError(sender, CSError.NOT_INVITED, args[0]);
 			return;
 		}
 		
 		plugin.getDB().removeInvite(player.getName(), args[0]);
-		player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+		player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
 				"You have declined the invitation to join the city of " + args[0] + ".");
 	}
 }

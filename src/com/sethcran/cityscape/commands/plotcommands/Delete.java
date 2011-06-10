@@ -12,6 +12,8 @@ import com.sethcran.cityscape.PlayerCache;
 import com.sethcran.cityscape.Plot;
 import com.sethcran.cityscape.RankPermissions;
 import com.sethcran.cityscape.commands.CSCommand;
+import com.sethcran.cityscape.error.ErrorManager;
+import com.sethcran.cityscape.error.ErrorManager.CSError;
 
 public class Delete extends CSCommand {
 
@@ -28,14 +30,13 @@ public class Delete extends CSCommand {
 		if(sender instanceof Player)
 			player = (Player)sender;
 		else {
-			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"Only a player in game can do that.");
+			ErrorManager.sendError(sender, CSError.IN_GAME_ONLY, null);
 			return;
 		}
 		
 		if(args != null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"That command does not take arguments.");
+			ErrorManager.sendError(sender, CSError.TOO_MANY_ARGUMENTS, null);
+			sender.sendMessage(Constants.ERROR_COLOR + usage);
 			return;
 		}
 		
@@ -44,29 +45,25 @@ public class Delete extends CSCommand {
 		City city = plugin.getCityAt(chunk.getX(), chunk.getZ(), 
 				chunk.getWorld().getName());
 		if(city == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You  must be standing inside a plot to do that.");
+			ErrorManager.sendError(sender, CSError.MUST_BE_STANDING_IN_CITY, null);
 			return;
 		}
 		
 		PlayerCache cache = plugin.getCache(player.getName());
 		if(!city.getName().equals(cache.getCity())) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You must be in your city to do that.");
+			ErrorManager.sendError(sender, CSError.MUST_BE_STANDING_IN_CITY, null);
 			return;
 		}
 		
 		RankPermissions rp = city.getRank(cache.getRank());
 		if(!rp.isCreatePlots()) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You do not have permission to do that.");
+			ErrorManager.sendError(sender, CSError.NO_RANK_PERMISSION, null);
 			return;
 		}
 		
 		Plot plot = city.getPlotAt(location.getBlockX(), location.getBlockZ());
 		if(plot == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You must be standing in a plot to do that.");
+			ErrorManager.sendError(sender, CSError.MUST_BE_STANDING_IN_PLOT, null);
 			return;
 		}
 		

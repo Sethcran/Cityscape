@@ -9,6 +9,8 @@ import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.RankPermissions;
 import com.sethcran.cityscape.commands.CSCommand;
+import com.sethcran.cityscape.error.ErrorManager;
+import com.sethcran.cityscape.error.ErrorManager.CSError;
 
 public class Rank extends CSCommand {
 
@@ -22,8 +24,8 @@ public class Rank extends CSCommand {
 	@Override
 	public void execute(CommandSender sender, String[] args) {
 		if(args == null) {
-			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"That command requires arguments.");
+			ErrorManager.sendError(sender, CSError.NOT_ENOUGH_ARGUMENTS, null);
+			sender.sendMessage(Constants.ERROR_COLOR + usage);
 			return;
 		}
 		
@@ -50,22 +52,19 @@ public class Rank extends CSCommand {
 		if(sender instanceof Player)
 			player = (Player)sender;
 		else {
-			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"Only in game players can do that.");
+			ErrorManager.sendError(sender, CSError.IN_GAME_ONLY, null);
 			return;
 		}
 		
 		String cityName = plugin.getCache(player.getName()).getCity();
 		if(cityName == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You are not in a city!");
+			ErrorManager.sendError(sender, CSError.NOT_IN_CITY, null);
 			return;
 		}
 		
 		City city = plugin.getCity(cityName);
 		if(!city.getMayor().equals(player.getName())) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"Only the city mayor can do that!");
+			ErrorManager.sendError(sender, CSError.MAYOR_ONLY, null);
 			return;
 		}
 		
@@ -75,20 +74,18 @@ public class Rank extends CSCommand {
 		}
 		
 		if(rank.length() > Constants.RANK_MAX_NAME_LENGTH ) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR + 
-					"That rank exceeds the maximum name length.");
+			ErrorManager.sendError(sender, CSError.LENGTH_EXCEEDED, 
+					"" + Constants.RANK_MAX_NAME_LENGTH);
 			return;
 		}
 		
 		if(!rank.matches("[a-zA-Z]+")) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"The rank name must consist only of alphabetic characters.");
+			ErrorManager.sendError(sender, CSError.INCORRECT_NAME_FORMAT, null);
 			return;
 		}
 		
 		if(city.doesRankExist(rank)) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"That rank already exists!");
+			ErrorManager.sendError(sender, CSError.RANK_ALREADY_EXISTS, null);
 			return;
 		}
 		
@@ -102,8 +99,7 @@ public class Rank extends CSCommand {
 	
 	public void viewRankInfo(CommandSender sender, String cityName, String rank) {
 		if(cityName == null) {
-			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"That city does not exist.");
+			ErrorManager.sendError(sender, CSError.CITY_DOES_NOT_EXIST_NS, null);
 			return;
 		}
 		
@@ -111,8 +107,7 @@ public class Rank extends CSCommand {
 		RankPermissions rp = city.getRank(rank);
 		
 		if(rp == null) {
-			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"That rank does not exist.");
+			ErrorManager.sendError(sender, CSError.RANK_DOES_NOT_EXIST_NS, null);
 			return;
 		}
 		
@@ -190,15 +185,13 @@ public class Rank extends CSCommand {
 		if(sender instanceof Player)
 			player = (Player)sender;
 		else {
-			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"Only in game players can do that.");
+			ErrorManager.sendError(sender, CSError.IN_GAME_ONLY, null);
 			return;
 		}
 		
 		String city = plugin.getCache(player.getName()).getCity();
 		if(city == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You are not currently in a city!");
+			ErrorManager.sendError(sender, CSError.NOT_IN_CITY, null);
 			return;
 		}
 		viewRankInfo(sender, city, rank);

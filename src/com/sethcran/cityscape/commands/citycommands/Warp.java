@@ -8,6 +8,8 @@ import com.sethcran.cityscape.City;
 import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.commands.CSCommand;
+import com.sethcran.cityscape.error.ErrorManager;
+import com.sethcran.cityscape.error.ErrorManager.CSError;
 
 public class Warp extends CSCommand {
 
@@ -24,8 +26,7 @@ public class Warp extends CSCommand {
 		if(sender instanceof Player)
 			player = (Player)sender;
 		else {
-			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You must be in game to do that.");
+			ErrorManager.sendError(sender, CSError.IN_GAME_ONLY, null);
 			return;
 		}
 		
@@ -34,14 +35,13 @@ public class Warp extends CSCommand {
 		if(args == null) {
 			city = plugin.getCity(plugin.getCache(player.getName()).getCity());
 			if(city == null) {
-				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-						"You are not in a city.");
+				ErrorManager.sendError(sender, CSError.NOT_IN_CITY, null);
 				return;
 			}
 		}
 		else if(args.length != 1){
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"That command only requires a city name.");
+			ErrorManager.sendError(sender, CSError.TOO_MANY_ARGUMENTS, null);
+			sender.sendMessage(Constants.ERROR_COLOR + usage);
 			return;
 		}
 		else {
@@ -49,8 +49,7 @@ public class Warp extends CSCommand {
 		}
 		
 		if(city == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"That city does not exist.");
+			ErrorManager.sendError(sender, CSError.CITY_DOES_NOT_EXIST_NS, null);
 			return;
 		}
 		

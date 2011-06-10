@@ -14,6 +14,8 @@ import com.sethcran.cityscape.PlayerCache;
 import com.sethcran.cityscape.RankPermissions;
 import com.sethcran.cityscape.commands.CSCommand;
 import com.sethcran.cityscape.database.Database;
+import com.sethcran.cityscape.error.ErrorManager;
+import com.sethcran.cityscape.error.ErrorManager.CSError;
 
 public class CreateCity extends CSCommand {
 	
@@ -33,55 +35,46 @@ public class CreateCity extends CSCommand {
 		if(sender instanceof Player)
 			player = (Player)sender;
 		else {
-			sender.sendMessage(Constants.CITYSCAPE + ChatColor.RED + 
-					"Only a player in game can do that!");
+			ErrorManager.sendError(sender, CSError.IN_GAME_ONLY, null);
 			return;
 		}
 		
 		// Check that arguments were provided correctly
 		if(args == null) {
-			player.sendMessage(Constants.CITYSCAPE + ChatColor.RED +
-					"You must provide a city name.");
+			ErrorManager.sendError(sender, CSError.NOT_ENOUGH_ARGUMENTS, null);
+			player.sendMessage(Constants.ERROR_COLOR + usage);
 			return;
 		}
 		if(args.length > 1) {
-			player.sendMessage(Constants.CITYSCAPE + ChatColor.RED + 
-					"Spaces are not allowed in city names.");
+			ErrorManager.sendError(sender, CSError.TOO_MANY_ARGUMENTS, null);
+			player.sendMessage(Constants.ERROR_COLOR + usage);
 			return;
 		}
 		
 		// Check that town name is of appropriate length
 		if(args[0].length() > Constants.TOWN_MAX_NAME_LENGTH) {
-			player.sendMessage(Constants.CITYSCAPE + ChatColor.RED + 
-					"The city name must be under " + Constants.TOWN_MAX_NAME_LENGTH + 
-					" characters.");
+			ErrorManager.sendError(sender, CSError.LENGTH_EXCEEDED, 
+					"" + Constants.TOWN_MAX_NAME_LENGTH);
 			return;
 		}
 		
 		// Check that town name is alphabetic
 		if(!args[0].matches("[a-zA-Z]+")) {
-			player.sendMessage(Constants.CITYSCAPE + ChatColor.RED +
-					"The city name must consist only of alphabetic characters.");
+			ErrorManager.sendError(sender, CSError.INCORRECT_NAME_FORMAT, null);
 			return;
 		}
 		
 		// Check that user has permissions to create a city.
 		if(!plugin.permissionHandler.has(player, "cityscape.createcity")) {
-			player.sendMessage(Constants.CITYSCAPE + ChatColor.RED + 
-					"You do not have permission to create a city.");
+			ErrorManager.sendError(sender, CSError.NO_PERMISSION, null);
 			return;
 		}
 		
 		// Check that user has enough money.
 		Holdings balance = iConomy.getAccount(player.getName()).getHoldings();
-		if(balance == null) {
-			player.sendMessage(Constants.CITYSCAPE + ChatColor.RED +
-					"There was an error executing that command.");
-			return;
-		}	
 		if(!balance.hasEnough(plugin.getSettings().cityCost)) {
-			player.sendMessage(Constants.CITYSCAPE + ChatColor.RED + 
-			"You do not have enough money for that.");
+			ErrorManager.sendError(sender, CSError.NOT_ENOUGH_MONEY, 
+					"" + plugin.getSettings().cityCost);
 			return;
 		}
 		
@@ -91,15 +84,13 @@ public class CreateCity extends CSCommand {
 		// Check that player is not in a city
 		String currentCity = db.getCurrentCity(player.getName());
 		if(currentCity != null) {
-			player.sendMessage(Constants.CITYSCAPE + ChatColor.RED + 
-				"You must first leave your current city.");
+			ErrorManager.sendError(sender, CSError.ALREADY_IN_A_CITY, null);
 			return;
 		}
 		
 		// Check that selected cityname does not exist
 		if(db.doesCityExist(args[0])) {
-			player.sendMessage(Constants.CITYSCAPE + ChatColor.RED +
-					"That city already exists!");
+			ErrorManager.sendError(sender, CSError.CITY_ALREADY_EXISTS, args[0]);
 			return;
 		}
 		
@@ -110,9 +101,9 @@ public class CreateCity extends CSCommand {
 		String worldName = chunk.getWorld().getName();
 		
 		// Check that the current chunk is unclaimed
-		if(plugin.isChunkClaimed(worldName, x, z)) {
-			player.sendMessage(Constants.CITYSCAPE + ChatColor.RED +
-					"A city already owns that spot!");
+		City localCity = plugin.getCityAt(x, z, worldName);
+		if(localCity != null) {
+			ErrorManager.sendError(sender, CSError.CITY_ALREADY_OWNS, localCity.getName());
 			return;
 		}
 		

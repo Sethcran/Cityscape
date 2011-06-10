@@ -12,6 +12,8 @@ import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.Plot;
 import com.sethcran.cityscape.RankPermissions;
 import com.sethcran.cityscape.commands.CSCommand;
+import com.sethcran.cityscape.error.ErrorManager;
+import com.sethcran.cityscape.error.ErrorManager.CSError;
 
 public class Sell extends CSCommand {
 
@@ -28,8 +30,7 @@ public class Sell extends CSCommand {
 		if(sender instanceof Player)
 			player = (Player)sender;
 		else {
-			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR + 
-					"You must be in game to do that.");
+			ErrorManager.sendError(sender, CSError.IN_GAME_ONLY, null);
 			return;
 		}
 		
@@ -39,21 +40,18 @@ public class Sell extends CSCommand {
 				chunk.getWorld().getName());
 		
 		if(city == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You must be in city limits to do that.");
+			ErrorManager.sendError(sender, CSError.MUST_BE_STANDING_IN_CITY, null);
 			return;
 		}
 		
 		if(!city.getName().equals(plugin.getCache(player.getName()).getCity())) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You must be in your own city to do that.");
+			ErrorManager.sendError(sender, CSError.MUST_BE_STANDING_IN_CITY, null);
 			return;
 		}
 		
 		Plot plot = city.getPlotAt(location.getBlockX(), location.getBlockZ());
 		if(plot == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You must be standing on one of your plots to do that.");
+			ErrorManager.sendError(sender, CSError.MUST_BE_STANDING_IN_PLOT, null);
 			return;
 		}
 		
@@ -65,13 +63,11 @@ public class Sell extends CSCommand {
 		
 		RankPermissions rp = city.getRank(plugin.getCache(player.getName()).getRank());
 		if(rp == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You do not have permission to do that.");
+			ErrorManager.sendError(sender, CSError.NO_RANK_PERMISSION, null);
 			return;
 		}
 		if(!rp.isSetPlotSale()) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You do not have permission to do that.");
+			ErrorManager.sendError(sender, CSError.NO_RANK_PERMISSION, null);
 			return;
 		}
 		
@@ -86,14 +82,13 @@ public class Sell extends CSCommand {
 				plot.setPrice(price);
 				plugin.getDB().setPlotForSale(plot);
 			} catch(NumberFormatException e) {
-				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-						"The argument must be an integer.");
+				ErrorManager.sendError(sender, CSError.INCORRECT_NUMBER_FORMAT, null);
 				return;
 			}
 		}
 		else {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"That command takes a price as an argument.");
+			ErrorManager.sendError(sender, CSError.TOO_MANY_ARGUMENTS, null);
+			sender.sendMessage(Constants.ERROR_COLOR + usage);
 			return;
 		}
 		

@@ -315,7 +315,7 @@ public class Cityscape extends JavaPlugin {
 			if(permissionsPlugin != null) {
 				permissionHandler = ((Permissions)permissionsPlugin).getHandler();
 			} else {
-				log.info("Permission system not detected, defaulting to OP");
+				log.info("Cityscape: Permission system not detected. Permissions is required.");
 			}
 		}
 	}

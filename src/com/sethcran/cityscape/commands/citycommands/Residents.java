@@ -10,6 +10,8 @@ import com.sethcran.cityscape.City;
 import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.commands.CSCommand;
+import com.sethcran.cityscape.error.ErrorManager;
+import com.sethcran.cityscape.error.ErrorManager.CSError;
 
 public class Residents extends CSCommand {
 
@@ -26,8 +28,7 @@ public class Residents extends CSCommand {
 		if(sender instanceof Player)
 			player = (Player)sender;
 		else {
-			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You are not in a city because you are not in game =p");
+			ErrorManager.sendError(sender, CSError.IN_GAME_ONLY, null);
 			return;
 		}
 		
@@ -35,14 +36,13 @@ public class Residents extends CSCommand {
 		
 		if(args != null) {
 			if(args.length > 1) {
-				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-						"That command does not take arguments.");
+				ErrorManager.sendError(sender, CSError.TOO_MANY_ARGUMENTS, null);
+				sender.sendMessage(Constants.ERROR_COLOR + usage);
 				return;
 			}
 			City c = plugin.getCity(args[0]);
 			if(c == null) {
-				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-						"That city does not exist.");
+				ErrorManager.sendError(sender, CSError.CITY_DOES_NOT_EXIST, args[0]);
 				return;
 			}
 			city = c.getName();
@@ -51,18 +51,11 @@ public class Residents extends CSCommand {
 			city = plugin.getCache(player.getName()).getCity();
 		
 		if(city == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You are not in a city.");
+			ErrorManager.sendError(sender, CSError.NOT_IN_CITY, null);
 			return;
 		}
 		
 		ArrayList<String> residents = plugin.getDB().getResidents(city);
-		
-		if(residents.size() == 0) {
-			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"That city does not exist.");
-			return;
-		}
 		
 		sender.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
 				"Residents of " + city + ":");

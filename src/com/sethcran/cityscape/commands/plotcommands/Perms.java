@@ -12,6 +12,8 @@ import com.sethcran.cityscape.Permissions;
 import com.sethcran.cityscape.Plot;
 import com.sethcran.cityscape.RankPermissions;
 import com.sethcran.cityscape.commands.CSCommand;
+import com.sethcran.cityscape.error.ErrorManager;
+import com.sethcran.cityscape.error.ErrorManager.CSError;
 
 public class Perms extends CSCommand {
 
@@ -28,14 +30,12 @@ public class Perms extends CSCommand {
 		if(sender instanceof Player)
 			player = (Player)sender;
 		else {
-			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"Only players in game can do that.");
+			ErrorManager.sendError(sender, CSError.IN_GAME_ONLY, null);
 			return;
 		}
 		
 		if(args == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"That command requires arguments.");
+			ErrorManager.sendError(sender, CSError.NOT_ENOUGH_ARGUMENTS, null);
 			player.sendMessage(Constants.ERROR_COLOR + usage);
 			return;
 		}
@@ -46,48 +46,41 @@ public class Perms extends CSCommand {
 				chunk.getWorld().getName());
 		
 		if(city == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You can not do that in the wilderness.");
+			ErrorManager.sendError(sender, CSError.WILDERNESS, null);
 			return;
 		}
 		
 		if(plugin.getCache(player.getName()).getCity() == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You must be in a city to do that.");
+			ErrorManager.sendError(sender, CSError.NOT_IN_CITY, null);
 			return;
 		}
 		
 		if(!city.getName().equals(plugin.getCache(player.getName()).getCity())) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You must within your city limits to do that.");
+			ErrorManager.sendError(sender, CSError.MUST_BE_STANDING_IN_CITY, null);
 			return;
 		}
 		
 		Plot plot = city.getPlotAt(location.getBlockX(), location.getBlockZ());
 		
 		if(plot == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You must be standing inside a plot to do that.");
+			ErrorManager.sendError(sender, CSError.MUST_BE_STANDING_IN_PLOT, null);
 			return;
 		}
 		
 		if(plot.isCityPlot()) {
 			RankPermissions rp = plugin.getPermissions(player.getName());
 			if(rp == null) {
-				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-						"You do not have permission to do that.");
+				ErrorManager.sendError(sender, CSError.NO_RANK_PERMISSION, null);
 				return;
 			}
 			if(!rp.isChangeCityPlotPerms()) {
-				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-						"You do not have permission to do that.");
+				ErrorManager.sendError(sender, CSError.NO_RANK_PERMISSION, null);
 				return;
 			}
 		}
 		else {
 			if(!plot.getOwnerName().equals(player.getName())) {
-				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-						"You do not have permission to do that.");
+				ErrorManager.sendError(sender, CSError.NO_PERMISSION, null);
 				return;
 			}
 		}
@@ -95,15 +88,13 @@ public class Perms extends CSCommand {
 		for(String s : args) {
 			String[] each = s.split(":");
 			if(each == null) {
-				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-						"There was an error with your format.");
+				ErrorManager.sendError(sender, CSError.INCORRECT_FORMAT, null);
 				player.sendMessage(Constants.ERROR_COLOR + usage);
 				return;
 			}
 			
 			if(each.length != 3) {
-				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-						"There was an error with your format.");
+				ErrorManager.sendError(sender, CSError.INCORRECT_FORMAT, null);
 				player.sendMessage(Constants.ERROR_COLOR + usage);
 				return;
 			}
@@ -112,8 +103,7 @@ public class Perms extends CSCommand {
 					"build".equalsIgnoreCase(each[2]) ||
 					"destroy".equalsIgnoreCase(each[2]) || 
 					"switch".equalsIgnoreCase(each[2]))) {
-				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-						"There was an error with your format.");
+				ErrorManager.sendError(sender, CSError.INCORRECT_FORMAT, null);
 				player.sendMessage(Constants.ERROR_COLOR + usage);
 				return;
 			}
@@ -180,8 +170,7 @@ public class Perms extends CSCommand {
 			}
 			else if("add".equalsIgnoreCase(each[0])) {
 				if(!plugin.getDB().doesPlayerExist(each[1])) {
-					player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-							"That player does not exist.");
+					ErrorManager.sendError(sender, CSError.PLAYER_DOES_NOT_EXIST, each[1]);
 					return;
 				}
 				
@@ -217,8 +206,7 @@ public class Perms extends CSCommand {
 			}
 			else if("addc".equalsIgnoreCase(each[0])) {
 				if(!plugin.getDB().doesCityExist(each[1])) {
-					player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-							"That player does not exist.");
+					ErrorManager.sendError(sender, CSError.PLAYER_DOES_NOT_EXIST, each[1]);
 					return;
 				}
 				

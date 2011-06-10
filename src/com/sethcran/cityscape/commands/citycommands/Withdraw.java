@@ -11,6 +11,8 @@ import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.PlayerCache;
 import com.sethcran.cityscape.RankPermissions;
 import com.sethcran.cityscape.commands.CSCommand;
+import com.sethcran.cityscape.error.ErrorManager;
+import com.sethcran.cityscape.error.ErrorManager.CSError;
 
 public class Withdraw extends CSCommand {
 
@@ -27,8 +29,7 @@ public class Withdraw extends CSCommand {
 		if(sender instanceof Player)
 			player = (Player)sender;
 		else {
-			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You must be in game to do that.");
+			ErrorManager.sendError(sender, CSError.IN_GAME_ONLY, null);
 			return;
 		}
 		
@@ -36,34 +37,31 @@ public class Withdraw extends CSCommand {
 		City city = plugin.getCity(cache.getCity());
 		
 		if(city == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR + 
-					"You must be in a city to do that.");
+			ErrorManager.sendError(sender, CSError.NOT_IN_CITY, null);
 			return;
 		}
 		
 		RankPermissions rp = city.getRank(cache.getRank());
 		
 		if(rp == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You do not have permission to do that.");
+			ErrorManager.sendError(sender, CSError.NO_RANK_PERMISSION, null);
 			return;
 		}
 		
 		if(!rp.isWithdraw()) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You do not have permission to do that.");
+			ErrorManager.sendError(sender, CSError.NO_RANK_PERMISSION, null);
 			return;
 		}
 		
 		if(args == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You must specify an amount to withdraw.");
+			ErrorManager.sendError(sender, CSError.NOT_ENOUGH_ARGUMENTS, null);
+			sender.sendMessage(Constants.ERROR_COLOR + usage);
 			return;
 		}
 		
 		if(args.length != 1) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"That command only requires an amount to withdraw.");
+			ErrorManager.sendError(sender, CSError.TOO_MANY_ARGUMENTS, null);
+			sender.sendMessage(Constants.ERROR_COLOR + usage);
 			return;
 		}
 		
@@ -71,13 +69,18 @@ public class Withdraw extends CSCommand {
 		try {
 			amount = Double.parseDouble(args[0]);
 		} catch(NumberFormatException e) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"The argument must be a number.");
+			ErrorManager.sendError(sender, CSError.INCORRECT_NUMBER_FORMAT, null);
 			return;
 		}
 		
 		Holdings cityBalance = city.getAccount().getHoldings();
 		Holdings playerBalance = iConomy.getAccount(player.getName()).getHoldings();
+		
+		if(!cityBalance.hasEnough(amount)) {
+			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
+					"The city bank does not have enough money.");
+			return;
+		}
 		
 		cityBalance.subtract(amount);
 		playerBalance.add(amount);

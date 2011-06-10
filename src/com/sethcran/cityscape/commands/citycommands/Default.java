@@ -10,6 +10,8 @@ import com.sethcran.cityscape.City;
 import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.commands.CSCommand;
+import com.sethcran.cityscape.error.ErrorManager;
+import com.sethcran.cityscape.error.ErrorManager.CSError;
 
 public class Default extends CSCommand {
 
@@ -17,7 +19,7 @@ public class Default extends CSCommand {
 		super(plugin);
 		name = "default";
 		description = "Information on your current city status.";
-		usage = "/city";
+		usage = "/city (cityname)";
 	}
 
 	@Override
@@ -28,8 +30,8 @@ public class Default extends CSCommand {
 		}
 		
 		if(args.length > 1) {
-			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"That command only needs a city name.");
+			ErrorManager.sendError(sender, CSError.TOO_MANY_ARGUMENTS, null);
+			sender.sendMessage(Constants.ERROR_COLOR + usage);
 			return;
 		}
 		
@@ -38,8 +40,7 @@ public class Default extends CSCommand {
 	
 	public void displayCityToSender(CommandSender sender, City city) {
 		if(city == null) {
-			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"That city does not exist.");
+			ErrorManager.sendError(sender, CSError.CITY_DOES_NOT_EXIST_NS, null);
 			return;
 		}
 		
@@ -85,15 +86,13 @@ public class Default extends CSCommand {
 		if(sender instanceof Player)
 			player = (Player)sender;
 		else {
-			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You are not in a city because you are not in game =p");
+			ErrorManager.sendError(sender, CSError.IN_GAME_ONLY, null);
 			return;
 		}
 		
 		City city = plugin.getCity(plugin.getCache(player.getName()).getCity());
 		if(city == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You are not in a city.");
+			ErrorManager.sendError(sender, CSError.NOT_IN_CITY, null);
 			return;
 		}
 		else
@@ -102,14 +101,12 @@ public class Default extends CSCommand {
 	
 	public void selectedCity(CommandSender sender, String args) {
 		if(args == null) {
-			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR + 
-					"You are not in a city!");
+			ErrorManager.sendError(sender, CSError.NOT_IN_CITY, null);
 			return;
 		}
 		City city = plugin.getCity(args);
 		if(city == null) {
-			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"That city does not exist: " + args);
+			ErrorManager.sendError(sender, CSError.CITY_DOES_NOT_EXIST, args);
 			return;
 		}
 		displayCityToSender(sender, city);

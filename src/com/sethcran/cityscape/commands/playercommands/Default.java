@@ -10,6 +10,8 @@ import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.PlayerCache;
 import com.sethcran.cityscape.commands.CSCommand;
+import com.sethcran.cityscape.error.ErrorManager;
+import com.sethcran.cityscape.error.ErrorManager.CSError;
 
 public class Default extends CSCommand {
 
@@ -24,8 +26,7 @@ public class Default extends CSCommand {
 	public void execute(CommandSender sender, String[] args) {
 		if(!(sender instanceof Player)) {
 			if(args == null) {
-				sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-						"That command requires a player name for out of game use.");
+				ErrorManager.sendError(sender, CSError.IN_GAME_ONLY, null);
 				return;
 			}
 		}
@@ -35,15 +36,13 @@ public class Default extends CSCommand {
 			cache = plugin.getCache(((Player)sender).getName());
 		}
 		else if(args.length != 1) {
-			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"That command only requires a player name.");
+			ErrorManager.sendError(sender, CSError.TOO_MANY_ARGUMENTS, null);
 			return;
 		}
 		else {
 			cache = plugin.getDB().getInfo(args[0]);
 			if(cache == null) {
-				sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-						"That player does not exist.");
+				ErrorManager.sendError(sender, CSError.PLAYER_DOES_NOT_EXIST, args[0]);
 				return;
 			}
 		}

@@ -8,6 +8,8 @@ import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Claim;
 import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.commands.CSCommand;
+import com.sethcran.cityscape.error.ErrorManager;
+import com.sethcran.cityscape.error.ErrorManager.CSError;
 
 public class Unclaim extends CSCommand {
 
@@ -24,8 +26,7 @@ public class Unclaim extends CSCommand {
 		if(sender instanceof Player)
 			player = (Player)sender;
 		else {
-			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You must be in game to do that.");
+			ErrorManager.sendError(sender, CSError.IN_GAME_ONLY, null);
 			return;
 		}
 		
@@ -34,8 +35,8 @@ public class Unclaim extends CSCommand {
 		}
 		
 		if(args != null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"That command does not take arguments.");
+			ErrorManager.sendError(sender, CSError.TOO_MANY_ARGUMENTS, null);
+			sender.sendMessage(Constants.ERROR_COLOR + usage);
 			return;
 		}
 		
@@ -45,8 +46,7 @@ public class Unclaim extends CSCommand {
 		Claim claim = plugin.getClaimAt(x, z, chunk.getWorld().getName());
 		
 		if(claim == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You are in the wilderness.");
+			ErrorManager.sendError(sender, CSError.WILDERNESS, null);
 			return;
 		}
 		

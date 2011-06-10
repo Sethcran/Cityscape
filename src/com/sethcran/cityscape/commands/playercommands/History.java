@@ -7,6 +7,8 @@ import org.bukkit.command.CommandSender;
 import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.commands.CSCommand;
+import com.sethcran.cityscape.error.ErrorManager;
+import com.sethcran.cityscape.error.ErrorManager.CSError;
 
 public class History extends CSCommand {
 
@@ -20,20 +22,19 @@ public class History extends CSCommand {
 	@Override
 	public void execute(CommandSender sender, String[] args) {
 		if(args == null) {
-			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"That command requires a playername.");
+			ErrorManager.sendError(sender, CSError.NOT_ENOUGH_ARGUMENTS, null);
+			sender.sendMessage(Constants.ERROR_COLOR + usage);
 			return;
 		}
 		
 		if(args.length != 1) {
-			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR + 
-					"That command requires only a single player name.");
+			ErrorManager.sendError(sender, CSError.TOO_MANY_ARGUMENTS, null);
+			sender.sendMessage(Constants.ERROR_COLOR + usage);
 			return;
 		}
 		
 		if(!plugin.getDB().doesPlayerExist(args[0])) {
-			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"That player does not exist.");
+			ErrorManager.sendError(sender, CSError.PLAYER_DOES_NOT_EXIST, args[0]);
 			return;
 		}
 		

@@ -7,6 +7,8 @@ import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.RankPermissions;
 import com.sethcran.cityscape.commands.CSCommand;
+import com.sethcran.cityscape.error.ErrorManager;
+import com.sethcran.cityscape.error.ErrorManager.CSError;
 
 public class Invite extends CSCommand {
 
@@ -23,27 +25,24 @@ public class Invite extends CSCommand {
 		if(sender instanceof Player)
 			player = (Player)sender;
 		else {
-			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"Only players in game can use that command.");
+			ErrorManager.sendError(sender, CSError.IN_GAME_ONLY, null);
 			return;
 		}
 		
 		if(args == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You must specify the player's name to invite.");
+			ErrorManager.sendError(sender, CSError.NOT_ENOUGH_ARGUMENTS, null);
+			player.sendMessage(Constants.ERROR_COLOR + usage);
 			return;
 		}
 		
 		RankPermissions rp = plugin.getPermissions(player.getName());
 		if(rp == null) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You can not do that.");
+			ErrorManager.sendError(sender, CSError.NO_RANK_PERMISSION, null);
 			return;
 		}
 		
 		if(!rp.isAddResident()) {
-			player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-					"You do not have permission to do that.");
+			ErrorManager.sendError(sender, CSError.NO_RANK_PERMISSION, null);
 			return;
 		}
 		
@@ -51,8 +50,7 @@ public class Invite extends CSCommand {
 			if(plugin.getDB().doesPlayerExist(resident)) {
 				String city = plugin.getDB().getCurrentCity(resident);
 				if(city != null) {
-					player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-							"The user " + resident + " is already in a city!");
+					ErrorManager.sendError(sender, CSError.OTHER_ALREADY_IN_CITY, null);
 				} 
 				else {
 					String cityName = plugin.getCache(player.getName()).getCity();
@@ -69,8 +67,7 @@ public class Invite extends CSCommand {
 				}
 			}
 			else {
-				player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-						"That user does not exist.");
+				ErrorManager.sendError(sender, CSError.PLAYER_DOES_NOT_EXIST, resident);
 			}
 		}
 	}
