@@ -36,7 +36,7 @@ public class Schemas {
 						"outsiderDestroy BOOL, " +
 						"outsiderSwitch BOOL, " +
 						"snow BOOL, " +
-						"FOREIGN KEY(mayor) REFERENCES CSPlayers(name) " +
+						"FOREIGN KEY(mayor) REFERENCES csplayers(name) " +
 						"ON DELETE CASCADE) " +
 						"ENGINE = InnoDB," +
 						"CHARACTER SET latin1 COLLATE latin1_general_cs;";
@@ -111,7 +111,7 @@ public class Schemas {
 						"city CHAR(" + Constants.TOWN_MAX_NAME_LENGTH + ")," +
 						"startingfrom DATETIME NOT NULL," +
 						"PRIMARY KEY(player, startingfrom)," +
-						"FOREIGN KEY(player) REFERENCES CSPlayers(name) ON DELETE CASCADE)" +
+						"FOREIGN KEY(player) REFERENCES csplayers(name) ON DELETE CASCADE)" +
 						"ENGINE = InnoDB," +
 						"CHARACTER SET latin1 COLLATE latin1_general_cs;";
 		

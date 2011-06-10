@@ -15,6 +15,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event.Type;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -196,6 +197,7 @@ public class Cityscape extends JavaPlugin {
 		
 		populateCityCache();
 		populateClaimsCache();
+		populatePlayerCache();
 		
 		registerEvents();
 		
@@ -219,6 +221,14 @@ public class Cityscape extends JavaPlugin {
 			for(Claim claim : claimsArray) {
 				addClaim(claim);
 			}
+		}
+	}
+	
+	public void populatePlayerCache() {
+		Player[] players = getServer().getOnlinePlayers();
+		CSPlayerListener cpl = new CSPlayerListener(this);
+		for(Player p : players) {
+			cpl.onPlayerJoin(new PlayerJoinEvent(p, null));
 		}
 	}
 	
