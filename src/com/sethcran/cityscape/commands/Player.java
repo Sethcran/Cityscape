@@ -16,6 +16,7 @@ public class Player extends CSCommand {
 		super(plugin);
 		
 		addToMap(new Default(plugin));
+		addToMap(new Help(plugin, this));
 		addToMap(new History(plugin));
 	}
 
@@ -52,6 +53,10 @@ public class Player extends CSCommand {
 				playerMap.put(alias, cmd);
 			}
 		}
+	}
+	
+	public CSCommand getCommand(String cmd) {
+		return playerMap.get(cmd);
 	}
 
 }

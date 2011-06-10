@@ -19,6 +19,7 @@ public class Plot extends CSCommand {
 		addToMap(new Default(plugin));
 		addToMap(new Delete(plugin));
 		addToMap(new Destroy(plugin));
+		addToMap(new Help(plugin, this));
 		addToMap(new Perms(plugin));
 		addToMap(new Reclaim(plugin));
 		addToMap(new Select(plugin));
@@ -61,6 +62,10 @@ public class Plot extends CSCommand {
 				plotMap.put(alias, cmd);
 			}
 		}
+	}
+	
+	public CSCommand getCommand(String cmd) {
+		return plotMap.get(cmd);
 	}
 
 }

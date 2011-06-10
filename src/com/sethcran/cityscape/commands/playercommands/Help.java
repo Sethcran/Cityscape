@@ -1,4 +1,4 @@
-package com.sethcran.cityscape.commands.citycommands;
+package com.sethcran.cityscape.commands.playercommands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -6,32 +6,27 @@ import org.bukkit.command.CommandSender;
 import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.commands.CSCommand;
-import com.sethcran.cityscape.commands.City;
+import com.sethcran.cityscape.commands.Player;
 
 public class Help extends CSCommand {
 	
-	City citycommands = null;
+	private Player playerCommands = null;
 	
-	String[] commands = { "accept", "ban", "buyclaims", "change", "claim", "createcity",
-			"decline", "default", "delete", "demote", "deposit", "help", "here", "invite",
-			"invites", "leave", "list", "map", "promote", "rank", "ranks", "remove",
-			"rename", "residents", "settings", "setwarp", "unban", "unclaim", "warp",
-			"welcome", "withdraw" };
+	private String[] commands = { "default", "history" };
 
-	public Help(Cityscape plugin, City citycommands) {
+	public Help(Cityscape plugin, Player playerCommands) {
 		super(plugin);
-		this.citycommands = citycommands;
+		this.playerCommands = playerCommands;
 		name = "help";
-		description = "Used to get information on /c commands.";
-		usage = "/c help";
+		description = "Displays help on the specified player command";
+		usage = "/p help";
 	}
 
 	@Override
 	public void execute(CommandSender sender, String[] args) {
-		 
 		if(args == null) {
 			sender.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
-					"City Commands List:");
+					"Player Commands List:");
 			String message = "" + ChatColor.WHITE;
 			for(String c : commands) {
 				if(message.length() + c.length() > Constants.CHAT_LINE_LENGTH) {
@@ -54,7 +49,7 @@ public class Help extends CSCommand {
 			return;
 		}
 		
-		CSCommand cmd = citycommands.getCommand(args[0]);
+		CSCommand cmd = playerCommands.getCommand(args[0]);
 		
 		if(cmd == null) {
 			sender.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
@@ -63,12 +58,10 @@ public class Help extends CSCommand {
 		}
 		
 		sender.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
-				"City Command: " + args[0]);
+				"Player Command: " + args[0]);
 		sender.sendMessage(Constants.GROUP_COLOR + "Description: " + ChatColor.WHITE + 
 				cmd.getDescription());
 		sender.sendMessage(Constants.GROUP_COLOR + "Usage: " + ChatColor.WHITE +
 				cmd.getUsage());
-
 	}
-
 }

@@ -25,7 +25,7 @@ public class City extends CSCommand {
 		addToMap(new Delete(plugin));
 		addToMap(new Demote(plugin));
 		addToMap(new Deposit(plugin));
-		addToMap(new Help(plugin));
+		addToMap(new Help(plugin, this));
 		addToMap(new Here(plugin));
 		addToMap(new Invite(plugin));
 		addToMap(new Invites(plugin));
@@ -80,5 +80,9 @@ public class City extends CSCommand {
 				cityMap.put(alias, cmd);
 			}
 		}
+	}
+	
+	public CSCommand getCommand(String cmd) {
+		return cityMap.get(cmd);
 	}
 }

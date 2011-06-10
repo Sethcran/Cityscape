@@ -19,6 +19,7 @@ public class CSAdmin extends CSCommand {
 		addToMap(new Claim(plugin));
 		addToMap(new Default(plugin));
 		addToMap(new DeleteCity(plugin));
+		addToMap(new Help(plugin, this));
 		addToMap(new SetMayor(plugin));
 		addToMap(new Unban(plugin));
 		addToMap(new Unclaim(plugin));
@@ -57,5 +58,9 @@ public class CSAdmin extends CSCommand {
 				csAdminMap.put(alias, cmd);
 			}
 		}
+	}
+	
+	public CSCommand getCommand(String cmd) {
+		return csAdminMap.get(cmd);
 	}
 }
