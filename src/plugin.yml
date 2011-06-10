@@ -24,6 +24,6 @@ commands:
     plot:
         description: plotcommands
         usage: /plot
-    chest:
-        description: chestcommands
-        usage: /chest
+    cc:
+        description: citychat
+        usage: /cc message

@@ -20,6 +20,7 @@ public class CommandHandler {
 		addPlayerCommands();
 		addPlotCommands();
 		addCSAdminCommands();
+		addOtherCommands();
 	}
 
 	public void addCityCommands() {
@@ -43,6 +44,11 @@ public class CommandHandler {
 	public void addPlotCommands() {
 		Plot plot = new Plot(plugin);
 		commandMap.put("plot", plot);
+	}
+	
+	public void addOtherCommands() {
+		CityChat chat = new CityChat(plugin);
+		commandMap.put("cc", chat);
 	}
 	
 	public boolean handleCommand(CommandSender sender, Command cmd, 

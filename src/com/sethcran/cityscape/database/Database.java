@@ -186,6 +186,8 @@ public class Database {
 				city.setSpawnY(rs.getDouble("spawnY"));
 				city.setSpawnZ(rs.getDouble("spawnZ"));
 				city.setSpawnPitch(rs.getFloat("spawnPitch"));
+				city.setSpawnYaw(rs.getFloat("spawnYaw"));
+				city.setWorld(rs.getString("world"));
 				city.setUsedClaims(rs.getInt("usedClaims"));
 				city.setSnow(rs.getBoolean("snow"));
 				
