@@ -49,6 +49,7 @@ public class Leave extends CSCommand {
 		
 		plugin.getDB().leaveCity(player.getName());
 		PlayerCache cache = plugin.getCache(player.getName());
+		plugin.checkCityRank(playerCity);
 		cache.setCity(null);
 		cache.setRank(null);
 		plugin.sendMessageToCity(player.getName() + " has left the city.", playerCity);

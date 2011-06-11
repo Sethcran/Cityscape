@@ -504,7 +504,7 @@ public class CSPlayerListener extends PlayerListener {
 			if(city.isBanned(event.getPlayer().getName())) {
 				event.setCancelled(true);
 				event.getPlayer().sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR +
-						"You have been banned from entering" + city.getName() + ".");
+						"You have been banned from entering " + city.getName() + ".");
 				return;
 			}
 		}

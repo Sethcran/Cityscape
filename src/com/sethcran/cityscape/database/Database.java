@@ -264,6 +264,10 @@ public class Database {
 		return csplots.getLastID();
 	}
 	
+	public int getNumResidents(String city) {
+		return csresidents.getNumResidents(city);
+	}
+	
 	public String getPlayerCity(String playerName) {
 		return csresidents.getCurrentCity(playerName);
 	}

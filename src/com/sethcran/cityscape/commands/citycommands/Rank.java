@@ -44,6 +44,11 @@ public class Rank extends CSCommand {
 					viewRankInfo(sender, args[0], args[1]);
 			}
 		}
+		
+		if(args.length > 2) {
+			ErrorManager.sendError(sender, CSError.TOO_MANY_ARGUMENTS, null);
+			sender.sendMessage(Constants.ERROR_COLOR + usage);
+		}
 
 	}
 	

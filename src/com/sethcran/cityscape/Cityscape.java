@@ -82,6 +82,18 @@ public class Cityscape extends JavaPlugin {
 		getCache(playerName).setCity(cityName);
 	}
 	
+	public void checkCityRank(String cityName) {
+		City city = cityCache.get(cityName);
+		int residents = database.getNumResidents(cityName);
+		switch(residents) {
+		case 1: city.setBaseClaims(16); break;
+		case 3: city.setBaseClaims(64); break;
+		case 6: city.setBaseClaims(128); break;
+		case 12: city.setBaseClaims(256); break;
+		case 100: city.setBaseClaims(2000); break;
+		}
+	}
+	
 	public void deleteCity(String city) {
 		
 		Collection<Claim> cc = claimMap.values();

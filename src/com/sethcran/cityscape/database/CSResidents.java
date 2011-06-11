@@ -52,6 +52,23 @@ public class CSResidents extends Table {
 		return null;
 	}
 	
+	public int getNumResidents(String city) {
+		String sql = 	"SELECT COUNT(*) " +
+						"FROM csresidents " +
+						"WHERE city = ?;";
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, city);
+			ResultSet rs = stmt.executeQuery();
+			if(rs.next())
+				return rs.getInt(1);
+		} catch (SQLException e) {
+			if(settings.debug)
+				e.printStackTrace();
+		}
+		return 0;
+	}
+	
 	public String getRank(String playerName) {
 		String sql = 	"SELECT rank " +
 						"FROM csresidents " +

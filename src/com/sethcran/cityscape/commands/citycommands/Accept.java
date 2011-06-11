@@ -56,6 +56,7 @@ public class Accept extends CSCommand {
 		plugin.getDB().addPlayerToCity(player.getName(), args[0]);
 		plugin.getDB().removeAllInvites(player.getName());
 		plugin.getCache(player.getName()).setCity(args[0]);
+		plugin.checkCityRank(args[0]);
 		
 		player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
 				"You have joined the city of " + args[0] + ".");

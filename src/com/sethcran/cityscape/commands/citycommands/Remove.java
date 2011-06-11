@@ -67,12 +67,14 @@ public class Remove extends CSCommand {
 						pc.setCity(null);
 						pc.setRank(null);
 					}
-					
+					plugin.checkCityRank(plugin.getCache(player.getName()).getCity());
 					plugin.sendMessageToCity(player.getName() + " has removed " + 
 							resident + " from the city.", cityName);
 					Player removed = plugin.getServer().getPlayer(resident);
-					removed.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
-							"You have been removed from the city of " + cityName + ".");
+					if(removed != null) {
+						removed.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
+								"You have been removed from the city of " + cityName + ".");
+					}
 				}
 			}
 			else {
