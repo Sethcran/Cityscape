@@ -67,7 +67,9 @@ public class Claim extends CSCommand {
 		plugin.addUsedClaim(claim.getCityName());
 		
 		player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
-				"You have claimed the chunk for " + args[0] + ".");		
+				"You have claimed the chunk for " + args[0] + ".");	
+		plugin.addLogEntry("ADMIN", player.getName() + " claimed " + chunk.getX() + ", " +
+				chunk.getZ() + " for " + args[0]);
 	}
 
 }

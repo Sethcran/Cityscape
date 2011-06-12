@@ -123,5 +123,7 @@ public class Create extends CSCommand {
 		
 		player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
 				"You have created a plot.");
+		plugin.addLogEntry("PLOT", player.getName() + " created a plot in " + 
+				city.getName());
 	}
 }

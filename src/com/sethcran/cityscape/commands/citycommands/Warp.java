@@ -72,6 +72,7 @@ public class Warp extends CSCommand {
 		player.teleport(location);
 		player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
 				"You have warped to " + city.getName() + ".");
+		plugin.addLogEntry("CITY", player.getName() + " warped to " +  city.getName());
 		
 	}
 

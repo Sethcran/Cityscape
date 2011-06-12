@@ -61,6 +61,8 @@ public class Unban extends CSCommand {
 		plugin.getDB().unban(args[1], args[0]);
 		player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
 				"You have unbanned " + args[0] + " from " + args[1] + ".");
+		plugin.addLogEntry("ADMIN", player.getName() + " unbanned " + args[0] +
+				" from " + args[1]);
 	}
 
 }

@@ -94,15 +94,45 @@ public class Schemas {
 		createCitiesTable();
 		
 		createClaimsTable();
-		
 		createInvitesTable();
-		
 		createPlotsTable();
 		createPlotPermissionsTable();
 		createPlayerCityDataTable();
 		createRanksTable();
 		createResidentsTable();
 		createCityBanListTable();
+		
+		createLogTable();
+		createCityChatLogTable();
+	}
+	
+	public void createCityChatLogTable() {
+		String sql = 	"CREATE TABLE IF NOT EXISTS cscitychatlogs(" +
+						"time DATETIME, " +
+						"city CHAR(" + Constants.TOWN_MAX_NAME_LENGTH + "), " +
+						"player CHAR(" + Constants.PLAYER_MAX_NAME_LENGTH + "), " +
+						"message VARCHAR(200))" +
+						"ENGINE = InnoDB;";
+		try {
+			con.createStatement().executeUpdate(sql);
+		} catch (SQLException e) {
+			Cityscape.log.severe("There was an error creating a database table.");
+			e.printStackTrace();
+		}
+	}
+	
+	public void createLogTable() {
+		String sql = 	"CREATE TABLE IF NOT EXISTS cslogs(" +
+						"time DATETIME, " +
+						"header CHAR(20), " +
+						"message VARCHAR(200)) " +
+						"ENGINE = InnoDB;";
+		try {
+			con.createStatement().executeUpdate(sql);
+		} catch (SQLException e) {
+			Cityscape.log.severe("There was an error creating a database table.");
+			e.printStackTrace();
+		}
 	}
 	
 	public void createPlayerCityDataTable() {

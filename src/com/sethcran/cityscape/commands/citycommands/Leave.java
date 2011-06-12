@@ -55,6 +55,7 @@ public class Leave extends CSCommand {
 		plugin.sendMessageToCity(player.getName() + " has left the city.", playerCity);
 		player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR + 
 				"You have left your town.");
+		plugin.addLogEntry("CITY", player.getName() + " left the city of " + playerCity);
 	}
 
 }

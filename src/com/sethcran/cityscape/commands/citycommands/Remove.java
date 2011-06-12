@@ -75,6 +75,8 @@ public class Remove extends CSCommand {
 						removed.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
 								"You have been removed from the city of " + cityName + ".");
 					}
+					plugin.addLogEntry("CITY", player.getName() + " has removed " + resident +
+							" from " + cityName);
 				}
 			}
 			else {

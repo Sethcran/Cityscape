@@ -61,6 +61,8 @@ public class Ban extends CSCommand {
 		plugin.getDB().ban(args[1], args[0]);
 		player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
 				"You have banned " + args[0] + " from " + args[1] + ".");
+		plugin.addLogEntry("ADMIN", player.getName() + " banned " + args[0] + " from " +
+				args[1]);
 	}
 
 }

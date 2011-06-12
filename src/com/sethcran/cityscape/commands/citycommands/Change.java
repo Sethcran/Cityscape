@@ -244,5 +244,7 @@ public class Change extends CSCommand {
 		plugin.getCity(cityName).changeRank(rp);
 		player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
 				"You have updated the permissions of " + rp.getRankName() + ".");
+		plugin.addLogEntry("CITY", player.getName() + " changed the rank permissions for " +
+				rp.getRankName());
 	}
 }

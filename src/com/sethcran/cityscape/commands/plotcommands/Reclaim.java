@@ -76,6 +76,8 @@ public class Reclaim extends CSCommand {
 		plugin.getDB().setPlotForSale(plot);
 		
 		player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR + 
-				"You have successfully reclaimed the plot.");		
+				"You have successfully reclaimed the plot.");
+		plugin.addLogEntry("PLOT", player.getName() + " reclaimed a plot in " + 
+				city.getName());
 	}
 }

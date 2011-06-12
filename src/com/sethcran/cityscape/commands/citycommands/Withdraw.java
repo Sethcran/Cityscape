@@ -87,6 +87,8 @@ public class Withdraw extends CSCommand {
 		
 		player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
 				"You have withdrawn " + iConomy.format(amount) + ".");
+		plugin.addLogEntry("MONEY", player.getName() + " withdrew " + amount + " from " +
+				city.getName() + "'s bank");
 	}
 
 }

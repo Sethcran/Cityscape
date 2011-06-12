@@ -60,6 +60,7 @@ public class DeleteCity extends CSCommand {
 		
 		player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR + 
 				"You have deleted the city of " + args[0] + ".");
+		plugin.addLogEntry("ADMIN", player.getName() + " deleted the city of " + args[0]);
 	}
 
 }

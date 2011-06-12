@@ -63,6 +63,8 @@ public class Invite extends CSCommand {
 							"You have been invited to join the city of " + cityName + ".");
 					invited.sendMessage(Constants.SUCCESS_COLOR + "Type /c invites to" +
 							" view a list of your invites.");
+					plugin.addLogEntry("CITY", player.getName() + " invited " + resident +
+							" to join the city of " + cityName);
 					return;
 				}
 			}

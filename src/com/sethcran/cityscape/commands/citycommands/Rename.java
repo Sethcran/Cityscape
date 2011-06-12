@@ -64,6 +64,8 @@ public class Rename extends CSCommand {
 		
 		plugin.getDB().renameCity(city.getName(), args[0]);
 		plugin.renameCity(city.getName(), args[0]);
+		plugin.addLogEntry("CITY", player.getName() + " has renamed the city of " + cityName +
+				" to " + args[0]);
 		
 	}
 

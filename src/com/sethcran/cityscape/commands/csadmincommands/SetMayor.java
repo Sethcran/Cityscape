@@ -72,6 +72,8 @@ public class SetMayor extends CSCommand {
 		plugin.getDB().setRank(oldMayor, null);
 		plugin.getDB().setRank(args[1], "Mayor");
 		plugin.getDB().updateMayor(args[0], args[1]);
+		plugin.addLogEntry("ADMIN", player.getName() + " set the mayor of " + args[0] + 
+				" to " + args[1]);
 	}
 
 }

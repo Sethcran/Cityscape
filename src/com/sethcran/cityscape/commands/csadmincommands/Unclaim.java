@@ -50,11 +50,14 @@ public class Unclaim extends CSCommand {
 			return;
 		}
 		
+		String owner = claim.getCityName();
 		plugin.removeClaim(claim);
 		plugin.getDB().unclaimChunk(claim);
 		
 		player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
 				"You have unclaimed the claim at " + x + ", " + z + ".");
+		plugin.addLogEntry("ADMIN", player.getName() + " unclaimed the claim at " + x + 
+				", " + z + " owned by " + owner);
 	}
 
 }

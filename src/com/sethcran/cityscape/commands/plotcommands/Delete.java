@@ -67,11 +67,15 @@ public class Delete extends CSCommand {
 			return;
 		}
 		
+		String owner = plot.getOwnerName();
+		
 		city.removePlot(plot);
 		plugin.getDB().removePlot(plot.getId());
 		
 		player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR + 
 				"You have deleted the plot.");
+		plugin.addLogEntry("PLOT", player.getName() + " deleted a plot owned by " +
+				owner + " in " + city.getName());
 	}
 
 }

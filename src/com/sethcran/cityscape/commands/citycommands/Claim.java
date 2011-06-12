@@ -162,6 +162,9 @@ public class Claim extends CSCommand {
 				
 				player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
 						"You have claimed " + claimList.size() + " claims.");
+				plugin.addLogEntry("CITY", player.getName() + " claimed " + 
+						claimList.size() + " claims for " + playerCity + " at " +
+						x + ", " + z);
 				return;
 			}
 		}
@@ -175,5 +178,7 @@ public class Claim extends CSCommand {
 		player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
 				"Your city has annexed the claim at " + x + 
 				", " + z + ".");
+		plugin.addLogEntry("CITY", player.getName() + " claimed the area at " + x + ", " +
+				z + " for " + playerCity);
 	}
 }

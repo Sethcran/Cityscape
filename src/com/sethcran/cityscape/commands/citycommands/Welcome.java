@@ -70,6 +70,7 @@ public class Welcome extends CSCommand {
 		plugin.getDB().setWelcome(city.getName(), total);
 		
 		plugin.sendMessageToCity(total, city.getName());
+		plugin.addLogEntry("CITY", player.getName() + " set welcome to " + total);
 	}
 
 }

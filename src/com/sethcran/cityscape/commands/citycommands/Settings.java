@@ -146,6 +146,8 @@ public class Settings extends CSCommand {
 		player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
 				"You have changed the settings of " + city.getName() + ".");
 		plugin.getDB().updateCitySettings(city);
+		plugin.addLogEntry("CITY", player.getName() + " updated the settings of " + 
+				city.getName());
 	}
 	
 	public void formatError(Player player) {

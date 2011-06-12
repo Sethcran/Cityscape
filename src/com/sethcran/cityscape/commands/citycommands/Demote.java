@@ -84,6 +84,7 @@ public class Demote extends CSCommand {
 		}
 		player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
 				"You have demoted " + args[0] + ".");
+		plugin.addLogEntry("CITY", player.getName() + " demoted " + args[0]);
 	}
 
 }

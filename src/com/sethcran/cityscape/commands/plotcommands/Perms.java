@@ -237,6 +237,8 @@ public class Perms extends CSCommand {
 				
 				player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
 						"The city of " + each[1] + "'s permissions have changed.");
+				plugin.addLogEntry("PLOT", player.getName() + " changed the perms of a " + 
+						"plot in " + city.getName());
 			}
 			
 			

@@ -68,6 +68,8 @@ public class RemoveAll extends CSCommand {
 		}
 		
 		plot.removeAllPerms();
+		plugin.addLogEntry("PLOT", player.getName() + " removed everyone from perms in a " +
+				"plot in " + city.getName());
 
 	}
 

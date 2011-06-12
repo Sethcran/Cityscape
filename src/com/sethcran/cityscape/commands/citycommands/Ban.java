@@ -60,6 +60,8 @@ public class Ban extends CSCommand {
 				plugin.getDB().ban(city.getName(), s);
 				player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR + 
 						"You have banned " + s + ".");
+				plugin.addLogEntry("CITY", player.getName() + " banned " + s + " from " +
+						city.getName());
 			}
 			else {
 				ErrorManager.sendError(sender, CSError.PLAYER_DOES_NOT_EXIST, s);

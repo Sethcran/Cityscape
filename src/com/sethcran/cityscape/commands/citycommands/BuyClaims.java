@@ -82,6 +82,8 @@ public class BuyClaims extends CSCommand {
 		
 		player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
 				"You have bought " + claims + " claims for " + iConomy.format(total) + ".");
+		plugin.addLogEntry("CITY", player.getName() + " bought " + claims + " claims for " +
+				city.getName());
 	}
 
 }

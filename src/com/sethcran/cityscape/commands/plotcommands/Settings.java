@@ -171,6 +171,8 @@ public class Settings extends CSCommand {
 		player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
 				"You have changed the settings of this plot.");
 		plugin.getDB().updatePlotSettings(plot);
+		plugin.addLogEntry("PLOT", player.getName() + " changed a plot's settings " + 
+				"in " + plot.getCityName());
 	}
 	
 	public void formatError(Player player) {

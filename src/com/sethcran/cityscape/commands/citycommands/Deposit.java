@@ -73,6 +73,8 @@ public class Deposit extends CSCommand {
 		
 		player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
 				"You have deposited " + iConomy.format(amount) + ".");
+		plugin.addLogEntry("MONEY", player.getName() + " depositied " + amount + " into " +
+				city.getName() + "'s bank");
 	}
 
 }

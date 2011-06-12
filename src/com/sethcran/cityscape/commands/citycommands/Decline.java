@@ -53,5 +53,7 @@ public class Decline extends CSCommand {
 		plugin.getDB().removeInvite(player.getName(), args[0]);
 		player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
 				"You have declined the invitation to join the city of " + args[0] + ".");
+		plugin.addLogEntry("CITY", player.getName() + " declined an invitiation to join " +
+				args[0]);
 	}
 }

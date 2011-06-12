@@ -118,6 +118,8 @@ public class Unclaim extends CSCommand {
 		player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
 				"Your town has unclaimed the area at " + x + ", " +
 				z + ".");
+		plugin.addLogEntry("CITY", player.getName() + " unclaimed the area at " +
+				x + ", " + z);
 	}
 
 }

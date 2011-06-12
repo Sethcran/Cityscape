@@ -98,6 +98,8 @@ public class Promote extends CSCommand {
 			cache.setRank(args[1]);
 		plugin.sendMessageToCity(args[0] + " has been promoted to " + args[1] + ".", 
 				playerCity);
+		plugin.addLogEntry("CITY", player.getName() + " promoted " + args[0] + " to " +
+				args[1] + " in " + playerCity);
 	}
 
 }

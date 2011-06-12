@@ -1,7 +1,5 @@
 package com.sethcran.cityscape;
 
-
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -29,11 +27,14 @@ import com.sethcran.cityscape.listeners.CSBlockListener;
 import com.sethcran.cityscape.listeners.CSEntityListener;
 import com.sethcran.cityscape.listeners.CSPlayerListener;
 import com.sethcran.cityscape.listeners.CSServerListener;
+import com.sethcran.cityscape.logging.LogThread;
 
 public class Cityscape extends JavaPlugin {
 	public static Logger log = null;
 	public PermissionHandler permissionHandler = null;
 	public iConomy iconomy = null;
+	
+	private LogThread logThread = null;
 	
 	private Settings settings = null;
 	private Database database = null;
@@ -42,6 +43,10 @@ public class Cityscape extends JavaPlugin {
 	private HashMap<String, PlayerCache> playerCache = null;
 	private HashMap<String, City> cityCache = null;
 	private HashMap<String, Claim> claimMap = null;
+	
+	public void addCityChatLogEntry(String city, String player, String message) {
+		logThread.addCityChatLogEntry(city, player, message);
+	}
 
 	public void addClaim(Claim claim) {
 		claimMap.put(claim.toString(), claim);
@@ -71,6 +76,10 @@ public class Cityscape extends JavaPlugin {
 				west = null;
 		}
 		getCity(claim.getCityName()).addClaim(claim, north, east, south, west);
+	}
+	
+	public void addLogEntry(String header, String message) {
+		logThread.addLogEntry(header, message);
 	}
 	
 	public void addUsedClaim(String cityName) {
@@ -201,6 +210,9 @@ public class Cityscape extends JavaPlugin {
 		
 		settings = new Settings();
 		database = new Database(this);
+		logThread = new LogThread(this);
+		getServer().getScheduler().scheduleAsyncRepeatingTask(this, logThread, 1L, 20L);
+		
 		commandHandler = new CommandHandler(this);
 		selectionMap = new HashMap<String, Selection>();
 		playerCache = new HashMap<String, PlayerCache>();
@@ -216,6 +228,7 @@ public class Cityscape extends JavaPlugin {
 		database.deleteOldInvites();
 		
 		log.info("Cityscape loaded.");
+		logThread.addLogEntry("SERVER", "Cityscape Enabled.");
 	}
 	
 	public void populateCityCache() {

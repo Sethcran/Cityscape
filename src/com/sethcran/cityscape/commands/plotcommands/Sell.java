@@ -95,5 +95,7 @@ public class Sell extends CSCommand {
 		player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
 				"You have set that plot for sale at " + 
 				iConomy.format(plot.getPrice()) + ".");
+		plugin.addLogEntry("PLOT", player.getName() + " set a plot in " + city.getName() +
+				" for sale");
 	}
 }

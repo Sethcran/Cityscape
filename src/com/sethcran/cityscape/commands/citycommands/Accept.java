@@ -60,5 +60,7 @@ public class Accept extends CSCommand {
 		
 		player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
 				"You have joined the city of " + args[0] + ".");
+		plugin.addLogEntry("CITY", player.getName() + " accepted the invitation to " + 
+				args[0]);
 	}
 }

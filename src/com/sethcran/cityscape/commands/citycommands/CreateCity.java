@@ -130,5 +130,6 @@ public class CreateCity extends CSCommand {
 		plugin.getDB().removeAllInvites(player.getName());
 		
 		balance.subtract(plugin.getSettings().cityCost);
+		plugin.addLogEntry("CITY", player.getName() + " created the city of " + args[0]);
 	}
 }

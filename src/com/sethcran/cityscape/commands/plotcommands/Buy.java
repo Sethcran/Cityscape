@@ -86,6 +86,8 @@ public class Buy extends CSCommand {
 		
 		player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
 				"You have bought the plot for " +iConomy.format(plot.getPrice()) + ".");
+		plugin.addLogEntry("PLOT", player.getName() + " bought a plot in " + 
+				plot.getCityName() + " for " + plot.getPrice());
 
 	}
 

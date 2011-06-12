@@ -67,6 +67,7 @@ public class Delete extends CSCommand {
 		plugin.getDB().deleteCity(cityName);
 		plugin.getServer().broadcastMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
 				"The city of " + cityName + " has fallen into ruin.");
+		plugin.addLogEntry("CITY", player.getName() + " deleted the city of " + cityName);
 	}
 
 }

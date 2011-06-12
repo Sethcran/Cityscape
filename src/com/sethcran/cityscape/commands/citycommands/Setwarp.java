@@ -77,6 +77,8 @@ public class Setwarp extends CSCommand {
 		
 		player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +
 				"You have set your city warp.");
+		plugin.addLogEntry("CITY", player.getName() + " set the warp of " + 
+				localCity.getName());
 		return;
 	}
 

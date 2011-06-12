@@ -37,10 +37,7 @@ public class Database {
 			Class.forName(settings.databaseDriver);
 			con = DriverManager.getConnection(settings.databaseUrl, 
 					settings.databaseUsername, settings.databasePassword);
-		} catch(ClassNotFoundException e) {
-			if(settings.debug)
-				e.printStackTrace();
-		} catch(SQLException e) {
+		} catch(Exception e) {
 			if(settings.debug)
 				e.printStackTrace();
 		}

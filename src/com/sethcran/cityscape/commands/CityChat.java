@@ -36,10 +36,13 @@ public class CityChat extends CSCommand {
 		String message = new String();
 		message += ChatColor.AQUA + "[" + player.getName() + "] " + 
 				ChatColor.WHITE;
+		String m = new String();
 		for(String a : args)
-			message += a;
+			m += a + " ";
+		message += m;
 		
 		plugin.sendMessageToCity(message, playerCity);
+		plugin.addCityChatLogEntry(playerCity, player.getName(), m);
 	}
 
 }
