@@ -328,8 +328,26 @@ public class City {
 		return snow;
 	}
 	
+	public void removeAllPlots() {
+		plotMap.clear();
+		plotTree = new RTree();
+		plotTree.init(null);
+	}
+	
 	public void removeClaim(Claim claim) {
 		claimGraph.removeVertex(claim);
+	}
+	
+	public ArrayList<Integer> removeIntersectingPlots(int xmin, int zmin, int xmax, int zmax) {
+		TreeProcedure tproc = new TreeProcedure();
+		ArrayList<Integer> idList = new ArrayList<Integer>();
+		
+		plotTree.intersects(new Rectangle(xmin, zmin, xmax, zmax), tproc);
+		for(int i : tproc.getId()) {
+			plotMap.remove(i);
+			idList.add(i);
+		}
+		return idList;
 	}
 	
 	public void removePlot(Plot plot) {

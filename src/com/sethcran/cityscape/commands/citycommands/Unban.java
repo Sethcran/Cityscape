@@ -40,13 +40,14 @@ public class Unban extends CSCommand {
 		}
 		
 		RankPermissions rp = city.getRank(cache.getRank());
-		if(!rp.isUnban()) {
+		if(rp == null || !rp.isUnban()) {
 			ErrorManager.sendError(sender, CSError.NO_RANK_PERMISSION, null);
 			return;
 		}
 		
 		if(args == null) {
-			ErrorManager.sendError(sender, CSError.NO_RANK_PERMISSION, null);
+			ErrorManager.sendError(sender, CSError.NOT_ENOUGH_ARGUMENTS, null);
+			player.sendMessage(Constants.ERROR_COLOR + usage);
 			return;
 		}
 		

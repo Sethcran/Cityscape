@@ -56,7 +56,7 @@ public class Delete extends CSCommand {
 		}
 		
 		RankPermissions rp = city.getRank(cache.getRank());
-		if(!rp.isCreatePlots()) {
+		if(rp == null || !rp.isCreatePlots()) {
 			ErrorManager.sendError(sender, CSError.NO_RANK_PERMISSION, null);
 			return;
 		}

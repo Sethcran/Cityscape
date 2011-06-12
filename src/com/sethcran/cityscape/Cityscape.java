@@ -8,6 +8,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import org.bukkit.Chunk;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -287,7 +289,22 @@ public class Cityscape extends JavaPlugin {
 	
 	public void removeClaim(Claim claim) {
 		claimMap.remove(claim.toString());
-		City city = getCity(claim.getCityName());
+		
+		Chunk chunk = getServer().getWorld(claim.getWorld()).getChunkAt(
+				claim.getX(), claim.getZ());
+		Block minBlock = chunk.getBlock(0, 0, 0);
+		Block maxBlock = chunk.getBlock(15, 0, 15);
+		int xmin = minBlock.getX();
+		int zmin = minBlock.getZ();
+		int xmax = maxBlock.getX();
+		int zmax = maxBlock.getZ();		
+		
+		City city = getCity(claim.getCityName());		
+		ArrayList<Integer> idList = city.removeIntersectingPlots(xmin, zmin, xmax, zmax);
+		for(int i : idList) {
+			database.removePlot(i);
+		}
+		
 		city.setUsedClaims(city.getUsedClaims() - 1);
 		city.removeClaim(claim);
 	}
@@ -361,5 +378,6 @@ public class Cityscape extends JavaPlugin {
 		city.addClaim(claim, null, null, null, null);
 		
 		city.setUsedClaims(1);
+		city.removeAllPlots();
 	}
 }

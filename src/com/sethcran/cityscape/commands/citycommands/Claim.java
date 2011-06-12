@@ -169,6 +169,11 @@ public class Claim extends CSCommand {
 			}
 		}
 		
+		if(city != null) {
+			ErrorManager.sendError(sender, CSError.CITY_ALREADY_OWNS, pcity.getName());
+			return;
+		}
+		
 		plugin.getDB().claimChunk(playerCity, world, x, z);
 		com.sethcran.cityscape.Claim claim = new com.sethcran.cityscape.Claim(
 				playerCity, world, x, z);

@@ -34,6 +34,7 @@ public class ErrorManager {
 		OTHER_ALREADY_IN_CITY,
 		OTHER_NOT_IN_YOUR_CITY,
 		PLAYER_DOES_NOT_EXIST,
+		PLAYER_IN_YOUR_CITY,
 		PLAYER_NOT_IN_YOUR_CITY,
 		RANK_ALREADY_EXISTS,
 		RANK_DOES_NOT_EXIST,
@@ -104,6 +105,8 @@ public class ErrorManager {
 				args + " is not in your city."); break;
 		case PLAYER_DOES_NOT_EXIST: sender.sendMessage(message + 
 				"The player " + args + " does not exist."); break;
+		case PLAYER_IN_YOUR_CITY: sender.sendMessage(message +
+				"The player " + args + " is in your city."); break;
 		case PLAYER_NOT_IN_YOUR_CITY: sender.sendMessage(message +
 				"The player " + args + " is not in your city."); break;
 		case RANK_ALREADY_EXISTS: sender.sendMessage(message +

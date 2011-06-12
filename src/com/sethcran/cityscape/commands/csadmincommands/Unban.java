@@ -39,7 +39,7 @@ public class Unban extends CSCommand {
 			return;
 		}
 		
-		if(args.length != 1) {
+		if(args.length != 2) {
 			ErrorManager.sendError(sender, CSError.TOO_MANY_ARGUMENTS, null);
 			sender.sendMessage(Constants.ERROR_COLOR + usage);
 			return;

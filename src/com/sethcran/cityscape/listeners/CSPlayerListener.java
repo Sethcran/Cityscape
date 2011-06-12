@@ -18,6 +18,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
+import com.iConomy.iConomy;
 import com.sethcran.cityscape.City;
 import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
@@ -445,8 +446,14 @@ public class CSPlayerListener extends PlayerListener {
 		if(cache.getLastPlotLocation() == null) {
 			if(plot != null) {
 				if(plot.isCityPlot()) {
-					player.sendMessage(ChatColor.DARK_GREEN + 
-							"You have entered a city plot.");
+					String message = new String();
+					if(plot.isForSale())
+						message += ChatColor.YELLOW + "This plot is for sale! " + 
+						iConomy.format(plot.getPrice());
+					else
+						message += ChatColor.DARK_GREEN + "You have entered a city" +
+						"plot. ";
+					player.sendMessage(message);
 					cache.setLastPlotLocation(plot.getOwnerName());
 					return;
 				}
@@ -464,10 +471,13 @@ public class CSPlayerListener extends PlayerListener {
 		else {
 			if(!plot.getOwnerName().equals(cache.getLastPlotLocation())) {
 				if(plot.isCityPlot()) {
-					String message = ChatColor.DARK_GREEN + "You have entered a city" +
-					"plot. ";
+					String message = new String();
 					if(plot.isForSale())
-						message += ChatColor.YELLOW + "For sale!";
+						message += ChatColor.YELLOW + "This plot is for sale! " + 
+						iConomy.format(plot.getPrice());
+					else
+						message += ChatColor.DARK_GREEN + "You have entered a city" +
+						"plot. ";
 					player.sendMessage(message);
 					cache.setLastPlotLocation(plot.getOwnerName());
 					return;

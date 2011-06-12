@@ -380,6 +380,7 @@ public class Database {
 			con.setAutoCommit(false);
 			csclaims.unclaimAll(city, claim);
 			cscities.setUsedClaims(city, 1);
+			csplots.removeAllPlots(city);
 			con.commit();
 			con.setAutoCommit(true);
 		} catch(SQLException e) {

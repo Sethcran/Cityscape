@@ -1,5 +1,6 @@
 package com.sethcran.cityscape.commands.csadmincommands;
 
+import org.bukkit.Chunk;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -39,7 +40,7 @@ public class Ban extends CSCommand {
 			return;
 		}
 		
-		if(args.length != 1) {
+		if(args.length != 2) {
 			ErrorManager.sendError(sender, CSError.TOO_MANY_ARGUMENTS, null);
 			sender.sendMessage(Constants.ERROR_COLOR + usage);
 			return;
@@ -63,6 +64,19 @@ public class Ban extends CSCommand {
 				"You have banned " + args[0] + " from " + args[1] + ".");
 		plugin.addLogEntry("ADMIN", player.getName() + " banned " + args[0] + " from " +
 				args[1]);
+		
+		Player p = plugin.getServer().getPlayer(args[0]);
+		if(p != null) {
+			Chunk chunk = p.getLocation().getBlock().getChunk();
+			City lcity = plugin.getCityAt(chunk.getX(), chunk.getZ(), 
+					chunk.getWorld().getName());
+			if(lcity != null && lcity.getName().equals(city.getName())) {
+				p.teleport(plugin.getServer().getWorld(
+						chunk.getWorld().getName()).getSpawnLocation());
+				p.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR + 
+				"You have been banned from " + city.getName() + ".");
+			}
+		}
 	}
 
 }

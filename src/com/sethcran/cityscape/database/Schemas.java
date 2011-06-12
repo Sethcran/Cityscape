@@ -213,8 +213,8 @@ public class Schemas {
 						"city CHAR(" + Constants.TOWN_MAX_NAME_LENGTH + ") NOT NULL," +
 						"owner CHAR(" + Constants.PLAYER_MAX_NAME_LENGTH + ")," +
 						"xmin INT," +
-						"xmax INT," +
 						"zmin INT," +
+						"xmax INT," +
 						"zmax INT," +
 						"residentBuild BOOL," +
 						"residentDestroy BOOL," +
