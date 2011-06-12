@@ -39,13 +39,15 @@ public class CSAdmin extends CSCommand {
 		}
 		
 		if(args.length > 1) {
-			if(wasNull)
-				args = null;
-			else
+			if(!wasNull)
 				args = Arrays.copyOfRange(args, 1, args.length);
 		}
-		else
-			args = null;
+		else {
+			if(!wasNull)
+				args = null;
+			else if(args.length == 0)
+				args = null;
+		}
 		
 		cscommand.execute(sender, args);
 	}
