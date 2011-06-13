@@ -47,6 +47,12 @@ public class CSPlayerListener extends PlayerListener {
 		
 		City city = plugin.getCityAt(chunk.getX(), chunk.getZ(), chunk.getWorld().getName());
 		
+		if(city == null)
+			return;
+		
+		if(plugin.permissionHandler.has(player, "cityscape.bypass"))
+			return;
+		
 		String playerCity = plugin.getCache(player.getName()).getCity();
 		
 		Plot plot = city.getPlotAt(block.getX(), block.getZ());
@@ -170,6 +176,12 @@ public class CSPlayerListener extends PlayerListener {
 		Chunk chunk = block.getChunk();
 		
 		City city = plugin.getCityAt(chunk.getX(), chunk.getZ(), chunk.getWorld().getName());
+		
+		if(city == null)
+			return;
+		
+		if(plugin.permissionHandler.has(player, "cityscape.bypass"))
+			return;
 		
 		String playerCity = plugin.getCache(player.getName()).getCity();
 		

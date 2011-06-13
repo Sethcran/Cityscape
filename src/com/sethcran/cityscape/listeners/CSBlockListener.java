@@ -37,6 +37,10 @@ public class CSBlockListener extends BlockListener {
 			return;
 		}
 		
+		if(plugin.permissionHandler.has(player, "cityscape.bypass")) {
+			return;
+		}
+		
 		String playerCity = plugin.getCache(player.getName()).getCity();
 		
 		Plot plot = city.getPlotAt(block.getX(), block.getZ());
@@ -164,6 +168,10 @@ public class CSBlockListener extends BlockListener {
 		
 		if(city == null)
 			return;
+		
+		if(plugin.permissionHandler.has(player, "cityscape.bypass")) {
+			return;
+		}
 		
 		String playerCity = plugin.getCache(player.getName()).getCity();
 		

@@ -285,6 +285,8 @@ public class Cityscape extends JavaPlugin {
 		pm.registerEvent(Type.CREATURE_SPAWN, entityListener, Priority.High, this);
 		pm.registerEvent(Type.ENTITY_DAMAGE, entityListener, Priority.High, this);
 		pm.registerEvent(Type.ENTITY_TARGET, entityListener, Priority.High, this);
+		pm.registerEvent(Type.PAINTING_BREAK, entityListener, Priority.High, this);
+		pm.registerEvent(Type.PAINTING_PLACE, entityListener, Priority.High, this);
 	}
 	
 	public void removeClaim(Claim claim) {
