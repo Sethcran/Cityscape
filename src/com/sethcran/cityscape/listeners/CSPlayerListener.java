@@ -69,6 +69,9 @@ public class CSPlayerListener extends PlayerListener {
 				}
 			}
 			else if(city.getName().equals(playerCity)) {
+				if(plot.getOwnerName().equals(player.getName())) {
+					return;
+				}
 				RankPermissions rp = plugin.getPermissions(player.getName());
 				if(rp != null) {			
 					if(rp.isCityBuild()) {
@@ -190,6 +193,9 @@ public class CSPlayerListener extends PlayerListener {
 				}
 			}
 			else if(city.getName().equals(playerCity)) {
+				if(plot.getOwnerName().equals(player.getName())) {
+					return;
+				}
 				RankPermissions rp = plugin.getPermissions(player.getName());
 				if(rp != null) {			
 					if(rp.isCityDestroy()) {

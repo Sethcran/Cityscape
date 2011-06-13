@@ -142,6 +142,7 @@ public class CSPlots extends Table {
 	public void removePlayer(String player) {
 		String sql = 	"UPDATE csplots SET " +
 						"owner = city, " +
+						"cityPlot = true" + 
 						"price = 0 " +
 						"WHERE owner = ?;";
 		try {

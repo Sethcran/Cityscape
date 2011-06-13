@@ -350,6 +350,20 @@ public class City {
 		return idList;
 	}
 	
+	public void removePlayer(String player) {
+		final String p = player;
+		plotMap.forEachEntry(new TIntObjectProcedure<Plot>() {
+			public boolean execute(int i, Plot plot) {
+				
+				if(plot.getOwnerName().equals(p)) {
+					plot.setCityPlot(true);
+					plot.setOwnerName(plot.getCityName());
+				}
+				return true;
+			}
+		});
+	}
+	
 	public void removePlot(Plot plot) {
 		plotMap.remove(plot.getId());
 		plotTree.delete(new Rectangle(plot.getXmin(), plot.getZmin(), 

@@ -52,7 +52,7 @@ public class Rename extends CSCommand {
 		
 		City city = plugin.getCity(cityName);
 		RankPermissions rp = city.getRank(cache.getRank());
-		if(!rp.isSetName()) {
+		if(rp != null && !rp.isSetName()) {
 			ErrorManager.sendError(sender, CSError.NO_RANK_PERMISSION, null);
 			return;
 		}

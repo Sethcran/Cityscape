@@ -46,14 +46,19 @@ public class Invite extends CSCommand {
 			return;
 		}
 		
+		String cityName = plugin.getCache(player.getName()).getCity();
+		
 		for(String resident : args) {
 			if(plugin.getDB().doesPlayerExist(resident)) {
 				String city = plugin.getDB().getCurrentCity(resident);
 				if(city != null) {
 					ErrorManager.sendError(sender, CSError.OTHER_ALREADY_IN_CITY, null);
 				} 
-				else {
-					String cityName = plugin.getCache(player.getName()).getCity();
+				else if(plugin.getDB().isInvited(resident, cityName)) {
+					player.sendMessage(Constants.CITYSCAPE + Constants.ERROR_COLOR + 
+							resident + " is already invited to " + cityName + ".");
+				}
+				else {					
 					plugin.getDB().addInvite(resident, cityName);
 					
 					player.sendMessage(Constants.CITYSCAPE + Constants.SUCCESS_COLOR +

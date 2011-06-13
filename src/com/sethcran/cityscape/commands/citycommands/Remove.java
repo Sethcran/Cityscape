@@ -3,6 +3,7 @@ package com.sethcran.cityscape.commands.citycommands;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.sethcran.cityscape.City;
 import com.sethcran.cityscape.Cityscape;
 import com.sethcran.cityscape.Constants;
 import com.sethcran.cityscape.PlayerCache;
@@ -67,6 +68,9 @@ public class Remove extends CSCommand {
 						pc.setCity(null);
 						pc.setRank(null);
 					}
+					City c = plugin.getCity(cityName);
+					c.removePlayer(resident);
+					
 					plugin.checkCityRank(plugin.getCache(player.getName()).getCity());
 					plugin.sendMessageToCity(player.getName() + " has removed " + 
 							resident + " from the city.", cityName);

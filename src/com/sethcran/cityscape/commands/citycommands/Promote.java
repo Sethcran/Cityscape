@@ -62,7 +62,7 @@ public class Promote extends CSCommand {
 		}
 		
 		RankPermissions rp = plugin.getPermissions(player.getName());
-		if(!rp.isPromote()) {
+		if(rp != null && !rp.isPromote()) {
 			ErrorManager.sendError(sender, CSError.NO_RANK_PERMISSION, null);
 			return;
 		}
